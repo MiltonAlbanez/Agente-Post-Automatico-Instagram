@@ -170,9 +170,10 @@ def main():
             # Validação: Supabase deve estar completo na conta; Instagram pode usar fallback do .env
             acc_instagram_id = acc.get("instagram_id") or cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
             acc_instagram_token = acc.get("instagram_access_token") or cfg["INSTAGRAM_ACCESS_TOKEN"]
-            acc_supa_url = acc.get("supabase_url", "")
-            acc_supa_key = acc.get("supabase_service_key", "")
-            acc_supa_bucket = acc.get("supabase_bucket", "")
+            # Fallback para Supabase via variáveis de ambiente (não versionar segredos em accounts.json)
+            acc_supa_url = acc.get("supabase_url") or cfg["SUPABASE_URL"]
+            acc_supa_key = acc.get("supabase_service_key") or cfg["SUPABASE_SERVICE_KEY"]
+            acc_supa_bucket = acc.get("supabase_bucket") or cfg["SUPABASE_BUCKET"]
             instagram_ok = bool(acc_instagram_id) and bool(acc_instagram_token)
             supabase_ok = bool(acc_supa_url) and bool(acc_supa_key) and bool(acc_supa_bucket)
             if not instagram_ok or not supabase_ok:
