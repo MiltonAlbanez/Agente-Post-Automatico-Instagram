@@ -1,0 +1,34 @@
+[
+  {
+    "nome": "advogado_conta",
+    "hashtags_pesquisa": ["blender3d", "isometric"],
+    "usernames": ["natgeo", "nasa"],
+    "prompt_ia_geracao_conteudo": "Crie um post sobre tendências em direito digital...",
+    "prompt_ia_legenda": "Resuma o conteúdo sobre direito digital em uma legenda...",
+    "supabase_url": "",
+    "supabase_service_key": "",
+    "supabase_bucket": ""
+  },
+  {
+    "nome": "dentista_conta",
+    "hashtags_pesquisa": ["blender3d", "isometric"],
+    "usernames": ["natgeo", "nasa"],
+    "prompt_ia_geracao_conteudo": "Crie um post sobre dicas de higiene bucal...",
+    "prompt_ia_legenda": "Resuma o conteúdo sobre higiene bucal em uma legenda...",
+    "supabase_url": "",
+    "supabase_service_key": "",
+    "supabase_bucket": ""
+  }
+  ,
+  {
+    "nome": "Milton_Albanez",
+    "hashtags_pesquisa": ["empreendedorismo", "coaching", "pnl", "desenvolvimento pessoal"],
+    "usernames": ["milton_albanez"],
+    "prompt_ia_geracao_conteudo": "Uma representação minimalista e limpa de uma mente empreendedora quebrando um limite de vidro. Cores azuis e douradas dominantes, estilo design gráfico moderno e conceitual, sem texto, com foco em linhas geométricas e sensação de velocidade. Qualidade fotográfica 8K.",
+    "prompt_ia_legenda": "Análise 2 (Legenda Instagram):\n\nVocê é um consultor de conteúdo nichado. Gere uma legenda coerente e persuasiva para Instagram, em PT-BR, conectando [TEXTO ORIGINAL COLETADO] e [DESCRIÇÃO DA IMAGEM].\n\nRegras:\n- Seja claro, objetivo e inspirador (sem jargões).\n- Mantenha coerência com os temas: Empreendedorismo, Coaching e PNL.\n- Use CTA sutil e relevante.\n- Inclua de 3 a 6 hashtags específicas e naturais.\n- Use emojis moderadamente para dar ritmo.\n\nSubstitua os placeholders: {texto_original} e {descricao}.\nSaída final: apenas a legenda pronta, sem explicações.",
+    "disable_replicate": false,
+    "supabase_url": "https://ccvfdupucmsjxwtfwzkd.supabase.co",
+    "supabase_service_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjdmZkdXB1Y21zanh3dGZ3emtkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTg3OTgwNywiZXhwIjoyMDc1NDU1ODA3fQ.HcQb9CpoF9sQcRUBQWmcmx6RmokXd64FbGpBV3GVUzM",
+    "supabase_bucket": "instagram-images"
+  }
+]
