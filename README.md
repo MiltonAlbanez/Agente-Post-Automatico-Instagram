@@ -9,6 +9,7 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 - OpenAI: `OPENAI_API_KEY`
 - Replicate: `REPLICATE_TOKEN`
 - PostgreSQL: `POSTGRES_DSN`
+  - No Railway, pode usar `DATABASE_URL` (fallback automático)
 - Supabase Storage (opcional p/ re-hospedar): `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_BUCKET`
 
 ## Instalação Local
@@ -30,6 +31,7 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 ## Deploy no Railway
 1. Link ao projeto: `railway link -p <PROJECT_ID>`
 2. Configure Variables com os segredos dos Requisitos.
+   - Banco: defina `POSTGRES_DSN` ou use `DATABASE_URL` do add-on PostgreSQL
 3. Faça deploy: `railway up`
 4. Procfile já define `worker: python src/main.py multirun --limit 1 --only Milton_Albanez`.
 5. Cron Job (UTC): 

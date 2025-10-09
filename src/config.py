@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 def load_config():
     load_dotenv()
+    # Suporte ao Railway: usar DATABASE_URL como fallback para POSTGRES_DSN
+    postgres_dsn = os.getenv("POSTGRES_DSN") or os.getenv("DATABASE_URL", "")
     return {
         "INSTAGRAM_BUSINESS_ACCOUNT_ID": os.getenv("INSTAGRAM_BUSINESS_ACCOUNT_ID", ""),
         "INSTAGRAM_ACCESS_TOKEN": os.getenv("INSTAGRAM_ACCESS_TOKEN", ""),
@@ -13,7 +15,7 @@ def load_config():
         "RAPIDAPI_HOST": os.getenv("RAPIDAPI_HOST", "instagram-scraper-api2.p.rapidapi.com"),
         "REPLICATE_TOKEN": os.getenv("REPLICATE_TOKEN", ""),
         "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY", ""),
-        "POSTGRES_DSN": os.getenv("POSTGRES_DSN", ""),
+        "POSTGRES_DSN": postgres_dsn,
         # Supabase Storage (opcional)
         "SUPABASE_URL": os.getenv("SUPABASE_URL", ""),
         "SUPABASE_SERVICE_KEY": os.getenv("SUPABASE_SERVICE_KEY", ""),
