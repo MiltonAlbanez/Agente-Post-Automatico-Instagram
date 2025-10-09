@@ -19,6 +19,35 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 3. Configure `.env` com as variáveis (veja Requisitos)
 4. Execute um teste: `python src/main.py multirun --limit 1 --only Milton_Albanez`
 
+### Exemplo de `.env`
+```
+# Instagram Graph API
+INSTAGRAM_BUSINESS_ACCOUNT_ID=xxxxxxxxxxxxxxxx
+INSTAGRAM_ACCESS_TOKEN=EAAB...long_token
+
+# Telegram (opcional)
+TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+TELEGRAM_CHAT_ID=123456789
+
+# RapidAPI
+RAPIDAPI_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+RAPIDAPI_HOST=instagram-scraper-api2.p.rapidapi.com
+
+# OpenAI e Replicate
+OPENAI_API_KEY=sk-xxxxx
+REPLICATE_TOKEN=r8_xxxxx
+
+# Banco de Dados
+POSTGRES_DSN=postgresql://usuario:senha@host:5432/dbname
+# Railway fallback automático
+# DATABASE_URL=postgresql://usuario:senha@host:5432/dbname
+
+# Supabase Storage (opcional)
+SUPABASE_URL=https://SEU_REF.supabase.co
+SUPABASE_SERVICE_KEY=service_role_key
+SUPABASE_BUCKET=instagram-images
+```
+
 ## Estrutura
 - `accounts.json`: define contas, hashtags/usernames, prompts e flags.
 - `src/services/*`: clientes (Instagram, Replicate, RapidAPI, Supabase, OpenAI).
@@ -49,6 +78,8 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 - Coleta por usuários: `python src/main.py collect_users --users milton_albanez`
 - Gerar a partir de URL: `python src/main.py generate --image_url <url>`
 - Limpar cache RapidAPI: `python src/main.py clear_cache --older 3600`
+ - Listar não postados (Railway): `railway run unposted`
+ - Publicar primeiro não postado (Railway): `railway run autopost -- --style "isometric, minimalista"`
 
 ## Licença
 Uso pessoal do autor. Ajuste conforme seu contexto.
