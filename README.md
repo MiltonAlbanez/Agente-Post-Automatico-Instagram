@@ -78,8 +78,10 @@ SUPABASE_BUCKET=instagram-images
 - Coleta por usuários: `python src/main.py collect_users --users milton_albanez`
 - Gerar a partir de URL: `python src/main.py generate --image_url <url>`
 - Limpar cache RapidAPI: `python src/main.py clear_cache --older 3600`
- - Listar não postados (Railway): `railway run unposted`
- - Publicar primeiro não postado (Railway): `railway run autopost -- --style "isometric, minimalista"`
+ - Listar não postados (Railway - Windows): `railway run python src/main.py unposted --limit 10`
+ - Publicar primeiro não postado (Railway - Windows): `railway run python src/main.py autopost --style "isometric, minimalista"`
+ - Dica: defina variáveis úteis via CLI (sem disparar deploy):
+   `railway variables --set "ACCOUNT_NAME=Milton_Albanez" --set "LIMIT=1" --set "STYLE=isometric, minimalista" --skip-deploys`
 
 ## Licença
 Uso pessoal do autor. Ajuste conforme seu contexto.
