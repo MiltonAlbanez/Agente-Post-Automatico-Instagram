@@ -1,0 +1,26 @@
+# Arquivo: railway.yaml
+version: 3
+
+# Define a configuração do serviço principal (seu Python Worker)
+services:
+  app:
+    name: Autopost Worker
+    # O comando que o serviço executa, que neste caso é apenas um trabalhador
+    startCommand: "python src/main.py multirun --limit 1"
+
+# Seção dedicada aos Jobs Agendados
+cron:
+  # Job 1: 06:00 BRT (09:00 UTC)
+  Morning_post:
+    schedule: "0 9 * * *"
+    command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
+    
+  # Job 2: 12:00 BRT (15:00 UTC)  
+  midday_post:
+    schedule: "0 15 * * *"
+    command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
+    
+  # Job 3: 19:00 BRT (22:00 UTC)
+  evening_post:
+    schedule: "0 22 * * *"
+    command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
