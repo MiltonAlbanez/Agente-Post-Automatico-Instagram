@@ -21,6 +21,8 @@ def generate_and_publish(
     caption_prompt: str | None = None,
     original_text: str | None = None,
     disable_replicate: bool = False,
+    # Prompt de geração de imagem opcional, vindo da conta (override do padrão seguro)
+    replicate_prompt: str | None = None,
     # Overrides opcionais de Supabase por conta (multirun)
     supabase_url: str | None = None,
     supabase_service_key: str | None = None,
@@ -34,9 +36,24 @@ def generate_and_publish(
     replicate_error = None
     if not disable_replicate:
         replicate = ReplicateClient(replicate_token)
-        base_prompt = content_prompt or "Renderização isométrica 3D altamente detalhada."
+        # Em vez de usar diretamente o prompt de descrição (que é para análise),
+        # construir um prompt de geração focado no tema e evitar clichês/elementos irrelevantes.
+        safer_image_prompt = replicate_prompt or (
+            "Visual profissional para empreendedorismo, coaching e PNL. "
+            "Estilo minimalista, limpo, sem objetos aleatórios, sem pessoas flutuando, sem barris enferrujados. "
+            "Composição clara, foco no conceito de crescimento e alta performance. Cores harmoniosas. "
+            "Evitar símbolos confusos; privilegiar formas simples e metáforas visuais claras (setas, degraus, caminhos)."
+        )
+        if original_text:
+            safer_image_prompt += (
+                f" Baseie os elementos visuais no tema descrito: '{original_text}'. "
+                "Evite literalidade excessiva; use metáforas visuais diretas ligadas ao tema."
+            )
+        # Se veio um estilo do CLI, incluir como instrução de estilo
+        if caption_style:
+            safer_image_prompt += f" Estilo adicional: {caption_style}."
         try:
-            generated_image_url = replicate.generate_image(prompt=f"{base_prompt} {description}")
+            generated_image_url = replicate.generate_image(prompt=safer_image_prompt)
         except Exception as e:
             print(f"Replicate falhou, usando imagem original. Erro: {e}")
             replicate_error = str(e)
@@ -83,15 +100,24 @@ def generate_and_publish(
         print(f"Erro carregando/avaliando config Supabase: {cfg_err}")
 
     # Descrever a imagem final e gerar a legenda com base nela
-    description = openai.describe_image(generated_image_url)
+    description = openai.describe_image(
+        generated_image_url,
+        custom_prompt=content_prompt,
+    )
+    if content_prompt:
+        print("DescribeImage: usando prompt_ia_geracao_conteudo personalizado.")
+    else:
+        print("DescribeImage: usando prompt padrão embutido.")
     if caption_prompt:
         # Suporte a placeholders {descricao} e {texto_original}
         prompt_text = caption_prompt.replace("{descricao}", description)
         if original_text:
             prompt_text = prompt_text.replace("{texto_original}", original_text)
         # Quando o prompt for definido pela conta, usar literal
+        print("Caption: usando prompt_ia_legenda da conta.")
         caption = openai.generate_caption_with_prompt(prompt_text)
     else:
+        print("Caption: usando prompt padrão com estilo opcional.")
         caption = openai.generate_caption(description, caption_style)
 
     # Preparar e publicar no Instagram

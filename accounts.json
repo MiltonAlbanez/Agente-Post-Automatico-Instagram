@@ -7,7 +7,8 @@
     "prompt_ia_legenda": "Resuma o conteúdo sobre direito digital em uma legenda...",
     "supabase_url": "",
     "supabase_service_key": "",
-    "supabase_bucket": ""
+    "supabase_bucket": "",
+    "disable_replicate": false
   },
   {
     "nome": "dentista_conta",
@@ -17,15 +18,17 @@
     "prompt_ia_legenda": "Resuma o conteúdo sobre higiene bucal em uma legenda...",
     "supabase_url": "",
     "supabase_service_key": "",
-    "supabase_bucket": ""
+    "supabase_bucket": "",
+    "disable_replicate": true
   }
   ,
   {
     "nome": "Milton_Albanez",
     "hashtags_pesquisa": ["empreendedorismo", "coaching", "pnl", "desenvolvimento pessoal"],
     "usernames": ["milton_albanez"],
-    "prompt_ia_geracao_conteudo": "Uma representação minimalista e limpa de uma mente empreendedora quebrando um limite de vidro. Cores azuis e douradas dominantes, estilo design gráfico moderno e conceitual, sem texto, com foco em linhas geométricas e sensação de velocidade. Qualidade fotográfica 8K.",
-    "prompt_ia_legenda": "Análise 2 (Legenda Instagram):\n\nVocê é um consultor de conteúdo nichado. Gere uma legenda coerente e persuasiva para Instagram, em PT-BR, conectando [TEXTO ORIGINAL COLETADO] e [DESCRIÇÃO DA IMAGEM].\n\nRegras:\n- Seja claro, objetivo e inspirador (sem jargões).\n- Mantenha coerência com os temas: Empreendedorismo, Coaching e PNL.\n- Use CTA sutil e relevante.\n- Inclua de 3 a 6 hashtags específicas e naturais.\n- Use emojis moderadamente para dar ritmo.\n\nSubstitua os placeholders: {texto_original} e {descricao}.\nSaída final: apenas a legenda pronta, sem explicações.",
+    "prompt_ia_geracao_conteudo": "Descreva a imagem em português (Brasil) de forma clara e objetiva. Foque em paisagens naturais (montanhas, florestas, praias, campos) e animais fofinhos (filhotes, animais dóceis), conectando os elementos visuais diretamente à mensagem escrita. Evite objetos aleatórios fora de contexto. Se a imagem for abstrata, destaque cores e formas em relação ao tema; se for concreta, descreva o que representa no contexto de crescimento, equilíbrio e alta performance, mantendo coerência com o texto original.",
+    "prompt_ia_replicate": "Paisagem natural serena ou animal fofinho em cenário natural. Estilo minimalista e harmonioso. Sem objetos aleatórios, sem elementos urbanos dominantes, sem pessoas. Cores suaves, composição limpa. Metáfora de crescimento, foco e equilíbrio. Ajuste a cena para refletir o tema do texto original sem literalidade excessiva.",
+    "prompt_ia_legenda": "Você é um Estrategista de Conteúdo Sênior, focado em Coaching, PNL e Desenvolvimento Pessoal para Empreendedores.\n\n**Tarefa:** Crie uma legenda de Instagram profissional, prática e com propósito, baseada na {descricao} e no {texto_original}.\n\n**Restrições e Estilo:**\n 1.  **Evite Clichês:** Não use frases motivacionais óbvias como \"Transforme seus sonhos!\" ou \"Acredite em si mesmo!\". O conteúdo deve ser *concreto*.\n 2.  **Foco em Ação:** Transforme a descrição da imagem e a inspiração do texto original em uma **dica, método ou reflexão profunda** sobre um dos temas (Coaching, PNL, Desenvolvimento Pessoal) que seja imediatamente aplicável ao empreendedor.\n 3.  **Estrutura:** * **Gancho (1ª Linha):** Uma frase que desafie uma crença comum do empreendedor.\n      * **Corpo (Desenvolvimento):** Explique como o conceito de PNL ou Coaching se aplica à situação descrita na imagem/texto.\n      * **Chamada para Ação (CTA):** Uma pergunta direta que incite a reflexão ou o comentário do público.\n 4.  **Hashtags:** Use as hashtags fornecidas: #Empreendedorismo #Coaching #PNL #DesenvolvimentoPessoal #SucessoDigital #JornadaEmpreendedora. Inclua 1 hashtag adicional que se relacione diretamente com a dica prática.\n\n**Dados Disponíveis:**\n - **DESCRIÇÃO DA IMAGEM:** {descricao}\n - **TEXTO ORIGINAL COLETADO:** {texto_original}\n\nSaída final: apenas a legenda pronta, sem explicações.",
     "disable_replicate": false
   }
 ]

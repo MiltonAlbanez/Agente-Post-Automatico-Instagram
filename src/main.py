@@ -1,5 +1,6 @@
 import argparse
 from typing import List
+import os
 
 from config import load_config
 from pipeline.collect import collect_hashtags, collect_userposts
@@ -43,6 +44,12 @@ def main():
     p_generate = sub.add_parser("generate", help="Gerar descrição, legenda e imagem a partir de URL")
     p_generate.add_argument("--image_url", required=True)
     p_generate.add_argument("--style", required=False)
+    p_generate.add_argument(
+        "--disable_replicate",
+        "--disable-replicate",
+        action="store_true",
+        help="Usar imagem original (sem Replicate)"
+    )
     # Flags opcionais de Supabase para teste ad-hoc
     p_generate.add_argument("--supabase_url", required=False, help="Override da URL do Supabase")
     p_generate.add_argument("--supabase_service_key", required=False, help="Override da Service Key do Supabase")
@@ -51,8 +58,30 @@ def main():
     p_unposted = sub.add_parser("unposted", help="Listar itens não postados do banco")
     p_unposted.add_argument("--limit", type=int, default=10)
 
+    p_preseed = sub.add_parser("preseed", help="Coleta rotineira antes do horário de autopost")
+    p_preseed.add_argument("--only", type=str, required=False, help="Rodar apenas uma conta pelo nome exato")
+
     p_autopost = sub.add_parser("autopost", help="Gerar e publicar a partir do primeiro item não postado")
     p_autopost.add_argument("--style", required=False)
+    p_autopost.add_argument(
+        "--disable_replicate",
+        "--no_replicate",
+        "--no-replicate",
+        action="store_true",
+        help="Usar imagem original (sem Replicate)"
+    )
+    p_autopost.add_argument("--tags", required=False, help="Lista de tags/usernames separadas por vírgula para filtrar o banco")
+    p_autopost.add_argument("--replicate_prompt", required=False, help="Override do prompt de geração de imagem (Replicate)")
+    # Flags opcionais de Supabase para teste ad-hoc (override das variáveis de ambiente)
+    p_autopost.add_argument("--supabase_url", required=False, help="Override da URL do Supabase")
+    p_autopost.add_argument("--supabase_service_key", required=False, help="Override da Service Key do Supabase")
+    p_autopost.add_argument("--supabase_bucket", required=False, help="Override do bucket do Supabase")
+
+    p_seed = sub.add_parser("seed_demo", help="Inserir um item de teste no banco")
+    p_seed.add_argument("--code", required=False, default="trae_code_demo")
+    p_seed.add_argument("--url", required=False, default="https://picsum.photos/seed/trae/1024/1024")
+    p_seed.add_argument("--tag", required=False, default="demo")
+    p_seed.add_argument("--prompt", required=False, default="Teste prompt")
 
     p_multirun = sub.add_parser("multirun", help="Executa fluxo para múltiplas contas definidas em accounts.json")
     p_multirun.add_argument("--limit", type=int, default=1, help="Qtde de itens por conta")
@@ -88,6 +117,7 @@ def main():
                 telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
                 source_image_url=args.image_url,
                 caption_style=args.style,
+                disable_replicate=getattr(args, "disable_replicate", False),
                 supabase_url=supa_url,
                 supabase_service_key=supa_key,
                 supabase_bucket=supa_bkt,
@@ -115,6 +145,7 @@ def main():
                 content_prompt=acc_milton.get("prompt_ia_geracao_conteudo") if acc_milton else None,
                 caption_prompt=acc_milton.get("prompt_ia_legenda") if acc_milton else None,
                 original_text=None,
+                disable_replicate=getattr(args, "disable_replicate", False),
             )
             print("Resultado:", result)
     elif args.cmd == "unposted":
@@ -122,14 +153,84 @@ def main():
         rows = Database(cfg["POSTGRES_DSN"]).list_unposted(args.limit)
         for r in rows:
             print(r)
-    elif args.cmd == "autopost":
+    elif args.cmd == "seed_demo":
         cfg = load_config()
         db = Database(cfg["POSTGRES_DSN"]) 
-        rows = db.list_unposted(1)
+        item = {
+            "prompt": args.prompt,
+            "thumbnail_url": args.url,
+            "content_code": args.code,
+            "tag": args.tag,
+        }
+        db.insert_trend(item)
+        print(f"Item de teste inserido: code={args.code}")
+    elif args.cmd == "preseed":
+        cfg = load_config()
+        # Ler contas
+        try:
+            with open("accounts.json", "r", encoding="utf-8") as f:
+                accounts = json.load(f)
+        except Exception as e:
+            print(f"ERRO ao ler accounts.json: {e}")
+            return
+        target_name = getattr(args, "only", None) or os.environ.get("ACCOUNT_NAME", "Milton_Albanez")
+        acc = next((a for a in accounts if a.get("nome") == target_name), None)
+        if not acc:
+            print(f"Conta '{target_name}' não encontrada em accounts.json")
+            return
+        hashtags = acc.get("hashtags_pesquisa", [])
+        users = acc.get("usernames", [])
+        inserted = 0
+        if hashtags:
+            inserted += collect_hashtags(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], hashtags)
+        if users:
+            inserted += collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
+        print(f"Preseed concluído para {target_name}. Novos itens inseridos: {inserted}")
+        try:
+            db = Database(cfg["POSTGRES_DSN"]) 
+            filter_tags = hashtags + users
+            rows = db.list_unposted_by_tags(filter_tags, 50)
+            print(f"Itens não postados disponíveis para {target_name}: {len(rows)}")
+        except Exception as e:
+            print(f"Aviso: não foi possível listar não postados por tags: {e}")
+    elif args.cmd == "autopost":
+        cfg = load_config()
+        # Guardas de configuração: DSN obrigatório no Railway (DATABASE_URL ou POSTGRES_DSN)
+        if not cfg.get("POSTGRES_DSN"):
+            print("ERRO: POSTGRES_DSN/DATABASE_URL não definido nas variáveis do serviço. Configure o banco antes de autopostar.")
+            return
+        # Conexão ao banco com tratamento explícito
+        try:
+            db = Database(cfg["POSTGRES_DSN"])  
+            # Suporte a filtro por tags/usernames quando informado via CLI ou variável de ambiente POST_TAGS
+            tags_arg = getattr(args, "tags", None) or os.environ.get("POST_TAGS")
+            if tags_arg:
+                tags = [t.strip() for t in tags_arg.split(",") if t.strip()]
+                rows = db.list_unposted_by_tags(tags, 1)
+            else:
+                rows = db.list_unposted(1)
+        except Exception as e:
+            print(f"ERRO ao conectar/consultar o banco: {e}")
+            return
         if not rows:
             print("Nenhum item não postado disponível.")
             return
         item = rows[0]
+        # Carregar prompts da conta (se disponível) para seguir o fluxo original
+        acc_content_prompt = None
+        acc_caption_prompt = None
+        acc_replicate_prompt = None
+        try:
+            with open("accounts.json", "r", encoding="utf-8") as f:
+                accounts = json.load(f)
+            acc_name = os.environ.get("ACCOUNT_NAME", "Milton_Albanez")
+            acc = next((a for a in accounts if a.get("nome") == acc_name), None)
+            if acc:
+                acc_content_prompt = acc.get("prompt_ia_geracao_conteudo")
+                acc_caption_prompt = acc.get("prompt_ia_legenda")
+                acc_replicate_prompt = acc.get("prompt_ia_replicate")
+        except Exception:
+            pass
         result = generate_and_publish(
             openai_key=cfg["OPENAI_API_KEY"],
             replicate_token=cfg["REPLICATE_TOKEN"],
@@ -139,6 +240,15 @@ def main():
             telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
             source_image_url=item["thumbnail_url"],
             caption_style=args.style,
+            content_prompt=acc_content_prompt,
+            caption_prompt=acc_caption_prompt,
+            original_text=item.get("prompt"),
+            disable_replicate=getattr(args, "disable_replicate", False),
+            replicate_prompt=(getattr(args, "replicate_prompt", None) or acc_replicate_prompt),
+            # Overrides opcionais de Supabase via CLI
+            supabase_url=getattr(args, "supabase_url", None),
+            supabase_service_key=getattr(args, "supabase_service_key", None),
+            supabase_bucket=getattr(args, "supabase_bucket", None),
         )
         print("Resultado:", result)
         if result.get("status") == "PUBLISHED":
@@ -196,6 +306,7 @@ def main():
                     caption_prompt=acc.get("prompt_ia_legenda"),
                     original_text=item.get("prompt"),
                     disable_replicate=bool(acc.get("disable_replicate", False)),
+                    replicate_prompt=acc.get("prompt_ia_replicate"),
                     supabase_url=acc_supa_url,
                     supabase_service_key=acc_supa_key,
                     supabase_bucket=acc_supa_bucket,

@@ -10,7 +10,7 @@ class OpenAIClient:
         # Cliente OpenAI v1.x
         self.client = OpenAI(api_key=api_key)
 
-    def describe_image(self, image_url: str) -> str:
+    def describe_image(self, image_url: str, custom_prompt: Optional[str] = None) -> str:
         # Tentar enviar a imagem como data URL base64 para evitar bloqueios do CDN
         def to_data_url(url: str) -> str:
             if url.startswith("data:"):
@@ -21,17 +21,19 @@ class OpenAIClient:
             b64 = base64.b64encode(r.content).decode("ascii")
             return f"data:{mime};base64,{b64}"
 
+        base_text = (
+            "Descreva a imagem em português (Brasil). "
+            "Se a imagem for abstrata, descreva os elementos e as cores. "
+            "Se a imagem for concreta, descreva o objeto e o que ele representa "
+            "metaforicamente no contexto de crescimento e alta performance. "
+            "Inclua palavras-chave conceituais que conectem a composição visual ao tema de "
+            "desenvolvimento, desempenho e evolução."
+        )
+        prompt_text = custom_prompt or base_text
         content = [
             {
                 "type": "text",
-                "text": (
-                    "Descreva a imagem em português (Brasil). "
-                    "Se a imagem for abstrata, descreva os elementos e as cores. "
-                    "Se a imagem for concreta, descreva o objeto e o que ele representa "
-                    "metaforicamente no contexto de crescimento e alta performance. "
-                    "Inclua palavras-chave conceituais que conectem a composição visual ao tema de "
-                    "desenvolvimento, desempenho e evolução."
-                ),
+                "text": prompt_text,
             },
         ]
         try:
@@ -39,7 +41,7 @@ class OpenAIClient:
             content.append({"type": "image_url", "image_url": {"url": data_url}})
         except Exception:
             # Se não for possível baixar a imagem, usar uma instrução genérica
-            content[0]["text"] = (
+            content[0]["text"] = custom_prompt or (
                 "Descreva um visual em português (Brasil). Se a imagem não estiver acessível, "
                 "infira um cenário comum e conecte-o conceitualmente a crescimento, alta performance "
                 "e evolução, destacando elementos, cores e metáforas relevantes."

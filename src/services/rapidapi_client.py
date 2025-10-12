@@ -97,10 +97,26 @@ class RapidAPIClient:
         # Suportar diferentes APIs/hosts
         if "api2" in self.host:
             base_url = "https://instagram-scraper-api2.p.rapidapi.com/v1/hashtag"
-            params = {"hashtag": hashtag, "feed_type": "top"}
-            resp = requests.get(base_url, headers=self.headers, params=params, timeout=30)
-            resp.raise_for_status()
-            return resp.json()
+            # Tentar em ordem: 'top' e depois 'recent' se falhar (403/erro)
+            attempts = [
+                {"hashtag": hashtag, "feed_type": "top"},
+                {"hashtag": hashtag, "feed_type": "recent"},
+            ]
+            last_err = None
+            for params in attempts:
+                try:
+                    # TTL mais longo para hashtags (12h)
+                    data = self._get_with_backoff(base_url, params, ttl_seconds=43200)
+                    # pequeno log para diagnóstico
+                    ft = params.get("feed_type")
+                    keys = list(data.keys())[:4]
+                    print(f"RapidAPI OK api2: feed_type={ft} -> keys={keys}")
+                    return data
+                except Exception as e:
+                    last_err = e
+                    continue
+            # Se nenhuma tentativa funcionou, propagar último erro
+            raise last_err or RuntimeError("RapidAPI hashtag fetch failed (api2)")
         else:
             # Tentar múltiplos caminhos conhecidos para hosts alternativos
             candidates = [
@@ -168,9 +184,9 @@ class RapidAPIClient:
             # api2 não documenta userposts; manter compatibilidade futura se necessário
             base_url = "https://instagram-scraper-api2.p.rapidapi.com/v1/userposts"
             params = {"username_or_id": username_or_id}
-            resp = requests.get(base_url, headers=self.headers, params=params, timeout=30)
-            resp.raise_for_status()
-            return resp.json()
+            # TTL menor para userposts (2h)
+            data = self._get_with_backoff(base_url, params, ttl_seconds=7200)
+            return data
         else:
             candidates = [
                 (f"https://{self.host}/userposts/", {"username_or_id": username_or_id}),

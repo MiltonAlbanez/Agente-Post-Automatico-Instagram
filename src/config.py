@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 def load_config():
     load_dotenv()
-    # Suporte ao Railway: usar DATABASE_URL como fallback para POSTGRES_DSN
-    postgres_dsn = os.getenv("POSTGRES_DSN") or os.getenv("DATABASE_URL", "")
+    # Suporte ao Railway: preferir DATABASE_URL quando disponível
+    postgres_dsn = os.getenv("DATABASE_URL") or os.getenv("POSTGRES_DSN", "")
     return {
         "INSTAGRAM_BUSINESS_ACCOUNT_ID": os.getenv("INSTAGRAM_BUSINESS_ACCOUNT_ID", ""),
         "INSTAGRAM_ACCESS_TOKEN": os.getenv("INSTAGRAM_ACCESS_TOKEN", ""),
