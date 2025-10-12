@@ -4,7 +4,7 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 
 ## Comandos rápidos (Railway — Windows)
 - Listar não postados: `railway run python src/main.py unposted --limit 10`
-- Publicar primeiro não postado: `railway run python src/main.py autopost --disable_replicate --style "isometric, minimalista"`
+- Publicar primeiro não postado: `railway run python src/main.py autopost --no-replicate --style "isometric, minimalista"`
   - Com Supabase overrides via CLI: `railway run python src/main.py autopost --tags coaching --supabase_url https://SEU_REF.supabase.co --supabase_service_key service_role_key --supabase_bucket instagram-images`
   - Com prompt visual do Replicate: `railway run python src/main.py autopost --replicate_prompt "paisagem serena ou animal fofinho em cenário natural, minimalista, sem pessoas, cores suaves, composição limpa"`
 - Coletar por usuários: `railway run python src/main.py collect_users --users milton_albanez`
@@ -13,7 +13,7 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 
 ## Comandos rápidos (Railway — Linux/macOS)
 - Listar não postados: `railway run python src/main.py unposted --limit 10`
-- Publicar primeiro não postado: `railway run python src/main.py autopost --disable_replicate --style "isometric, minimalista"`
+- Publicar primeiro não postado: `railway run python src/main.py autopost --no-replicate --style "isometric, minimalista"`
   - Com Supabase overrides via CLI: `railway run python src/main.py autopost --tags coaching --supabase_url https://SEU_REF.supabase.co --supabase_service_key service_role_key --supabase_bucket instagram-images`
   - Com prompt visual do Replicate: `railway run python src/main.py autopost --replicate_prompt "paisagem serena ou animal fofinho em cenário natural, minimalista, sem pessoas, cores suaves, composição limpa"`
 - Coletar por usuários: `railway run python src/main.py collect_users --users milton_albanez`
@@ -123,7 +123,7 @@ SUPABASE_BUCKET=instagram-images
 - Timezone: BRT (UTC-3). Horários desejados: 06:00, 12:00 e 19:00.
 - Equivalência em UTC: 09:00, 15:00 e 22:00 UTC.
 - Crie três Cron Jobs no Railway com o comando abaixo:
-  - Command: `python src/main.py autopost --disable_replicate`
+  - Command: `python src/main.py autopost --no-replicate`
   - Horários (UTC): `09:00`, `15:00`, `22:00`
 - Opcional: defina `STYLE` (fotográfico) via Variables para orientar legenda/descrição, por exemplo:
   - `STYLE=isometric, minimalista`
@@ -142,10 +142,10 @@ SUPABASE_BUCKET=instagram-images
 - Gerar a partir de URL: `python src/main.py generate --image_url <url>`
  - Limpar cache RapidAPI: `python src/main.py clear_cache --older 3600`
   - Listar não postados (Railway): `railway run python src/main.py unposted --limit 10`
-  - Publicar primeiro não postado (Railway): `railway run python src/main.py autopost --disable_replicate --style "isometric, minimalista"`
+  - Publicar primeiro não postado (Railway): `railway run python src/main.py autopost --no-replicate --style "isometric, minimalista"`
   - Publicar com imagem gerada (Replicate): `railway run python src/main.py autopost --replicate_prompt "paisagem serena ou animal fofinho em cenário natural, minimalista"`
   - Listar não postados (Railway - Windows): `railway run python src/main.py unposted --limit 10`
-  - Publicar primeiro não postado (Railway - Windows): `railway run python src/main.py autopost --disable_replicate --style "isometric, minimalista"`
+  - Publicar primeiro não postado (Railway - Windows): `railway run python src/main.py autopost --no-replicate --style "isometric, minimalista"`
   - Dica: defina variáveis úteis via CLI (sem disparar deploy):
     `railway variables --set "ACCOUNT_NAME=Milton_Albanez" --set "LIMIT=1" --set "STYLE=isometric, minimalista" --skip-deploys`
 
@@ -167,9 +167,9 @@ Uso pessoal do autor. Ajuste conforme seu contexto.
   - Crie um serviço novo apontando para este repo e faça o deploy.
   - Em “Variables”, adicione as chaves acima com seus valores.
   - Em “Scheduled Jobs”, confirme que apareceram:
-    - `morning_post` diário às `09:00` UTC: `python src/main.py autopost --disable_replicate --style "street, candid, natural light"`
-    - `midday_post` diário às `15:00` UTC: `python src/main.py autopost --disable_replicate --style "portrait, studio-like natural light"`
-    - `evening_post` diário às `22:00` UTC: `python src/main.py autopost --disable_replicate --style "evening golden hour, city scenes"`
+    - `morning_post` diário às `09:00` UTC: `python src/main.py autopost --no-replicate --style "street, candid, natural light"`
+    - `midday_post` diário às `15:00` UTC: `python src/main.py autopost --no-replicate --style "portrait, studio-like natural light"`
+    - `evening_post` diário às `22:00` UTC: `python src/main.py autopost --no-replicate --style "evening golden hour, city scenes"`
   - E os preseed 5 minutos antes de cada horário (`08:55`, `14:55`, `21:55` UTC).
 - Como criar via CLI (opcional):
   - `railway login`
@@ -179,11 +179,11 @@ Uso pessoal do autor. Ajuste conforme seu contexto.
   - Exemplo de fallback de RapidAPI sem mudar o host primário:
     - `railway variables set RAPIDAPI_ALT_HOSTS="instagram-scraper-api2.p.rapidapi.com,instagram-scraper.p.rapidapi.com"`
 - Testar antes do horário:
-  - Execute manualmente: `railway run python src/main.py autopost --disable_replicate --style "street, candid, natural light"`
+  - Execute manualmente: `railway run python src/main.py autopost --no-replicate --style "street, candid, natural light"`
   - Verifique logs: `railway logs` e se o item foi marcado como postado no DB.
 - Observações de horário:
   - Horários do manifest estão em UTC: 09:00 (06:00 BRT), 15:00 (12:00 BRT), 22:00 (19:00 BRT).
   - Ajuste os `schedule` em `railway.yaml` se quiser outro fuso.
 - Estilos e fluxo:
   - Cada job usa `--style` próprio; se omitir, o código aceita `STYLE` como fallback.
-  - Fluxo mantém fotos reais (`--disable_replicate`), descrição da imagem por IA e legenda gerada com seus prompts de conta usando `{descricao}` e `{texto_original}`.
+  - Fluxo mantém fotos reais (`--no-replicate`), descrição da imagem por IA e legenda gerada com seus prompts de conta usando `{descricao}` e `{texto_original}`.

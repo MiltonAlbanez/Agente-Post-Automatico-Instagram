@@ -10,29 +10,29 @@ services:
       numReplicas: 1
       sleepApplication: false
       restartPolicyType: ON_FAILURE
-      restartPolicyMaxRetries: 10
+      restartPolicyMaxRetries: 3
 
 cron:
-  - name: preseed-morning
+  morning_preseed:
     schedule: "0 9 * * *"
     command: "python src/main.py preseed"
     
-  - name: autopost-morning
+  morning_post:
     schedule: "5 9 * * *"
-    command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
+    command: "python src/main.py autopost --no-replicate --style \"street, candid, natural light\""
     
-  - name: preseed-midday
+  midday_preseed:
     schedule: "0 15 * * *"
     command: "python src/main.py preseed"
     
-  - name: autopost-midday
+  midday_post:
     schedule: "5 15 * * *"
-    command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
+    command: "python src/main.py autopost --no-replicate --style \"portrait, studio-like natural light\""
     
-  - name: preseed-evening
+  evening_preseed:
     schedule: "0 22 * * *"
     command: "python src/main.py preseed"
     
-  - name: autopost-evening
+  evening_post:
     schedule: "5 22 * * *"
-    command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
+    command: "python src/main.py autopost --no-replicate --style \"evening golden hour, city scenes\""
