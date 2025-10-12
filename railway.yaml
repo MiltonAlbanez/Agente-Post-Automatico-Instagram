@@ -1,4 +1,3 @@
-# Railway Configuration - Updated 2025-01-09
 version: 3
 
 services:
@@ -14,26 +13,26 @@ services:
       restartPolicyMaxRetries: 10
 
 cron:
-  - name: preseed-06h-brt
+  - name: preseed-morning
     schedule: "0 9 * * *"
     command: "python src/main.py preseed"
     
-  - name: autopost-06h-brt
+  - name: autopost-morning
     schedule: "5 9 * * *"
     command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
     
-  - name: preseed-12h-brt
+  - name: preseed-midday
     schedule: "0 15 * * *"
     command: "python src/main.py preseed"
     
-  - name: autopost-12h-brt
+  - name: autopost-midday
     schedule: "5 15 * * *"
     command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
     
-  - name: preseed-19h-brt
+  - name: preseed-evening
     schedule: "0 22 * * *"
     command: "python src/main.py preseed"
     
-  - name: autopost-19h-brt
+  - name: autopost-evening
     schedule: "5 22 * * *"
     command: "python src/main.py autopost --no-replicate --style 'Paisagem natural com animais fofos'"
