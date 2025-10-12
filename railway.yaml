@@ -7,6 +7,7 @@ services:
     build:
       builder: NIXPACKS
     deploy:
+      startCommand: "python src/main.py multirun --limit 1"
       numReplicas: 1
       sleepApplication: false
       restartPolicyType: ON_FAILURE
@@ -14,25 +15,25 @@ services:
 
 cron:
   morning_preseed:
-    schedule: "0 9 * * *"
+    schedule: "55 8 * * *"
     command: "python src/main.py preseed"
     
   morning_post:
-    schedule: "5 9 * * *"
+    schedule: "0 9 * * *"
     command: "python src/main.py autopost --no-replicate --style \"street, candid, natural light\""
     
   midday_preseed:
-    schedule: "0 15 * * *"
+    schedule: "55 14 * * *"
     command: "python src/main.py preseed"
     
   midday_post:
-    schedule: "5 15 * * *"
+    schedule: "0 15 * * *"
     command: "python src/main.py autopost --no-replicate --style \"portrait, studio-like natural light\""
     
   evening_preseed:
-    schedule: "0 22 * * *"
+    schedule: "55 21 * * *"
     command: "python src/main.py preseed"
     
   evening_post:
-    schedule: "5 22 * * *"
+    schedule: "0 22 * * *"
     command: "python src/main.py autopost --no-replicate --style \"evening golden hour, city scenes\""
