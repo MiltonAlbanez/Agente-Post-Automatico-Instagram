@@ -1,4 +1,4 @@
-worker: python simple_test.py
+worker: python railway_automation.py
 
 unposted: python src/main.py unposted --limit ${LIMIT:-10}
 autopost: python src/main.py autopost --style "${STYLE:-}"
