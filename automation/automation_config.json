@@ -1,0 +1,35 @@
+{
+  "schedule": {
+    "daily_posts": 3,
+    "post_times": ["06:00", "12:00", "19:00"],
+    "stories_times": ["09:00", "15:00", "21:00"],
+    "optimization_time": "23:00",
+    "monitoring_interval": 60
+  },
+  "content_settings": {
+    "auto_optimize": true,
+    "use_trending_concepts": true,
+    "maintain_quality_threshold": 0.8,
+    "preferred_styles": ["minimalista", "natureza", "lifestyle"],
+    "avoid_repetition_days": 7
+  },
+  "safety_settings": {
+    "max_daily_posts": 5,
+    "min_interval_between_posts": 120,
+    "backup_concepts": true,
+    "quality_check": true,
+    "manual_approval_required": false
+  },
+  "optimization_settings": {
+    "auto_adjust_concepts": true,
+    "performance_threshold": 0.7,
+    "learning_period_days": 14,
+    "backup_before_changes": true
+  },
+  "notification_settings": {
+    "email_reports": false,
+    "daily_summary": true,
+    "error_alerts": true,
+    "performance_alerts": true
+  }
+}

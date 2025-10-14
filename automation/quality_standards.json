@@ -1,0 +1,40 @@
+{
+  "visual_quality": {
+    "min_resolution": [
+      1080,
+      1080
+    ],
+    "aspect_ratios": [
+      "1:1",
+      "4:5",
+      "9:16"
+    ],
+    "color_harmony": true,
+    "composition_rules": [
+      "rule_of_thirds",
+      "golden_ratio"
+    ]
+  },
+  "content_quality": {
+    "min_caption_length": 50,
+    "max_caption_length": 2200,
+    "hashtag_count": {
+      "min": 5,
+      "max": 30
+    },
+    "emoji_usage": "moderate",
+    "call_to_action": true
+  },
+  "consistency_rules": {
+    "brand_voice": "friendly_professional",
+    "posting_frequency": "3_per_day",
+    "style_variation": 0.7,
+    "concept_repetition_limit": 7
+  },
+  "engagement_targets": {
+    "min_likes_rate": 0.03,
+    "min_comments_rate": 0.005,
+    "min_saves_rate": 0.01,
+    "growth_rate_target": 0.02
+  }
+}
