@@ -7,20 +7,21 @@ services:
     build:
       builder: NIXPACKS
     deploy:
-      startCommand: "python src/main.py multirun --limit 1"
+      startCommand: "python run_automation.py start"
       numReplicas: 1
       sleepApplication: false
       restartPolicyType: ON_FAILURE
       restartPolicyMaxRetries: 3
 
 cron:
+  # FEED POSTS (6h, 12h, 19h Brasil = 9h, 15h, 22h UTC)
   morning_preseed:
     schedule: "55 8 * * *"
     command: "python src/main.py preseed"
     
   morning_post:
     schedule: "0 9 * * *"
-    command: "python src/main.py autopost --no-replicate --style \"street, candid, natural light\""
+    command: "python src/main.py multirun --limit 1 --style \"street, candid, natural light\""
     
   midday_preseed:
     schedule: "55 14 * * *"
@@ -28,7 +29,7 @@ cron:
     
   midday_post:
     schedule: "0 15 * * *"
-    command: "python src/main.py autopost --no-replicate --style \"portrait, studio-like natural light\""
+    command: "python src/main.py multirun --limit 1 --style \"portrait, studio-like natural light\""
     
   evening_preseed:
     schedule: "55 21 * * *"
@@ -36,4 +37,24 @@ cron:
     
   evening_post:
     schedule: "0 22 * * *"
-    command: "python src/main.py autopost --no-replicate --style \"evening golden hour, city scenes\""
+    command: "python src/main.py multirun --limit 1 --style \"evening golden hour, city scenes\""
+  
+  # STORIES POSTS (9h, 15h, 21h Brasil = 12h, 18h, 00h UTC)
+  morning_stories_preseed:
+    schedule: "0 11 * * *"  # 11:00 UTC = 08:00 BRT (1h antes do stories das 9h)
+    command: "python src/main.py preseed"
+  morning_stories:
+    schedule: "0 12 * * *"  # 12:00 UTC = 09:00 BRT
+    command: "python src/main.py multirun --limit 1 --stories"
+  midday_stories_preseed:
+    schedule: "0 17 * * *"  # 17:00 UTC = 14:00 BRT (1h antes do stories das 15h)
+    command: "python src/main.py preseed"
+  midday_stories:
+    schedule: "0 18 * * *"  # 18:00 UTC = 15:00 BRT
+    command: "python src/main.py multirun --limit 1 --stories"
+  evening_stories_preseed:
+    schedule: "0 23 * * *"  # 23:00 UTC = 20:00 BRT (1h antes do stories das 21h)
+    command: "python src/main.py preseed"
+  evening_stories:
+    schedule: "0 0 * * *"   # 00:00 UTC = 21:00 BRT
+    command: "python src/main.py multirun --limit 1 --stories"
