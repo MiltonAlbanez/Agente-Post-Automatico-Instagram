@@ -7,7 +7,7 @@ services:
     build:
       builder: NIXPACKS
     deploy:
-      startCommand: "python run_automation.py start"
+      startCommand: "python test_railway.py"
       numReplicas: 1
       sleepApplication: false
       restartPolicyType: ON_FAILURE
