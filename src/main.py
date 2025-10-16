@@ -354,8 +354,18 @@ def main():
             db.mark_posted(item["code"]) 
             print(f"Marcado como postado: {item['code']}")
     elif args.cmd == "multirun":
-        print("🚀 INICIANDO MULTIRUN - LOG DETALHADO")
+        # Detectar se é modo Stories
+        is_stories_mode = getattr(args, "stories", False)
+        mode_text = "STORIES" if is_stories_mode else "FEED"
+        
+        print(f"🚀 INICIANDO MULTIRUN - MODO {mode_text} - LOG DETALHADO")
         print(f"⏰ Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S UTC')}")
+        print(f"🌍 Timezone: BRT (UTC-3)")
+        
+        if is_stories_mode:
+            print("📱 MODO STORIES ATIVADO - Monitoramento especial habilitado")
+            print("🔍 Logs detalhados para Stories das 15h BRT")
+            print("=" * 60)
         
         cfg = load_config()
         print(f"✅ Configuração carregada")
@@ -441,6 +451,18 @@ def main():
                 print(f"   💬 Prompt: {item.get('prompt', 'N/A')[:50]}...")
                 
                 try:
+                    # Logs específicos para Stories
+                    if getattr(args, "stories", False):
+                        print(f"📱 INICIANDO GERAÇÃO DE STORIES para {nome}")
+                        print(f"   🔐 Instagram ID: {acc_instagram_id}")
+                        print(f"   🔑 Token válido: {'✅' if acc_instagram_token else '❌'}")
+                        print(f"   🖼️ URL da imagem: {item['thumbnail_url']}")
+                        print(f"   📝 Prompt original: {item.get('prompt', 'N/A')[:100]}...")
+                        print(f"   ⚙️ Configurações Stories:")
+                        print(f"      - publish_to_stories: True")
+                        print(f"      - stories_text_position: auto")
+                        print(f"   🚀 Chamando generate_and_publish...")
+                    
                     result = generate_and_publish(
                         openai_key=acc.get("openai_api_key", cfg["OPENAI_API_KEY"]),
                         replicate_token=acc.get("replicate_token", cfg["REPLICATE_TOKEN"]),
@@ -463,7 +485,21 @@ def main():
                         publish_to_stories=getattr(args, "stories", False),
                         stories_text_position="auto" if getattr(args, "stories", False) else None,
                     )
-                    print(f"✅ RESULTADO para {nome}: {result}")
+                    
+                    # Logs específicos do resultado para Stories
+                    if getattr(args, "stories", False):
+                        print(f"📱 RESULTADO STORIES para {nome}:")
+                        print(f"   📊 Status: {result.get('status', 'UNKNOWN')}")
+                        print(f"   🆔 Post ID: {result.get('post_id', 'N/A')}")
+                        if result.get('stories_published'):
+                            print(f"   ✅ Stories publicado com sucesso!")
+                            print(f"   📱 Stories ID: {result.get('stories', {}).get('media_id', 'N/A')}")
+                        else:
+                            print(f"   ❌ Stories NÃO foi publicado")
+                        if result.get('error'):
+                            print(f"   🚨 ERRO: {result.get('error')}")
+                    else:
+                        print(f"✅ RESULTADO para {nome}: {result}")
                     
                     if result.get("status") == "PUBLISHED":
                         db.mark_posted(item["code"]) 
@@ -475,7 +511,15 @@ def main():
                             print(f"❌ Erro: {result.get('error')}")
                             
                 except Exception as e:
-                    print(f"❌ ERRO CRÍTICO ao processar item para {nome}: {e}")
+                    if getattr(args, "stories", False):
+                        print(f"🚨 ERRO CRÍTICO EM STORIES para {nome}: {e}")
+                        print(f"   📱 Modo: STORIES")
+                        print(f"   🔐 Instagram ID: {acc_instagram_id}")
+                        print(f"   🔑 Token presente: {'✅' if acc_instagram_token else '❌'}")
+                        print(f"   📄 Item código: {item.get('code', 'N/A')}")
+                        print(f"   🖼️ URL imagem: {item.get('thumbnail_url', 'N/A')}")
+                    else:
+                        print(f"❌ ERRO CRÍTICO ao processar item para {nome}: {e}")
                     import traceback
                     print(f"🔍 Traceback: {traceback.format_exc()}")
                     continue
