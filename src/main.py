@@ -357,6 +357,7 @@ def main():
         # Detectar se é modo Stories
         is_stories_mode = getattr(args, "stories", False)
         mode_text = "STORIES" if is_stories_mode else "FEED"
+        force_fallback_stories = False
         
         print(f"🚀 INICIANDO MULTIRUN - MODO {mode_text} - LOG DETALHADO")
         print(f"⏰ Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S UTC')}")
@@ -365,6 +366,22 @@ def main():
         if is_stories_mode:
             print("📱 MODO STORIES ATIVADO - Monitoramento especial habilitado")
             print("🔍 Logs detalhados para Stories das 15h BRT")
+            
+            # Para Stories, sempre ativar fallback se RapidAPI falhar
+            from datetime import datetime, timezone, timedelta
+            utc_now = datetime.now(timezone.utc)
+            brt_now = utc_now - timedelta(hours=3)  # UTC-3 = BRT
+            
+            print(f"🕐 Horário atual: {brt_now.strftime('%H:%M')} BRT ({utc_now.strftime('%H:%M')} UTC)")
+            
+            # Para Stories, sempre usar fallback se for horário crítico ou se RapidAPI falhar
+            if brt_now.hour == 15:  # 15h BRT
+                force_fallback_stories = True
+                print("🚨 HORÁRIO CRÍTICO DETECTADO: 15h BRT - Ativando fallback automático para Stories")
+                print("⚡ Pulando RapidAPI e indo direto para modo fallback")
+            else:
+                print(f"🔍 Horário atual: {brt_now.hour}h BRT - Tentando RapidAPI primeiro, fallback se falhar")
+            
             print("=" * 60)
         
         cfg = load_config()
@@ -393,31 +410,116 @@ def main():
             print(f"📊 Hashtags: {hashtags}")
             print(f"👥 Usuários: {users}")
             
-            # Coleta de dados
+            # Coleta de dados com timeout de segurança
             inserted = 0
-            try:
-                if hashtags:
-                    print(f"🔍 Coletando hashtags...")
-                    inserted += collect_hashtags(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], hashtags)
-                if users:
-                    print(f"👤 Coletando posts de usuários...")
-                    inserted += collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
-                print(f"✅ Coleta concluída para {nome}. Novos itens: {inserted}")
-            except Exception as e:
-                print(f"❌ ERRO na coleta para {nome}: {e}")
-                continue
+            rapidapi_failed = force_fallback_stories  # Usar fallback forçado se ativado
+            import time as time_module
+            
+            if force_fallback_stories:
+                print(f"⚡ FALLBACK FORÇADO ATIVADO para {nome} - Pulando coleta RapidAPI")
+                rapidapi_failed = True
+            else:
+                try:
+                    if hashtags:
+                        print(f"🔍 Coletando hashtags...")
+                        start_time = time_module.time()
+                        
+                        try:
+                            inserted += collect_hashtags(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], hashtags)
+                            elapsed = time_module.time() - start_time
+                            print(f"⏱️ Coleta de hashtags levou {elapsed:.1f}s")
+                        except Exception as e:
+                            elapsed = time_module.time() - start_time
+                            print(f"⚠️ Erro na coleta de hashtags após {elapsed:.1f}s: {str(e)}")
+                            # Para Stories, ativar fallback imediatamente em qualquer erro
+                            if is_stories_mode:
+                                print(f"🔄 STORIES: Erro detectado - Ativando modo fallback para {nome}...")
+                                rapidapi_failed = True
+                            elif elapsed > 25 or "403" in str(e) or "Forbidden" in str(e) or "timeout" in str(e).lower():
+                                print(f"🔄 RapidAPI com problemas. Ativando modo fallback para {nome}...")
+                                rapidapi_failed = True
+                
+                    if users and not rapidapi_failed:
+                        print(f"👤 Coletando posts de usuários...")
+                        try:
+                            inserted += collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
+                        except Exception as e:
+                            print(f"⚠️ Erro na coleta de usuários: {str(e)}")
+                            if "403" in str(e) or "Forbidden" in str(e) or "timeout" in str(e).lower():
+                                rapidapi_failed = True
+                    
+                    if not rapidapi_failed:
+                        print(f"✅ Coleta concluída para {nome}. Novos itens: {inserted}")
+                except Exception as e:
+                    error_msg = str(e)
+                    print(f"❌ ERRO na coleta para {nome}: {e}")
+                    # Verificar se é erro 403, timeout ou travamento da RapidAPI
+                    if ("403" in error_msg or "Forbidden" in error_msg or 
+                        "timeout" in error_msg.lower() or "travou" in error_msg.lower()):
+                        print(f"🔄 RapidAPI com problemas. Ativando modo fallback para {nome}...")
+                        rapidapi_failed = True
+                    else:
+                        continue
             
             # Verificar banco de dados
-            try:
-                db = Database(cfg["POSTGRES_DSN"]) 
-                filter_tags = hashtags + users
-                rows = db.list_unposted_by_tags(filter_tags, args.limit)
-                print(f"📋 Itens não postados encontrados: {len(rows)}")
-                if len(rows) == 0:
-                    print(f"⚠️ Nenhum item para postar para {nome}")
-                    continue
-            except Exception as e:
-                print(f"❌ ERRO ao acessar banco para {nome}: {e}")
+            rows = []
+            if not rapidapi_failed and not force_fallback_stories:
+                try:
+                    db = Database(cfg["POSTGRES_DSN"]) 
+                    filter_tags = hashtags + users
+                    rows = db.list_unposted_by_tags(filter_tags, args.limit)
+                    print(f"📋 Itens não postados encontrados: {len(rows)}")
+                    if len(rows) == 0:
+                        print(f"⚠️ Nenhum item para postar para {nome}")
+                        if not is_stories_mode:
+                            continue
+                        else:
+                            print(f"🔄 Modo Stories: ativando fallback temático...")
+                            rapidapi_failed = True
+                except Exception as e:
+                    print(f"❌ ERRO ao acessar banco para {nome}: {e}")
+                    if is_stories_mode:
+                        print(f"🔄 Erro no banco em modo Stories: ativando fallback...")
+                        rapidapi_failed = True
+                    else:
+                        continue
+            
+            # Fallback para modo Stories quando RapidAPI falha ou não há conteúdo
+            if (rapidapi_failed or force_fallback_stories) and is_stories_mode:
+                print(f"🎯 MODO FALLBACK ATIVADO para {nome}")
+                if force_fallback_stories:
+                    print(f"⚡ FALLBACK FORÇADO - Horário crítico 15h BRT detectado")
+                print(f"🎨 Gerando conteúdo temático standalone...")
+                
+                # Temas para Stories
+                themes = ["motivacional", "produtividade", "lideranca", "mindset", "negocios"]
+                import random
+                selected_theme = random.choice(themes)
+                
+                # Imagens por tema (Unsplash)
+                theme_images = {
+                    "motivacional": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                    "produtividade": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                    "lideranca": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                    "mindset": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                    "negocios": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                }
+                
+                fallback_image = theme_images.get(selected_theme, theme_images["motivacional"])
+                print(f"🎨 Tema selecionado: {selected_theme}")
+                print(f"🖼️ Imagem: {fallback_image}")
+                
+                # Criar item fake para o fallback
+                rows = [{
+                    "thumbnail_url": fallback_image,
+                    "code": f"fallback_{selected_theme}_{int(time.time())}",
+                    "prompt": f"Conteúdo temático sobre {selected_theme} para Stories - Horário crítico 15h BRT" if force_fallback_stories else f"Conteúdo temático sobre {selected_theme} para Stories"
+                }]
+                print(f"✅ Item fallback criado para {nome}")
+                if force_fallback_stories:
+                    print(f"🚨 GARANTIA DE PUBLICAÇÃO: Fallback automático às 15h BRT funcionando!")
+            elif len(rows) == 0:
+                print(f"⚠️ Nenhum item para postar para {nome}")
                 continue
 
             # Validação detalhada de credenciais
@@ -454,6 +556,8 @@ def main():
                     # Logs específicos para Stories
                     if getattr(args, "stories", False):
                         print(f"📱 INICIANDO GERAÇÃO DE STORIES para {nome}")
+                        if force_fallback_stories:
+                            print(f"   🚨 MODO FALLBACK FORÇADO - 15h BRT")
                         print(f"   🔐 Instagram ID: {acc_instagram_id}")
                         print(f"   🔑 Token válido: {'✅' if acc_instagram_token else '❌'}")
                         print(f"   🖼️ URL da imagem: {item['thumbnail_url']}")
@@ -489,13 +593,19 @@ def main():
                     # Logs específicos do resultado para Stories
                     if getattr(args, "stories", False):
                         print(f"📱 RESULTADO STORIES para {nome}:")
+                        if force_fallback_stories:
+                            print(f"   🚨 RESULTADO FALLBACK FORÇADO - 15h BRT")
                         print(f"   📊 Status: {result.get('status', 'UNKNOWN')}")
                         print(f"   🆔 Post ID: {result.get('post_id', 'N/A')}")
                         if result.get('stories_published'):
                             print(f"   ✅ Stories publicado com sucesso!")
+                            if force_fallback_stories:
+                                print(f"   🎉 FALLBACK AUTOMÁTICO FUNCIONOU - 15h BRT GARANTIDO!")
                             print(f"   📱 Stories ID: {result.get('stories', {}).get('media_id', 'N/A')}")
                         else:
                             print(f"   ❌ Stories NÃO foi publicado")
+                            if force_fallback_stories:
+                                print(f"   🚨 FALHA NO FALLBACK FORÇADO - INVESTIGAR!")
                         if result.get('error'):
                             print(f"   🚨 ERRO: {result.get('error')}")
                     else:
