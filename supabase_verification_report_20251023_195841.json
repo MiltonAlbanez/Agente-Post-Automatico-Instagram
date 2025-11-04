@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-10-23T19:58:41.923161",
+  "verification_type": "supabase_complete",
+  "components": {
+    "database": {
+      "name": "PostgreSQL Database",
+      "status": "NOT_CONFIGURED",
+      "details": {
+        "error": "SUPABASE_URL não configurada"
+      },
+      "tests": [],
+      "score": 0,
+      "max_score": 4
+    },
+    "auth": {
+      "name": "Authentication & Authorization",
+      "status": "NOT_CONFIGURED",
+      "details": {
+        "error": "SUPABASE_URL não configurada"
+      },
+      "tests": [],
+      "score": 0,
+      "max_score": 3
+    },
+    "apis": {
+      "name": "REST & GraphQL APIs",
+      "status": "NOT_CONFIGURED",
+      "details": {
+        "error": "SUPABASE_URL não configurada"
+      },
+      "tests": [],
+      "score": 0,
+      "max_score": 4
+    },
+    "storage": {
+      "name": "File Storage",
+      "status": "NOT_CONFIGURED",
+      "details": {
+        "error": "SUPABASE_URL não configurada"
+      },
+      "tests": [],
+      "score": 0,
+      "max_score": 4
+    },
+    "edge_functions": {
+      "name": "Edge Functions & RPC",
+      "status": "NOT_CONFIGURED",
+      "details": {
+        "error": "SUPABASE_URL não configurada"
+      },
+      "tests": [],
+      "score": 0,
+      "max_score": 3
+    }
+  },
+  "overall_status": "CRÍTICO",
+  "score": 0,
+  "max_score": 18,
+  "errors": [
+    "SUPABASE_URL não encontrada nas configurações"
+  ],
+  "warnings": [],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Configuration",
+      "issue": "SUPABASE_URL não configurada",
+      "solution": "Configurar SUPABASE_URL nas variáveis de ambiente ou accounts.json"
+    },
+    {
+      "priority": "HIGH",
+      "category": "Configuration",
+      "issue": "SUPABASE_SERVICE_KEY não configurada",
+      "solution": "Configurar SUPABASE_SERVICE_KEY para acesso completo às APIs"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Storage",
+      "issue": "SUPABASE_BUCKET não configurado",
+      "solution": "Configurar nome do bucket para upload de imagens"
+    }
+  ]
+}

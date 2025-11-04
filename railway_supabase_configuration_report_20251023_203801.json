@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-10-23 20:38:01",
+  "railway_cli_status": "NOT_FOUND",
+  "authentication_status": "UNKNOWN",
+  "project_status": "UNKNOWN",
+  "variables_configured": [],
+  "failed_variables": [],
+  "overall_status": "CLI_NOT_INSTALLED",
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "category": "Installation",
+      "issue": "Railway CLI não está instalado",
+      "solution": "Instalar Railway CLI: npm install -g @railway/cli"
+    },
+    {
+      "priority": "CRITICAL",
+      "category": "Authentication",
+      "issue": "Não autenticado no Railway",
+      "solution": "Executar: railway login"
+    },
+    {
+      "priority": "HIGH",
+      "category": "Project",
+      "issue": "Nenhum projeto Railway conectado",
+      "solution": "Conectar ao projeto: railway link"
+    }
+  ]
+}

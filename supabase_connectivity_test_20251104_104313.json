@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-11-04T10:43:10.565124",
+  "credentials_loaded": {
+    "url": "LOADED",
+    "service_key": "LOADED",
+    "anon_key": "LOADED",
+    "bucket": "LOADED",
+    "project_ref": "LOADED",
+    "db_url": "LOADED"
+  },
+  "connectivity_tests": {
+    "supabase_health": "SUCCESS",
+    "supabase_auth": "SUCCESS",
+    "supabase_storage": "SUCCESS"
+  },
+  "api_tests": {
+    "rest_api": "SUCCESS"
+  },
+  "storage_tests": {
+    "list_buckets": "SUCCESS",
+    "target_bucket": "EXISTS",
+    "file_upload": "SUCCESS",
+    "file_download": "SUCCESS"
+  },
+  "overall_status": "EXCELLENT",
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "category": "Status",
+      "issue": "Todos os testes passaram",
+      "action": "Supabase está configurado e funcionando corretamente"
+    }
+  ],
+  "success_rate": "13/14 (92.9%)"
+}

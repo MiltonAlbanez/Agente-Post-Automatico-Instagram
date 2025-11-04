@@ -1,0 +1,41 @@
+{
+  "ENV": {
+    "ENVIRONMENT": "railway",
+    "OPENAI_API_KEY": "",
+    "RAPIDAPI_KEY": "",
+    "INSTAGRAM_ACCESS_TOKEN": "",
+    "INSTAGRAM_BUSINESS_ACCOUNT_ID": "",
+    "SUPABASE_URL": "",
+    "SUPABASE_SERVICE_KEY": "",
+    "TELEGRAM_BOT_TOKEN": "",
+    "TELEGRAM_CHAT_ID": "",
+    "DISABLE_REPLICATE": "true",
+    "WEEKLY_THEMES_ENABLED": "true",
+    "STORIES_BACKGROUND_TYPE": "gradient",
+    "STORIES_TEXT_POSITION": "auto",
+    "ACCOUNT_NAME_DEFAULT": ""
+  },
+  "SLOTS": {
+    "stories_09_brt": {
+      "utc_cron": "0 12 * * *",
+      "publish_to_stories": true,
+      "use_weekly_themes": true,
+      "stories_background_type": "gradient",
+      "stories_text_position": "auto"
+    },
+    "feed_19_brt": {
+      "utc_cron": "0 22 * * *",
+      "publish_to_stories": false,
+      "caption_style": "Formato Dica",
+      "hashtags_strategy": "Hashtags Nicho"
+    }
+  },
+  "ACCOUNTS": [
+    {
+      "name": "",
+      "instagram_business_account_id": "",
+      "instagram_access_token": "",
+      "telegram_chat_id": ""
+    }
+  ]
+}

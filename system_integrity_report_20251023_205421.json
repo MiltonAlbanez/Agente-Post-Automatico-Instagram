@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "generated_at": "2025-10-23T20:54:21.451545",
+    "verification_type": "POST_LTM_UPDATE_INTEGRITY_CHECK",
+    "version": "1.0"
+  },
+  "overall_status": "CRITICAL",
+  "summary": {
+    "ltm_databases": "HEALTHY",
+    "ltm_updates": "VERIFIED",
+    "system_connections": "CRITICAL",
+    "core_modules": "OPERATIONAL",
+    "scheduler_readiness": "READY"
+  },
+  "detailed_results": {
+    "databases": {
+      "overall_status": "HEALTHY",
+      "databases": {
+        "error_reflection.db": {
+          "status": "HEALTHY",
+          "integrity_check": "ok",
+          "tables": 4,
+          "total_records": 36,
+          "table_details": {
+            "error_attempts": 25,
+            "error_patterns": 8,
+            "solution_attempts": 3
+          }
+        },
+        "performance.db": {
+          "status": "HEALTHY",
+          "integrity_check": "ok",
+          "tables": 4,
+          "total_records": 94,
+          "table_details": {
+            "post_performance": 77,
+            "format_performance": 0,
+            "hashtag_performance": 17
+          }
+        },
+        "engagement_monitor.db": {
+          "status": "HEALTHY",
+          "integrity_check": "ok",
+          "tables": 4,
+          "total_records": 169,
+          "table_details": {
+            "engagement_history": 51,
+            "concept_analytics": 118,
+            "engagement_alerts": 0
+          }
+        },
+        "performance_optimizer.db": {
+          "status": "HEALTHY",
+          "integrity_check": "ok",
+          "tables": 4,
+          "total_records": 0,
+          "table_details": {
+            "optimization_history": 0,
+            "dynamic_config": 0,
+            "optimization_metrics": 0
+          }
+        },
+        "ab_testing.db": {
+          "status": "HEALTHY",
+          "integrity_check": "ok",
+          "tables": 4,
+          "total_records": 306,
+          "table_details": {
+            "ab_tests": 3,
+            "ab_test_assignments": 282,
+            "ab_test_results": 21
+          }
+        }
+      },
+      "total_records": 605,
+      "issues_found": []
+    },
+    "ltm_updates": {
+      "status": "VERIFIED",
+      "recent_solutions": 3,
+      "error_patterns_updated": 3,
+      "optimization_log_updated": true,
+      "issues": []
+    },
+    "connections": {
+      "overall_status": "CRITICAL",
+      "connections": {
+        "accounts_file": {
+          "status": "ERROR",
+          "error": "'list' object has no attribute 'get'"
+        }
+      },
+      "issues": [
+        "Erro ao verificar accounts.json: 'list' object has no attribute 'get'"
+      ]
+    },
+    "modules": {
+      "overall_status": "OPERATIONAL",
+      "modules": {
+        "core/system_prompt_manager.py": {
+          "status": "PRESENT",
+          "size": 11424,
+          "lines": 307
+        },
+        "src/services/error_reflection_manager.py": {
+          "status": "PRESENT",
+          "size": 22083,
+          "lines": 563
+        },
+        "src/services/structured_error_logger.py": {
+          "status": "PRESENT",
+          "size": 15788,
+          "lines": 435
+        }
+      },
+      "import_tests": {},
+      "issues": []
+    },
+    "scheduler": {
+      "overall_status": "READY",
+      "components": {
+        "railway.yaml": "PRESENT",
+        "Procfile": "PRESENT"
+      },
+      "next_execution_ready": true,
+      "issues": [],
+      "time_to_next_execution": "1 horas"
+    }
+  },
+  "recommendations": [
+    "🚨 Problemas críticos identificados",
+    "🔧 Correção imediata necessária antes da próxima execução",
+    "📞 Verificar logs detalhados para diagnóstico"
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "timestamp": "2025-10-23T21:22:49.513520",
+  "diagnosis_type": "RAILWAY_ENVIRONMENT_ANALYSIS",
+  "critical_findings": [
+    {
+      "type": "MISSING_CRITICAL_ENVIRONMENT_VARIABLES",
+      "count": 6,
+      "variables": [
+        "OPENAI_API_KEY",
+        "RAPIDAPI_KEY",
+        "INSTAGRAM_ACCESS_TOKEN",
+        "INSTAGRAM_BUSINESS_ACCOUNT_ID",
+        "TELEGRAM_BOT_TOKEN",
+        "TELEGRAM_CHAT_ID"
+      ],
+      "impact": "CRITICAL",
+      "description": "Variáveis de ambiente críticas não configuradas no Railway"
+    }
+  ],
+  "environment_comparison": {
+    "critical_variables": {
+      "OPENAI_API_KEY": {
+        "exists": false,
+        "description": "Chave da API OpenAI para geração de conteúdo",
+        "value_length": 0
+      },
+      "RAPIDAPI_KEY": {
+        "exists": false,
+        "description": "Chave da RapidAPI para serviços externos",
+        "value_length": 0
+      },
+      "INSTAGRAM_ACCESS_TOKEN": {
+        "exists": false,
+        "description": "Token de acesso do Instagram",
+        "value_length": 0
+      },
+      "INSTAGRAM_BUSINESS_ACCOUNT_ID": {
+        "exists": false,
+        "description": "ID da conta business do Instagram",
+        "value_length": 0
+      },
+      "TELEGRAM_BOT_TOKEN": {
+        "exists": false,
+        "description": "Token do bot do Telegram",
+        "value_length": 0
+      },
+      "TELEGRAM_CHAT_ID": {
+        "exists": false,
+        "description": "ID do chat do Telegram",
+        "value_length": 0
+      }
+    },
+    "simulation_variables": {
+      "DRY_RUN": {
+        "exists": false,
+        "value": null,
+        "description": "Modo dry run ativo"
+      },
+      "SIMULATION_MODE": {
+        "exists": false,
+        "value": null,
+        "description": "Modo simulação ativo"
+      },
+      "TEST_MODE": {
+        "exists": false,
+        "value": null,
+        "description": "Modo teste ativo"
+      },
+      "DEBUG_MODE": {
+        "exists": false,
+        "value": null,
+        "description": "Modo debug ativo"
+      },
+      "PRODUCTION_MODE": {
+        "exists": false,
+        "value": null,
+        "description": "Modo produção (deve ser true)"
+      },
+      "REAL_POSTING": {
+        "exists": false,
+        "value": null,
+        "description": "Postagem real (deve ser true)"
+      }
+    },
+    "missing_critical": [
+      {
+        "variable": "OPENAI_API_KEY",
+        "description": "Chave da API OpenAI para geração de conteúdo",
+        "impact": "CRITICAL"
+      },
+      {
+        "variable": "RAPIDAPI_KEY",
+        "description": "Chave da RapidAPI para serviços externos",
+        "impact": "CRITICAL"
+      },
+      {
+        "variable": "INSTAGRAM_ACCESS_TOKEN",
+        "description": "Token de acesso do Instagram",
+        "impact": "CRITICAL"
+      },
+      {
+        "variable": "INSTAGRAM_BUSINESS_ACCOUNT_ID",
+        "description": "ID da conta business do Instagram",
+        "impact": "CRITICAL"
+      },
+      {
+        "variable": "TELEGRAM_BOT_TOKEN",
+        "description": "Token do bot do Telegram",
+        "impact": "CRITICAL"
+      },
+      {
+        "variable": "TELEGRAM_CHAT_ID",
+        "description": "ID do chat do Telegram",
+        "impact": "CRITICAL"
+      }
+    ],
+    "problematic_simulation": []
+  },
+  "root_cause_analysis": {
+    "primary_cause": "RAILWAY_ENVIRONMENT_NOT_CONFIGURED",
+    "contributing_factors": [
+      {
+        "cause": "ENVIRONMENT_VARIABLES_NOT_SET_IN_RAILWAY",
+        "priority": "CRITICAL",
+        "description": "Variáveis de ambiente críticas não estão configuradas no Railway",
+        "evidence": [
+          "OPENAI_API_KEY",
+          "RAPIDAPI_KEY",
+          "INSTAGRAM_ACCESS_TOKEN",
+          "INSTAGRAM_BUSINESS_ACCOUNT_ID",
+          "TELEGRAM_BOT_TOKEN",
+          "TELEGRAM_CHAT_ID"
+        ],
+        "fix": "Configurar todas as variáveis de ambiente no painel do Railway"
+      }
+    ],
+    "confidence_level": "HIGH"
+  },
+  "immediate_fixes": [
+    {
+      "priority": "CRITICAL",
+      "title": "Configurar Variáveis de Ambiente no Railway",
+      "description": "Acessar painel do Railway e configurar todas as variáveis críticas",
+      "steps": [
+        "1. Acessar dashboard do Railway",
+        "2. Ir em Settings > Environment Variables",
+        "3. Adicionar OPENAI_API_KEY com valor da chave OpenAI",
+        "4. Adicionar RAPIDAPI_KEY com valor da chave RapidAPI",
+        "5. Adicionar INSTAGRAM_ACCESS_TOKEN com token do Instagram",
+        "6. Adicionar INSTAGRAM_BUSINESS_ACCOUNT_ID com ID da conta",
+        "7. Adicionar TELEGRAM_BOT_TOKEN com token do bot",
+        "8. Adicionar TELEGRAM_CHAT_ID com ID do chat",
+        "9. Fazer redeploy da aplicação"
+      ],
+      "estimated_time": "10 minutos"
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "Verificar Logs do Railway",
+      "description": "Monitorar logs em tempo real para confirmar correções",
+      "steps": [
+        "1. Acessar dashboard do Railway",
+        "2. Ir na aba Logs",
+        "3. Verificar se sistema inicia corretamente",
+        "4. Confirmar que não há erros de variáveis de ambiente",
+        "5. Aguardar próximo horário de stories (00:00 UTC)"
+      ],
+      "estimated_time": "15 minutos"
+    }
+  ],
+  "accounts_configuration": {
+    "file_exists": true,
+    "account_count": 2,
+    "accounts_details": [
+      {
+        "index": 0,
+        "name": "Milton_Albanez",
+        "has_instagram_id": true,
+        "has_instagram_token": true,
+        "has_telegram_config": false,
+        "token_length": 216
+      },
+      {
+        "index": 1,
+        "name": "Albanez Assistência Técnica",
+        "has_instagram_id": true,
+        "has_instagram_token": true,
+        "has_telegram_config": false,
+        "token_length": 211
+      }
+    ],
+    "configuration_issues": []
+  },
+  "scheduler_vs_automation": {
+    "railway_scheduler": {
+      "exists": true,
+      "size": 7957,
+      "uses_generate_and_publish": true,
+      "has_stories_schedule": true,
+      "has_21h_schedule": true,
+      "mode_stories": true,
+      "mode_feed": true
+    },
+    "railway_automation": {
+      "exists": true,
+      "size": 4133,
+      "uses_simulate_post_creation": true,
+      "uses_generate_and_publish": false,
+      "is_simulation_only": true
+    },
+    "procfile_configuration": {
+      "exists": true,
+      "content": "# AGENDADOR AUTOMÁTICO 24/7 - COMANDO PRINCIPAL\nscheduler: python railway_scheduler.py\n\n# COMANDOS MANUAIS (para testes)\nunposted: python src/main.py unposted --limit ${LIMIT:-10}\nautopost: python src/main.py autopost --style \"${STYLE:-}\"\nteste: python railway_automation_teste.py\n\n# AGENDADOR AUTOMÁTICO:\n# O comando 'scheduler' executa o sistema 24/7 com agendamentos automáticos:\n# - Feed: 06:00, 12:00, 18:00, 19:00 BRT (09:00, 15:00, 21:00, 22:00 UTC)\n# - Stories: 09:00, 15:00, 21:00 BRT (12:00, 18:00, 00:00 UTC)\n# - Processa TODAS as contas do accounts.json automaticamente\n# - Funciona de forma completamente autônoma na nuvem\n\n# COMANDOS MANUAIS ANTIGOS (para referência):\n# - ACCOUNT_NAME: nome da conta do accounts.json (default: Milton_Albanez)\n# - LIMIT: limite de itens (default: 1)\n# - STYLE: estilo opcional para autopost (ex.: \"street, portrait, natural light\")",
+      "main_command": "railway_scheduler.py",
+      "uses_scheduler": true,
+      "uses_automation": false
+    },
+    "execution_difference": {
+      "scheduler_does_real_posting": true,
+      "automation_does_simulation": true,
+      "procfile_uses_correct_file": true,
+      "potential_issue": false
+    }
+  }
+}

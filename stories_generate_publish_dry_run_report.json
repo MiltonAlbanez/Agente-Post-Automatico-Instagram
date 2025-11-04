@@ -1,0 +1,43 @@
+{
+  "params": {
+    "openai_key": null,
+    "replicate_token": null,
+    "instagram_business_id": "FAKE_BUSINESS",
+    "instagram_access_token": "DRY_RUN_TOKEN",
+    "telegram_bot_token": "FAKE_TELEGRAM_TOKEN",
+    "telegram_chat_id": "FAKE_CHAT",
+    "source_image_url": "https://picsum.photos/seed/dryrun/1080/1080.jpg",
+    "caption_style": "professional",
+    "content_prompt": "Crie conteúdo curto sobre manutenção de ar-condicionado em residência.",
+    "caption_prompt": "Escreva uma legenda envolvente baseada em {descricao} com CTA.",
+    "original_text": null,
+    "disable_replicate": true,
+    "replicate_prompt": null,
+    "account_name": "conta_teste_stories",
+    "account_config": {
+      "superior_concepts_enabled": false
+    },
+    "publish_to_stories": true,
+    "stories_background_type": "gradient",
+    "stories_text": "Atendemos hoje! Solicite agendamento pelo WhatsApp.",
+    "stories_text_position": "auto",
+    "use_weekly_themes": false,
+    "force_day_of_week": null,
+    "force_time_slot": null
+  },
+  "result": {
+    "description": "Conteúdo curto simulado sobre manutenção residencial e qualidade de serviço.",
+    "caption": "Legenda simulada via prompt com hashtags dinâmicas. #Serviço #Urgência #Profissional",
+    "generated_image_url": "https://example.com/fake-public.jpg",
+    "creation_id": "FAKE_CREATION_ID",
+    "media_id": "FAKE_MEDIA_ID_123",
+    "status": "PUBLISHED",
+    "telegram_sent": true,
+    "replicate_error": "DISABLED",
+    "stories": {
+      "success": true,
+      "media_id": "FAKE_STORY_ID_456"
+    },
+    "stories_published": true
+  }
+}

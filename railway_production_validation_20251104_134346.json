@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251104_134346",
+  "validation_results": {
+    "environment_variables": {
+      "configured": 7,
+      "missing": 0,
+      "configured_vars": [
+        "TELEGRAM_BOT_TOKEN",
+        "TELEGRAM_CHAT_ID",
+        "OPENAI_API_KEY",
+        "RAPIDAPI_KEY",
+        "REPLICATE_TOKEN",
+        "INSTAGRAM_BUSINESS_ACCOUNT_ID",
+        "INSTAGRAM_ACCESS_TOKEN"
+      ],
+      "missing_vars": [],
+      "status": "PASS"
+    },
+    "telegram": {
+      "status": "PASS",
+      "bot_username": "AgentePostInsta_bot",
+      "chat_accessible": true
+    },
+    "instagram": {
+      "status": "PASS",
+      "username": "milton_albanez",
+      "account_id": "17841404919106588"
+    },
+    "production_settings": {
+      "status": "PASS",
+      "critical_issues": 0,
+      "warnings": 0
+    },
+    "railway_files": {
+      "status": "PASS",
+      "found": [
+        "railway_env_commands.txt",
+        "src/config.py",
+        "automation/scheduler.py",
+        "requirements.txt"
+      ],
+      "missing": []
+    },
+    "railway_commands": {
+      "status": "PASS",
+      "commands_generated": 16,
+      "file": "railway_production_setup.txt"
+    }
+  },
+  "critical_issues": [],
+  "warnings": [],
+  "recommendations": [
+    "Configuração pronta para produção no Railway"
+  ],
+  "status": "SUCCESS"
+}

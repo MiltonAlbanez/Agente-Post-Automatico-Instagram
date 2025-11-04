@@ -1,0 +1,12 @@
+version: 3
+
+services:
+  app:
+    build:
+      builder: NIXPACKS
+    deploy:
+      sleepApplication: false
+
+# NOTA: Railway NÃO lê configurações de cron do railway.yaml
+# Os cron jobs devem ser configurados na interface web do Railway
+# Consulte INSTRUCOES_RAILWAY_CRON.md para instruções detalhadas

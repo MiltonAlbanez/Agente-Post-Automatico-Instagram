@@ -1,0 +1,383 @@
+{
+  "timestamp": "2025-10-23T20:04:28.899095",
+  "report_type": "supabase_final_verification",
+  "executive_summary": {
+    "overall_status": "LIMITADO",
+    "overall_score": "10/28",
+    "overall_percentage": "35.7%",
+    "components_tested": 8,
+    "total_tests_executed": 25,
+    "status_distribution": {
+      "CRÍTICO": 2,
+      "NÃO_CONFIGURADO": 3,
+      "EXCELENTE": 1,
+      "LIMITADO": 1,
+      "PARCIAL": 1
+    },
+    "reports_analyzed": 3,
+    "test_date": "23/10/2025 às 20:04:28"
+  },
+  "component_results": {
+    "postgresql_database": {
+      "name": "Banco de Dados PostgreSQL",
+      "status": "NOT_CONNECTED",
+      "score": 0,
+      "max_score": 2,
+      "details": {
+        "config_source": "No valid configuration found"
+      },
+      "tests_performed": [
+        {
+          "name": "Configuration Available",
+          "status": "FAIL",
+          "details": "Nenhuma configuração válida encontrada"
+        }
+      ],
+      "final_status": "CRÍTICO"
+    },
+    "authentication": {
+      "name": "Autenticação e Autorização",
+      "status": "NOT_TESTED",
+      "score": 0,
+      "max_score": 0,
+      "details": {},
+      "tests_performed": [],
+      "final_status": "NÃO_CONFIGURADO"
+    },
+    "rest_graphql_apis": {
+      "name": "APIs REST e GraphQL",
+      "status": "UNHEALTHY",
+      "score": 1,
+      "max_score": 9,
+      "details": {
+        "project_ref": "xyzcompany",
+        "rest api_available": false,
+        "auth api_available": false,
+        "storage api_available": false,
+        "realtime_available": false,
+        "edge functions_available": false
+      },
+      "tests_performed": [
+        {
+          "name": "URL Format",
+          "status": "PASS",
+          "details": "Formato de URL válido"
+        },
+        {
+          "name": "Standard Endpoints",
+          "status": "FAIL",
+          "details": "Apenas 0/5 endpoints acessíveis"
+        },
+        {
+          "name": "Response Headers",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /rest/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E33250>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "CORS Policy",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /rest/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E31F90>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "REST API Basic",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /rest/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E31950>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "Auth API",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /auth/v1/settings (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E33890>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "Storage API",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /storage/v1/bucket (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E33C50>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "Edge Functions",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /functions/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045F58050>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        }
+      ],
+      "final_status": "CRÍTICO"
+    },
+    "file_storage": {
+      "name": "Armazenamento de Arquivos",
+      "status": "NOT_TESTED",
+      "score": 0,
+      "max_score": 0,
+      "details": {},
+      "tests_performed": [],
+      "final_status": "NÃO_CONFIGURADO"
+    },
+    "edge_functions_rpc": {
+      "name": "Funções Edge e RPC",
+      "status": "NOT_TESTED",
+      "score": 0,
+      "max_score": 0,
+      "details": {},
+      "tests_performed": [],
+      "final_status": "NÃO_CONFIGURADO"
+    },
+    "service_availability": {
+      "name": "Disponibilidade do Serviço",
+      "status": "HEALTHY",
+      "score": 4,
+      "max_score": 4,
+      "details": {},
+      "tests_performed": [
+        {
+          "name": "Supabase Website",
+          "status": "PASS",
+          "details": "Site principal acessível"
+        },
+        {
+          "name": "API Documentation",
+          "status": "PASS",
+          "details": "Documentação acessível"
+        },
+        {
+          "name": "Service Status",
+          "status": "PASS",
+          "details": "Página de status acessível"
+        },
+        {
+          "name": "Global Infrastructure",
+          "status": "PASS",
+          "details": "Informações de infraestrutura disponíveis"
+        }
+      ],
+      "final_status": "EXCELENTE"
+    },
+    "configuration": {
+      "name": "Configuração Local",
+      "status": "NOT_CONFIGURED",
+      "score": 3,
+      "max_score": 10,
+      "details": {
+        "env_vars_configured": [],
+        "accounts_with_supabase": [
+          "Milton_Albanez",
+          "Albanez Assistência Técnica"
+        ],
+        "config_py_lines": [
+          "# Supabase Storage (opcional)",
+          "\"SUPABASE_URL\": os.getenv(\"SUPABASE_URL\", \"\"),",
+          "\"SUPABASE_SERVICE_KEY\": os.getenv(\"SUPABASE_SERVICE_KEY\", \"\"),",
+          "\"SUPABASE_BUCKET\": os.getenv(\"SUPABASE_BUCKET\", \"\"),"
+        ]
+      },
+      "tests_performed": [
+        {
+          "name": "Environment Variables",
+          "status": "FAIL",
+          "details": "Nenhuma variável configurada"
+        },
+        {
+          "name": "Accounts Configuration",
+          "status": "FAIL",
+          "details": "Nenhuma conta configurada com Supabase"
+        },
+        {
+          "name": "Supabase Implementation",
+          "status": "PASS",
+          "details": "SupabaseUploader implementado"
+        },
+        {
+          "name": "Railway CLI Available",
+          "status": "FAIL",
+          "details": "Railway CLI não instalado"
+        },
+        {
+          "name": "Deploy Script Config",
+          "status": "FAIL",
+          "details": "Nenhuma configuração do Supabase no script de deploy"
+        },
+        {
+          "name": "Environment Variables",
+          "status": "FAIL",
+          "details": "Nenhuma variável de ambiente configurada"
+        },
+        {
+          "name": "Config.py File",
+          "status": "PASS",
+          "details": "Encontradas 4 linhas com Supabase"
+        },
+        {
+          "name": "Accounts.json File",
+          "status": "PASS",
+          "details": "Contas com Supabase: ['Milton_Albanez', 'Albanez Assistência Técnica']"
+        },
+        {
+          "name": "Permanent Credentials",
+          "status": "FAIL",
+          "details": "Nenhuma credencial do Supabase encontrada"
+        }
+      ],
+      "final_status": "LIMITADO"
+    },
+    "implementation": {
+      "name": "Implementação no Código",
+      "status": "IMPLEMENTED",
+      "score": 2,
+      "max_score": 3,
+      "details": {
+        "uploader_methods": [
+          "upload_from_url",
+          "__init__"
+        ],
+        "pipeline_occurrences": 15
+      },
+      "tests_performed": [
+        {
+          "name": "SupabaseUploader Class",
+          "status": "PASS",
+          "details": "Métodos encontrados: ['upload_from_url', '__init__']"
+        },
+        {
+          "name": "Pipeline Integration",
+          "status": "PASS",
+          "details": "Supabase integrado no pipeline"
+        },
+        {
+          "name": "Supabase Imports",
+          "status": "FAIL",
+          "details": "Nenhum import do Supabase encontrado"
+        }
+      ],
+      "final_status": "PARCIAL"
+    }
+  },
+  "overall_assessment": {
+    "total_components": 8,
+    "functional_components": 1,
+    "problematic_components": 5,
+    "needs_attention": 2
+  },
+  "critical_issues": [
+    {
+      "component": "Banco de Dados PostgreSQL",
+      "issue": "Componente Banco de Dados PostgreSQL não está configurado ou funcional",
+      "impact": "ALTO",
+      "details": "Status: CRÍTICO, Score: 0/2"
+    },
+    {
+      "component": "Autenticação e Autorização",
+      "issue": "Componente Autenticação e Autorização não está configurado ou funcional",
+      "impact": "ALTO",
+      "details": "Status: NÃO_CONFIGURADO, Score: 0/0"
+    },
+    {
+      "component": "APIs REST e GraphQL",
+      "issue": "Componente APIs REST e GraphQL não está configurado ou funcional",
+      "impact": "ALTO",
+      "details": "Status: CRÍTICO, Score: 1/9"
+    },
+    {
+      "component": "Armazenamento de Arquivos",
+      "issue": "Componente Armazenamento de Arquivos não está configurado ou funcional",
+      "impact": "ALTO",
+      "details": "Status: NÃO_CONFIGURADO, Score: 0/0"
+    },
+    {
+      "component": "Funções Edge e RPC",
+      "issue": "Componente Funções Edge e RPC não está configurado ou funcional",
+      "impact": "ALTO",
+      "details": "Status: NÃO_CONFIGURADO, Score: 0/0"
+    },
+    {
+      "component": "Configuração Local",
+      "issue": "Componente Configuração Local com funcionalidade limitada",
+      "impact": "MÉDIO",
+      "details": "Status: LIMITADO, Score: 3/10"
+    },
+    {
+      "component": "Implementação",
+      "issue": "Código preparado mas sem configuração",
+      "impact": "MÉDIO",
+      "details": "SupabaseUploader implementado mas sem credenciais válidas"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "CRÍTICA",
+      "category": "Configuração",
+      "action": "Configurar projeto Supabase",
+      "description": "Criar projeto no Supabase e configurar todas as variáveis necessárias",
+      "steps": [
+        "1. Criar conta no Supabase (https://supabase.com)",
+        "2. Criar novo projeto",
+        "3. Obter SUPABASE_URL e SUPABASE_SERVICE_KEY",
+        "4. Configurar variáveis no Railway",
+        "5. Criar bucket para armazenamento de imagens"
+      ]
+    },
+    {
+      "priority": "ALTA",
+      "category": "Implementação",
+      "action": "Ativar funcionalidade do Supabase",
+      "description": "O código está preparado, apenas faltam as configurações",
+      "steps": [
+        "1. Configurar variáveis de ambiente",
+        "2. Testar upload de imagens",
+        "3. Verificar permissões do bucket",
+        "4. Validar integração no pipeline"
+      ]
+    },
+    {
+      "priority": "MÉDIA",
+      "category": "Monitoramento",
+      "action": "Implementar monitoramento do Supabase",
+      "description": "Adicionar logs e métricas para acompanhar uso do Supabase",
+      "steps": [
+        "1. Adicionar logs de upload",
+        "2. Monitorar quotas de armazenamento",
+        "3. Configurar alertas de erro",
+        "4. Acompanhar performance das APIs"
+      ]
+    }
+  ],
+  "next_steps": [
+    "🔴 URGENTE: Configurar projeto Supabase",
+    "📝 Obter credenciais do Supabase",
+    "⚙️ Configurar variáveis no Railway",
+    "🧪 Testar conectividade básica",
+    "🔴 Configurar projeto Supabase",
+    "🟠 Ativar funcionalidade do Supabase"
+  ],
+  "metadata": {
+    "tests_performed": [
+      "Supabase Website",
+      "Global Infrastructure",
+      "Accounts.json File",
+      "Accounts Configuration",
+      "URL Format",
+      "Environment Variables",
+      "Service Status",
+      "Railway CLI Available",
+      "Storage API",
+      "Supabase Imports",
+      "REST API Basic",
+      "Configuration Available",
+      "Supabase Implementation",
+      "Permanent Credentials",
+      "Deploy Script Config",
+      "CORS Policy",
+      "Edge Functions",
+      "Standard Endpoints",
+      "Response Headers",
+      "Auth API",
+      "Pipeline Integration",
+      "Config.py File",
+      "API Documentation",
+      "SupabaseUploader Class"
+    ],
+    "reports_analyzed": [
+      "supabase_verification_report_20251023_195841.json",
+      "supabase_demo_verification_report_20251023_200035.json",
+      "supabase_real_config_report_20251023_200228.json"
+    ],
+    "total_components_tested": 8,
+    "total_tests_executed": 25
+  }
+}

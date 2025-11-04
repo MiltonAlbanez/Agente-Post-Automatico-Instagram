@@ -1,0 +1,212 @@
+{
+  "timestamp": "2025-10-23 20:44:17",
+  "overall_status": "FAIR",
+  "overall_score": 20,
+  "max_score": 29,
+  "tests": {
+    "environment_variables": {
+      "status": "POOR",
+      "score": 0,
+      "max_score": 7,
+      "details": [
+        {
+          "variable": "SUPABASE_URL",
+          "status": "NOT_FOUND"
+        },
+        {
+          "variable": "SUPABASE_SERVICE_KEY",
+          "status": "NOT_FOUND"
+        },
+        {
+          "variable": "SUPABASE_ANON_KEY",
+          "status": "NOT_FOUND"
+        },
+        {
+          "variable": "SUPABASE_BUCKET",
+          "status": "NOT_FOUND"
+        },
+        {
+          "variable": "SUPABASE_PROJECT_REF",
+          "status": "NOT_FOUND"
+        },
+        {
+          "variable": "SUPABASE_DB_URL",
+          "status": "NOT_FOUND"
+        },
+        {
+          "variable": "SUPABASE_ACCESS_TOKEN",
+          "status": "NOT_FOUND"
+        }
+      ]
+    },
+    "configuration_files": {
+      "status": "EXCELLENT",
+      "score": 4,
+      "max_score": 4,
+      "details": [
+        {
+          "file": "accounts.json",
+          "status": "HAS_SUPABASE",
+          "size": 8019
+        },
+        {
+          "file": "accounts_backup.json",
+          "status": "HAS_SUPABASE",
+          "size": 9447
+        },
+        {
+          "file": "accounts_corrected.json",
+          "status": "HAS_SUPABASE",
+          "size": 4046
+        },
+        {
+          "file": "CREDENCIAIS_PERMANENTES.json",
+          "status": "HAS_SUPABASE",
+          "size": 4192
+        }
+      ]
+    },
+    "connectivity": {
+      "status": "EXCELLENT",
+      "score": 3,
+      "max_score": 3,
+      "details": [
+        {
+          "test": "health_check",
+          "status": "SUCCESS",
+          "response_code": 200
+        },
+        {
+          "test": "auth_endpoint",
+          "status": "SUCCESS",
+          "response_code": 200
+        },
+        {
+          "test": "storage_endpoint",
+          "status": "SUCCESS",
+          "response_code": 200
+        }
+      ]
+    },
+    "storage_operations": {
+      "status": "EXCELLENT",
+      "score": 4,
+      "max_score": 5,
+      "details": [
+        {
+          "operation": "list_buckets",
+          "status": "SUCCESS",
+          "bucket_found": true,
+          "total_buckets": 2
+        },
+        {
+          "operation": "file_upload",
+          "status": "SUCCESS",
+          "filename": "integration_test_20251023_204420.txt",
+          "size": 56
+        },
+        {
+          "operation": "public_url_access",
+          "status": "SUCCESS",
+          "url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/public/instagram-images/integration_test_20251023_204420.txt"
+        },
+        {
+          "operation": "image_upload",
+          "status": "SUCCESS",
+          "filename": "integration_test_image_20251023_204422.jpg",
+          "size": 825
+        },
+        {
+          "operation": "list_files",
+          "status": "FAILED",
+          "error": "HTTP Error 400: Bad Request"
+        }
+      ]
+    },
+    "api_functionality": {
+      "status": "EXCELLENT",
+      "score": 3,
+      "max_score": 3,
+      "details": [
+        {
+          "test": "rest_api_basic",
+          "status": "SUCCESS"
+        },
+        {
+          "test": "auth_api",
+          "status": "SUCCESS"
+        },
+        {
+          "test": "storage_api",
+          "status": "SUCCESS"
+        }
+      ]
+    },
+    "railway_integration": {
+      "status": "EXCELLENT",
+      "score": 3,
+      "max_score": 3,
+      "details": [
+        {
+          "file": "railway_supabase_commands.txt",
+          "status": "FOUND"
+        },
+        {
+          "file": "railway_supabase_configuration_report_20251023_204150.json",
+          "status": "FOUND"
+        },
+        {
+          "test": "railway_configuration",
+          "status": "FULLY_CONFIGURED",
+          "variables_count": 7
+        }
+      ]
+    },
+    "code_integration": {
+      "status": "EXCELLENT",
+      "score": 3,
+      "max_score": 4,
+      "details": [
+        {
+          "component": "SupabaseUploader",
+          "status": "IMPLEMENTED",
+          "methods_found": [
+            "upload_from_bytes",
+            "__init__"
+          ]
+        },
+        {
+          "component": "Pipeline",
+          "status": "INTEGRATED",
+          "supabase_references": 15
+        },
+        {
+          "component": "Config",
+          "status": "CONFIGURED"
+        },
+        {
+          "component": "Requirements",
+          "status": "NO_SUPABASE_DEPS"
+        }
+      ]
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Environment",
+      "issue": "Variáveis de ambiente não configuradas",
+      "solution": "Configurar todas as variáveis SUPABASE_* no sistema"
+    }
+  ],
+  "summary": {
+    "total_tests": 7,
+    "excellent_tests": 6,
+    "good_tests": 0,
+    "poor_tests": 1,
+    "score_percentage": 68.96551724137932,
+    "critical_issues": 0,
+    "high_issues": 1,
+    "medium_issues": 0
+  }
+}

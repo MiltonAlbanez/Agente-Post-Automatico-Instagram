@@ -1,0 +1,438 @@
+{
+  "timestamp": "2025-10-23T21:34:48.898393",
+  "analysis_type": "RAILWAY_DISCREPANCY_INVESTIGATION",
+  "image_analysis": {
+    "variables_tab_analysis": {
+      "variables_present": [
+        "AUTOCMD",
+        "TOKEN_DE_ACESSO_DO_INSTAGRAM",
+        "ID_DA_CONTA_COMERCIAL_DO_INSTAGRAM",
+        "VERIFICAÇÕES_DE_ENQUETE_MÁXIMO",
+        "INSTAGRAM_MAX_RETENTATIVAS",
+        "INTERVALO_DE_ENQUETE_DO_INSTAGRAM",
+        "TEMPO_LIMITE_DO_INSTAGRAM"
+      ],
+      "variables_masked": true,
+      "total_variables_visible": 7,
+      "critical_missing_variables": [
+        "OPENAI_API_KEY",
+        "RAPIDAPI_KEY",
+        "TELEGRAM_BOT_TOKEN",
+        "TELEGRAM_CHAT_ID"
+      ],
+      "naming_discrepancy": {
+        "expected": "INSTAGRAM_ACCESS_TOKEN",
+        "found": "TOKEN_DE_ACESSO_DO_INSTAGRAM",
+        "impact": "CRITICAL - Código pode não reconhecer nomes em português"
+      }
+    },
+    "cron_runs_analysis": {
+      "recent_executions": [
+        {
+          "date": "23/10/25",
+          "time": "21h26",
+          "status": "Correndo...",
+          "duration": "4m 13s",
+          "description": "Correção: Fallback automático"
+        },
+        {
+          "date": "23/10/25",
+          "time": "21h03",
+          "status": "Completed",
+          "duration": "23m 13s",
+          "description": "Correção: Fallback automático"
+        },
+        {
+          "date": "22/10/25",
+          "time": "21h04",
+          "status": "Completed",
+          "duration": "23h 59m",
+          "description": "Correção: Fallback automático"
+        },
+        {
+          "date": "21/10/25",
+          "time": "21h16",
+          "status": "Completed",
+          "duration": "23h 47m",
+          "description": "Correção: Fallback automático"
+        }
+      ],
+      "pattern_analysis": {
+        "all_executions_fallback": true,
+        "consistent_21h_timing": true,
+        "long_durations": true,
+        "no_normal_executions": true
+      }
+    }
+  },
+  "ltm_records_analysis": {
+    "files_found": 25,
+    "recent_records": [
+      {
+        "filename": "railway_environment_diagnosis_20251023_212249.json",
+        "timestamp": "2025-10-23T21:22:49.513520",
+        "type": "RAILWAY_ENVIRONMENT_ANALYSIS",
+        "claims_variables_configured": false,
+        "environment_status": {
+          "critical_variables": {
+            "OPENAI_API_KEY": {
+              "exists": false,
+              "description": "Chave da API OpenAI para geração de conteúdo",
+              "value_length": 0
+            },
+            "RAPIDAPI_KEY": {
+              "exists": false,
+              "description": "Chave da RapidAPI para serviços externos",
+              "value_length": 0
+            },
+            "INSTAGRAM_ACCESS_TOKEN": {
+              "exists": false,
+              "description": "Token de acesso do Instagram",
+              "value_length": 0
+            },
+            "INSTAGRAM_BUSINESS_ACCOUNT_ID": {
+              "exists": false,
+              "description": "ID da conta business do Instagram",
+              "value_length": 0
+            },
+            "TELEGRAM_BOT_TOKEN": {
+              "exists": false,
+              "description": "Token do bot do Telegram",
+              "value_length": 0
+            },
+            "TELEGRAM_CHAT_ID": {
+              "exists": false,
+              "description": "ID do chat do Telegram",
+              "value_length": 0
+            }
+          },
+          "simulation_variables": {
+            "DRY_RUN": {
+              "exists": false,
+              "value": null,
+              "description": "Modo dry run ativo"
+            },
+            "SIMULATION_MODE": {
+              "exists": false,
+              "value": null,
+              "description": "Modo simulação ativo"
+            },
+            "TEST_MODE": {
+              "exists": false,
+              "value": null,
+              "description": "Modo teste ativo"
+            },
+            "DEBUG_MODE": {
+              "exists": false,
+              "value": null,
+              "description": "Modo debug ativo"
+            },
+            "PRODUCTION_MODE": {
+              "exists": false,
+              "value": null,
+              "description": "Modo produção (deve ser true)"
+            },
+            "REAL_POSTING": {
+              "exists": false,
+              "value": null,
+              "description": "Postagem real (deve ser true)"
+            }
+          },
+          "missing_critical": [
+            {
+              "variable": "OPENAI_API_KEY",
+              "description": "Chave da API OpenAI para geração de conteúdo",
+              "impact": "CRITICAL"
+            },
+            {
+              "variable": "RAPIDAPI_KEY",
+              "description": "Chave da RapidAPI para serviços externos",
+              "impact": "CRITICAL"
+            },
+            {
+              "variable": "INSTAGRAM_ACCESS_TOKEN",
+              "description": "Token de acesso do Instagram",
+              "impact": "CRITICAL"
+            },
+            {
+              "variable": "INSTAGRAM_BUSINESS_ACCOUNT_ID",
+              "description": "ID da conta business do Instagram",
+              "impact": "CRITICAL"
+            },
+            {
+              "variable": "TELEGRAM_BOT_TOKEN",
+              "description": "Token do bot do Telegram",
+              "impact": "CRITICAL"
+            },
+            {
+              "variable": "TELEGRAM_CHAT_ID",
+              "description": "ID do chat do Telegram",
+              "impact": "CRITICAL"
+            }
+          ],
+          "problematic_simulation": []
+        }
+      },
+      {
+        "filename": "stories_21h_failure_analysis_20251023_212102.json",
+        "timestamp": "2025-10-23T21:21:02.282174",
+        "type": "21h_stories_failure_investigation",
+        "claims_variables_configured": false,
+        "environment_status": {}
+      },
+      {
+        "filename": "simulation_issue_diagnosis_20251023_211815.json",
+        "timestamp": "unknown",
+        "type": "unknown",
+        "claims_variables_configured": false,
+        "environment_status": {}
+      },
+      {
+        "filename": "final_system_verification_report_20251023_210321.json",
+        "timestamp": "unknown",
+        "type": "unknown",
+        "claims_variables_configured": false,
+        "environment_status": {}
+      },
+      {
+        "filename": "connection_auth_report_20251023_205949.json",
+        "timestamp": "unknown",
+        "type": "unknown",
+        "claims_variables_configured": false,
+        "environment_status": {}
+      }
+    ],
+    "configuration_claims": [],
+    "discrepancies_found": []
+  },
+  "telegram_silence_analysis": {
+    "potential_causes": [
+      {
+        "cause": "TELEGRAM_NOT_CONFIGURED_IN_ACCOUNTS",
+        "description": "Algumas contas não têm configuração Telegram",
+        "impact": "Notificações não serão enviadas para essas contas"
+      }
+    ],
+    "verification_points": [],
+    "hypothesis": [
+      {
+        "hypothesis": "VARIABLE_NAME_MISMATCH",
+        "description": "Código busca TELEGRAM_BOT_TOKEN, mas Railway tem nomes em português",
+        "probability": "HIGH",
+        "evidence": "Padrão similar ao Instagram token"
+      },
+      {
+        "hypothesis": "TELEGRAM_VARIABLES_MISSING_IN_RAILWAY",
+        "description": "Variáveis Telegram não configuradas no Railway",
+        "probability": "HIGH",
+        "evidence": "Não visíveis nas imagens das variáveis"
+      },
+      {
+        "hypothesis": "SILENT_FAILURE_IN_TELEGRAM_CLIENT",
+        "description": "Cliente Telegram falha silenciosamente sem variáveis",
+        "probability": "MEDIUM",
+        "evidence": "Padrão de fallback sem notificações"
+      }
+    ],
+    "local_config": {
+      "accounts_with_telegram": 0,
+      "accounts_without_telegram": 2,
+      "telegram_tokens_present": [],
+      "telegram_chat_ids_present": []
+    }
+  },
+  "execution_patterns": {
+    "fallback_pattern": {
+      "description": "Todas as execuções são 'Correção: Fallback automático'",
+      "implications": [
+        "Sistema nunca executa normalmente",
+        "Sempre ativa mecanismo de recuperação",
+        "Indica falha sistemática na execução principal"
+      ],
+      "root_cause_indicators": [
+        "Variáveis de ambiente não carregadas",
+        "Falha na inicialização do sistema",
+        "Erro de configuração fundamental"
+      ]
+    },
+    "timing_analysis": {
+      "consistent_21h_execution": true,
+      "description": "Execuções sempre às 21h (horário das stories)",
+      "implication": "Scheduler está funcionando, mas execução falha"
+    },
+    "duration_analysis": {
+      "long_durations": true,
+      "typical_duration": "23+ horas",
+      "description": "Durações anormalmente longas",
+      "implication": "Sistema fica em loop ou estado de espera prolongado"
+    }
+  },
+  "root_cause_hypothesis": [
+    {
+      "hypothesis": "VARIABLE_NAMING_LANGUAGE_MISMATCH",
+      "probability": "VERY_HIGH",
+      "description": "Código em inglês, variáveis configuradas em português",
+      "evidence": [
+        "TOKEN_DE_ACESSO_DO_INSTAGRAM vs INSTAGRAM_ACCESS_TOKEN",
+        "Padrão consistente de nomenclatura em português",
+        "Sistema não reconhece variáveis existentes"
+      ],
+      "verification": "Verificar se código busca nomes em inglês",
+      "fix": "Reconfigurar variáveis com nomes em inglês ou adaptar código"
+    },
+    {
+      "hypothesis": "CRITICAL_VARIABLES_COMPLETELY_MISSING",
+      "probability": "HIGH",
+      "description": "Variáveis essenciais não configuradas no Railway",
+      "evidence": [
+        "OPENAI_API_KEY não visível",
+        "RAPIDAPI_KEY não visível",
+        "TELEGRAM_* variáveis ausentes"
+      ],
+      "verification": "Verificar painel completo de variáveis",
+      "fix": "Configurar todas as variáveis críticas"
+    },
+    {
+      "hypothesis": "RAILWAY_ENVIRONMENT_LOADING_ISSUE",
+      "probability": "MEDIUM",
+      "description": "Railway não carrega variáveis corretamente para a aplicação",
+      "evidence": [
+        "Variáveis visíveis no painel mas não no código",
+        "Padrão de fallback constante"
+      ],
+      "verification": "Testar carregamento de variáveis em runtime",
+      "fix": "Investigar configuração de deployment"
+    },
+    {
+      "hypothesis": "LTM_RECORDS_OUTDATED_OR_INCORRECT",
+      "probability": "HIGH",
+      "description": "Registros LTM não refletem estado atual",
+      "evidence": [
+        "Discrepância entre LTM e realidade",
+        "Claims de configuração vs evidência visual"
+      ],
+      "verification": "Comparar timestamps dos registros",
+      "fix": "Atualizar registros LTM com estado real"
+    }
+  ],
+  "verification_points": [
+    {
+      "category": "RAILWAY_VARIABLES",
+      "checks": [
+        {
+          "item": "Verificar nomes exatos das variáveis no Railway",
+          "method": "Screenshot completo da aba Variáveis",
+          "expected": "Nomes em inglês conforme código",
+          "priority": "CRITICAL"
+        },
+        {
+          "item": "Confirmar presença de TODAS as variáveis críticas",
+          "method": "Checklist manual no painel Railway",
+          "expected": "6 variáveis críticas presentes",
+          "priority": "CRITICAL"
+        },
+        {
+          "item": "Testar carregamento de variáveis em runtime",
+          "method": "Script de verificação no Railway",
+          "expected": "Todas as variáveis acessíveis",
+          "priority": "HIGH"
+        }
+      ]
+    },
+    {
+      "category": "CODE_VERIFICATION",
+      "checks": [
+        {
+          "item": "Verificar nomes de variáveis no código",
+          "method": "Busca por os.getenv() no código",
+          "expected": "Nomes em inglês",
+          "priority": "HIGH"
+        },
+        {
+          "item": "Verificar tratamento de variáveis ausentes",
+          "method": "Análise do código de inicialização",
+          "expected": "Validação e logs de erro",
+          "priority": "MEDIUM"
+        }
+      ]
+    },
+    {
+      "category": "TELEGRAM_VERIFICATION",
+      "checks": [
+        {
+          "item": "Verificar configuração Telegram no Railway",
+          "method": "Buscar TELEGRAM_BOT_TOKEN e TELEGRAM_CHAT_ID",
+          "expected": "Variáveis presentes e válidas",
+          "priority": "HIGH"
+        },
+        {
+          "item": "Testar envio de notificação manual",
+          "method": "Script de teste Telegram",
+          "expected": "Notificação recebida",
+          "priority": "MEDIUM"
+        }
+      ]
+    }
+  ],
+  "critical_issues_from_images": [
+    {
+      "type": "VARIABLE_NAMING_MISMATCH",
+      "severity": "CRITICAL",
+      "description": "Variáveis configuradas em português, código espera em inglês",
+      "evidence": {
+        "expected": "INSTAGRAM_ACCESS_TOKEN",
+        "found": "TOKEN_DE_ACESSO_DO_INSTAGRAM",
+        "impact": "CRITICAL - Código pode não reconhecer nomes em português"
+      },
+      "impact": "Sistema não consegue ler variáveis devido à diferença de nomenclatura"
+    },
+    {
+      "type": "CRITICAL_VARIABLES_MISSING",
+      "severity": "CRITICAL",
+      "description": "Variáveis essenciais não configuradas",
+      "evidence": [
+        "OPENAI_API_KEY",
+        "RAPIDAPI_KEY",
+        "TELEGRAM_BOT_TOKEN",
+        "TELEGRAM_CHAT_ID"
+      ],
+      "impact": "Sistema não pode funcionar sem essas variáveis"
+    },
+    {
+      "type": "FALLBACK_EXECUTION_PATTERN",
+      "severity": "HIGH",
+      "description": "Todas as execuções são fallbacks, nunca execução normal",
+      "evidence": [
+        {
+          "date": "23/10/25",
+          "time": "21h26",
+          "status": "Correndo...",
+          "duration": "4m 13s",
+          "description": "Correção: Fallback automático"
+        },
+        {
+          "date": "23/10/25",
+          "time": "21h03",
+          "status": "Completed",
+          "duration": "23m 13s",
+          "description": "Correção: Fallback automático"
+        },
+        {
+          "date": "22/10/25",
+          "time": "21h04",
+          "status": "Completed",
+          "duration": "23h 59m",
+          "description": "Correção: Fallback automático"
+        },
+        {
+          "date": "21/10/25",
+          "time": "21h16",
+          "status": "Completed",
+          "duration": "23h 47m",
+          "description": "Correção: Fallback automático"
+        }
+      ],
+      "impact": "Sistema está constantemente em modo de recuperação"
+    }
+  ]
+}

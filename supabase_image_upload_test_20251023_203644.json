@@ -1,0 +1,90 @@
+{
+  "timestamp": "2025-10-23T20:36:36.546387",
+  "image_tests": {
+    "JPEG": {
+      "status": "SUCCESS",
+      "upload_time": 1.011593,
+      "file_size": 171,
+      "public_url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/public/instagram-images/test_jpeg_20251023_203636.jpg",
+      "public_access": {
+        "accessible": true,
+        "content_length": 171
+      },
+      "response": "{\"Key\":\"instagram-images/test_jpeg_20251023_203636.jpg\",\"Id\":\"4db3f753-d667-4098-9bf4-3a5346d9f9e1\"}"
+    },
+    "PNG": {
+      "status": "SUCCESS",
+      "upload_time": 0.679343,
+      "file_size": 70,
+      "public_url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/public/instagram-images/test_png_20251023_203636.png",
+      "public_access": {
+        "accessible": true,
+        "content_length": 70
+      },
+      "response": "{\"Key\":\"instagram-images/test_png_20251023_203636.png\",\"Id\":\"a6b11b0d-c4f7-4510-b447-8631d8c227d7\"}"
+    },
+    "large_image": {
+      "status": "SUCCESS",
+      "upload_time": 0.419996,
+      "file_size": 17100,
+      "public_url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/public/instagram-images/test_large_20251023_203640.jpg",
+      "public_access": {
+        "accessible": true,
+        "content_length": 17100
+      },
+      "response": "{\"Key\":\"instagram-images/test_large_20251023_203640.jpg\",\"Id\":\"23698ff0-b6a5-494f-b450-c71a9262b232\"}"
+    }
+  },
+  "performance_metrics": {
+    "average_upload_time": 0.703644,
+    "max_upload_time": 1.011593,
+    "min_upload_time": 0.419996,
+    "total_files_uploaded": 3,
+    "total_bytes_uploaded": 17341,
+    "average_upload_speed_bps": 8214.854860317622
+  },
+  "url_generation": {
+    "public_url": {
+      "url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/public/instagram-images/url_test_20251023_203642.jpg",
+      "access_result": {
+        "accessible": true,
+        "content_length": 171
+      }
+    },
+    "authenticated_url": {
+      "url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/instagram-images/url_test_20251023_203642.jpg",
+      "access_result": {
+        "accessible": true,
+        "content_length": 171
+      }
+    },
+    "signed_url_pattern": {
+      "url": "https://ccvfdupucmsjxwtfwzkd.supabase.co/storage/v1/object/sign/instagram-images/url_test_20251023_203642.jpg",
+      "access_result": {
+        "accessible": false,
+        "error": "HTTP Error 400: Bad Request"
+      }
+    }
+  },
+  "integration_tests": {
+    "uploader_file": {
+      "found": false,
+      "searched_paths": [
+        "supabase_uploader.py",
+        "uploaders/supabase_uploader.py",
+        "src/supabase_uploader.py"
+      ]
+    },
+    "config_accounts.json": {
+      "found": true
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Integração",
+      "issue": "Arquivo SupabaseUploader não encontrado",
+      "action": "Verificar estrutura do projeto e implementação"
+    }
+  ]
+}

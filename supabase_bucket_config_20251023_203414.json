@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-23T20:34:14.036300",
+  "bucket_status": {
+    "error": "expected string or bytes-like object, got 'NoneType'",
+    "creation_error": "expected string or bytes-like object, got 'NoneType'"
+  },
+  "policies_status": {
+    "list_files": "ERROR: expected string or bytes-like object, got 'NoneType'",
+    "upload_permission": "ERROR: expected string or bytes-like object, got 'NoneType'",
+    "public_access": "ERROR: expected string or bytes-like object, got 'NoneType'"
+  },
+  "configuration_applied": {},
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "category": "Bucket",
+      "issue": "Bucket 'instagram-images' não existe",
+      "action": "Criar bucket com configurações adequadas"
+    },
+    {
+      "priority": "HIGH",
+      "category": "Permissões",
+      "issue": "Upload com service_key falhando",
+      "action": "Verificar políticas RLS e permissões do bucket"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Acesso Público",
+      "issue": "Acesso público não funcionando",
+      "action": "Configurar bucket como público e verificar políticas"
+    }
+  ]
+}

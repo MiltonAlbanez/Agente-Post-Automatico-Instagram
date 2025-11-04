@@ -1,0 +1,49 @@
+# COMANDOS PARA APLICAR NO RAILWAY DASHBOARD
+
+# 1. Variáveis de ambiente (adicionar no Railway Dashboard):
+INSTAGRAM_TIMEOUT=120
+INSTAGRAM_MAX_RETRIES=3
+INSTAGRAM_POLLING_INTERVAL=10
+INSTAGRAM_MAX_POLLING_CHECKS=60
+
+# 2. Reiniciar serviços após aplicar as correções:
+# - Feed-19h: Reiniciar serviço
+# - Stories-21h: Reiniciar serviço
+
+# 3. Monitorar logs no próximo agendamento 19h BRT (22:00 UTC)
+
+# 4. Verificar se posts são concluídos com sucesso
+
+# 5. Cron - Monitor Logs (comando auxiliar)
+# Objetivo: configurar execução periódica do monitor de logs com alertas Telegram
+
+# 5.1 Configuração do ambiente
+# - Garanta que o projeto está linkado
+railway link
+# - Defina variáveis necessárias
+railway variables set TELEGRAM_BOT_TOKEN=<seu_token> TELEGRAM_CHAT_ID=<seu_chat_id> TZ=America/Sao_Paulo
+# - Comando padrão para execução do monitor via AUTOCMD (opcional)
+railway variables set AUTOCMD="python monitor_railway_logs.py --recent --alerts"
+
+# 5.2 Definição da periodicidade (cron)
+# - A configuração de cron é feita na UI do Railway (Settings > Cron Schedule)
+# - Sugestão: executar a cada 10 minutos (UTC): "*/10 * * * *"
+# - Observação: horários configurados na UI são em UTC; ajuste conforme BRT
+
+# 5.3 Comando de execução principal (monitoramento)
+# - Verificação pontual dos logs recentes com alertas
+python monitor_railway_logs.py --recent --alerts
+# - Modo contínuo (polling) com intervalo customizado
+python monitor_railway_logs.py --monitor --interval 30 --alerts
+# - Agendador simples local (alternativa): executa N vezes em intervalos
+python log_check_scheduler.py --interval 10 --runs 6 --alerts
+
+# 5.4 Tratamento de erros e logs
+# - Capturar logs com timestamp e salvar em arquivo (PowerShell)
+powershell -Command "$ts=(Get-Date).ToString('yyyy-MM-dd_HH-mm-ss'); railway logs --timestamp | Out-File -Encoding utf8 backups\\railway_logs_$ts.log"
+# - Filtrar erros comuns diretamente do output
+railway logs --timestamp | findstr /I /C:"ERROR" /C:"Traceback" /C:"telegram" /C:"Failed" /C:"Timeout"
+# - Reexecutar verificação com alertas após falha
+python monitor_railway_logs.py --recent --alerts
+# - Validar variáveis de ambiente em caso de falha de alertas
+railway variables

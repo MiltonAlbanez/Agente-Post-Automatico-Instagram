@@ -1,0 +1,213 @@
+{
+  "timestamp": "2025-10-24T14:16:30.938890",
+  "analysis_type": "21h_stories_failure_investigation",
+  "findings": {
+    "railway_status": {
+      "procfile_analysis": {
+        "exists": true,
+        "main_command": "UNKNOWN",
+        "content_preview": "# AGENDADOR AUTOMÁTICO 24/7 - COMANDO PRINCIPAL\nscheduler: python run_once.py\n\n# COMANDOS MANUAIS (para testes)\nunposted: python src/main.py unposted --limit ${LIMIT:-10}\nautopost: python src/main.py "
+      },
+      "scheduler_configuration": {
+        "stories_schedules_found": [
+          "00:00 UTC (21:00 BRT)",
+          "18:00 UTC (15:00 BRT)",
+          "12:00 UTC (09:00 BRT)"
+        ],
+        "has_21h_brt_schedule": true,
+        "uses_real_generate_and_publish": true,
+        "mode_parameter": true
+      },
+      "environment_variables": {
+        "OPENAI_API_KEY": {
+          "exists": false,
+          "value_preview": null
+        },
+        "RAPIDAPI_KEY": {
+          "exists": false,
+          "value_preview": null
+        },
+        "INSTAGRAM_ACCESS_TOKEN": {
+          "exists": false,
+          "value_preview": null
+        },
+        "INSTAGRAM_BUSINESS_ACCOUNT_ID": {
+          "exists": false,
+          "value_preview": null
+        },
+        "TELEGRAM_BOT_TOKEN": {
+          "exists": false,
+          "value_preview": null
+        },
+        "TELEGRAM_CHAT_ID": {
+          "exists": false,
+          "value_preview": null
+        },
+        "DRY_RUN": {
+          "exists": false,
+          "value_preview": null
+        },
+        "SIMULATION_MODE": {
+          "exists": false,
+          "value_preview": null
+        },
+        "PRODUCTION_MODE": {
+          "exists": false,
+          "value_preview": null
+        },
+        "REAL_POSTING": {
+          "exists": false,
+          "value_preview": null
+        }
+      },
+      "discrepancies": []
+    },
+    "telegram_integration": {
+      "configuration": {
+        "bot_token_configured": false,
+        "chat_id_configured": false,
+        "token_format_valid": false
+      },
+      "connectivity": {},
+      "silent_failures": []
+    },
+    "instagram_publishing": {
+      "credentials": {
+        "access_token_configured": false,
+        "business_id_configured": false,
+        "token_length": 0,
+        "business_id_format": false,
+        "accounts_file": {
+          "exists": true,
+          "account_count": 2,
+          "accounts": [
+            "Milton_Albanez",
+            "Albanez Assistência Técnica"
+          ]
+        },
+        "token_match_found": false
+      },
+      "quotas": {},
+      "restrictions": {},
+      "api_health": {}
+    },
+    "ltm_analysis": {
+      "log_files": {
+        "simulation_issue_diagnosis_*.json": {
+          "file": "simulation_issue_diagnosis_20251023_211815.json",
+          "timestamp": "2025-10-23T21:18:15.647188",
+          "content_summary": {
+            "main_keys": [
+              "metadata",
+              "executive_summary",
+              "detailed_analysis",
+              "consolidated_issues",
+              "immediate_actions",
+              "next_steps"
+            ],
+            "contains_simulation_data": true,
+            "contains_errors": true
+          }
+        },
+        "comprehensive_performance_documentation_*.json": {
+          "file": "comprehensive_performance_documentation_20251024_141616.json",
+          "timestamp": "2025-10-24T14:16:16.975605",
+          "content_summary": {
+            "main_keys": [
+              "metadata",
+              "executive_summary",
+              "detailed_analysis",
+              "recommendations",
+              "technical_specifications"
+            ],
+            "contains_simulation_data": true,
+            "contains_errors": true,
+            "contains_success_data": true
+          }
+        },
+        "final_system_verification_report_*.json": {
+          "file": "final_system_verification_report_20251024_132811.json",
+          "timestamp": "2025-10-24T13:28:11.741524",
+          "content_summary": {
+            "main_keys": [
+              "metadata",
+              "executive_summary",
+              "detailed_verification",
+              "final_recommendations",
+              "next_steps"
+            ],
+            "contains_errors": true
+          }
+        },
+        "connection_auth_report_*.json": {
+          "file": "connection_auth_report_20251023_205949.json",
+          "timestamp": "2025-10-23T20:59:49.534818",
+          "content_summary": {
+            "main_keys": [
+              "metadata",
+              "overall_status",
+              "test_summary",
+              "detailed_results",
+              "security_recommendations",
+              "connection_readiness"
+            ],
+            "contains_errors": true,
+            "contains_success_data": true
+          }
+        }
+      },
+      "anomalous_events": [
+        {
+          "type": "API_FAILURE_DETECTED",
+          "source": "comprehensive_performance_documentation_20251024_141616.json",
+          "description": "Possível falha de API detectada nos logs",
+          "severity": "MEDIUM"
+        }
+      ],
+      "performance_metrics": {},
+      "api_failures": [],
+      "critical_timeframe_analysis": {
+        "target_time": "00:00 UTC (21:00 BRT)",
+        "analysis_window": "23:30 UTC - 00:30 UTC",
+        "events_found": [],
+        "gaps_detected": [],
+        "current_status": "OUTSIDE_CRITICAL_WINDOW"
+      }
+    }
+  },
+  "timeline": [
+    {
+      "timestamp": "2025-10-24T14:16:30.940284",
+      "event": "Railway Status Analysis",
+      "status": "COMPLETED",
+      "critical_issues": 0
+    }
+  ],
+  "evidence": [],
+  "recommendations": [],
+  "prevention_measures": [
+    {
+      "measure": "Implementar monitoramento de modo de operação",
+      "description": "Adicionar verificação automática se o sistema está em modo real ou simulação",
+      "implementation": "Criar script de verificação que roda a cada hora"
+    },
+    {
+      "measure": "Adicionar logs detalhados para stories",
+      "description": "Incluir logs específicos para publicação de stories com timestamps",
+      "implementation": "Modificar railway_scheduler.py para incluir logs detalhados"
+    },
+    {
+      "measure": "Criar sistema de alertas para falhas silenciosas",
+      "description": "Notificar via Telegram quando stories não são publicados no horário esperado",
+      "implementation": "Implementar verificação pós-execução com timeout"
+    }
+  ],
+  "executive_summary": {
+    "overall_status": "NO_MAJOR_ISSUES_DETECTED",
+    "critical_issues_count": 0,
+    "high_priority_issues_count": 0,
+    "medium_priority_issues_count": 0,
+    "analysis_completion_time": "2025-10-24T14:16:30.951602",
+    "primary_cause_hypothesis": "UNKNOWN_REQUIRES_DEEPER_INVESTIGATION"
+  }
+}

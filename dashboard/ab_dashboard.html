@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard A/B Testing - Instagram Bot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-text {
+            text-align: center;
+            flex: 1;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .theme-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .change {
+            font-size: 0.9rem;
+            color: #28a745;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .chart-container h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .test-results {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .test-results h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .test-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #28a745;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-item.losing {
+            border-left-color: #dc3545;
+        }
+
+        .test-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .test-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-active {
+            background-color: #00d4aa;
+        }
+
+        .status-completed {
+            background-color: #0068c9;
+        }
+
+        .status-paused {
+            background-color: #ffbd45;
+        }
+
+        /* Tema Escuro */
+        body.dark-theme {
+            background: linear-gradient(135deg, #0e1117, #262730);
+        }
+
+        body.dark-theme .header {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+        }
+
+        body.dark-theme .stat-card {
+            background: #262730;
+            border-left-color: #4a5568;
+        }
+
+        body.dark-theme .stat-card h3 {
+            color: #fafafa;
+        }
+
+        body.dark-theme .stat-card .value {
+            color: #68d391;
+        }
+
+        body.dark-theme .chart-container {
+            background: #262730;
+        }
+
+        body.dark-theme .chart-container h3 {
+            color: #fafafa;
+        }
+
+        body.dark-theme .test-results {
+            background: #262730;
+        }
+
+        body.dark-theme .test-results h3 {
+            color: #fafafa;
+        }
+
+        body.dark-theme .test-item {
+            background: #0e1117;
+            border-left-color: #00d4aa;
+        }
+
+        body.dark-theme .test-item.losing {
+            border-left-color: #ff4b4b;
+        }
+
+        body.dark-theme .test-item h4 {
+            color: #fafafa;
+        }
+
+        body.dark-theme .metric .label {
+            color: #c9c9c9;
+        }
+
+        body.dark-theme .metric .value {
+            color: #fafafa;
+        }
+
+        body.dark-theme .refresh-btn {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+        }
+
+        body.dark-theme .status-active {
+            background: #00d4aa;
+        }
+
+        body.dark-theme .status-completed {
+            background: #0068c9;
+        }
+
+        body.dark-theme .status-paused {
+            background: #ffb000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>🚀 Dashboard A/B Testing</h1>
+                    <p>Monitoramento em tempo real dos testes de otimização do Instagram Bot</p>
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Estatísticas Gerais -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Testes Ativos</h3>
+                    <div class="value" id="active-tests">3</div>
+                    <div class="change">+1 esta semana</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Posts Analisados</h3>
+                    <div class="value" id="total-posts">156</div>
+                    <div class="change">+23 hoje</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Taxa de Engajamento Média</h3>
+                    <div class="value" id="avg-engagement">4.2%</div>
+                    <div class="change">+0.8% vs. semana passada</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Melhor Variante</h3>
+                    <div class="value" id="best-variant">Formato Dica</div>
+                    <div class="change">+15% engajamento</div>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>📊 Performance por Formato de Conteúdo</h3>
+                    <canvas id="formatChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>📈 Engajamento ao Longo do Tempo</h3>
+                    <canvas id="timeChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>🏷️ Performance por Estratégia de Hashtag</h3>
+                    <canvas id="hashtagChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>🎨 Performance por Estilo de Imagem</h3>
+                    <canvas id="imageStyleChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Resultados dos Testes -->
+            <div class="test-results">
+                <h3>🧪 Resultados dos Testes A/B</h3>
+                
+                <div class="test-item">
+                    <h4><span class="status-indicator status-active"></span>Teste de Formatos de Conteúdo</h4>
+                    <p><strong>Vencedor:</strong> Formato Dica (+15% engajamento)</p>
+                    <div class="test-metrics">
+                        <div class="metric">
+                            <div class="label">Confiança</div>
+                            <div class="value">95%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Amostras</div>
+                            <div class="value">45</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Duração</div>
+                            <div class="value">7 dias</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Lift</div>
+                            <div class="value">+15%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-item">
+                    <h4><span class="status-indicator status-active"></span>Teste de Estratégias de Hashtag</h4>
+                    <p><strong>Líder atual:</strong> Hashtags Trending (+8% alcance)</p>
+                    <div class="test-metrics">
+                        <div class="metric">
+                            <div class="label">Confiança</div>
+                            <div class="value">78%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Amostras</div>
+                            <div class="value">32</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Duração</div>
+                            <div class="value">5 dias</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Lift</div>
+                            <div class="value">+8%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-item">
+                    <h4><span class="status-indicator status-completed"></span>Teste de Estilos de Imagem</h4>
+                    <p><strong>Vencedor:</strong> Estilo Dinâmico (+12% impressões)</p>
+                    <div class="test-metrics">
+                        <div class="metric">
+                            <div class="label">Confiança</div>
+                            <div class="value">92%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Amostras</div>
+                            <div class="value">58</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Duração</div>
+                            <div class="value">10 dias</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Lift</div>
+                            <div class="value">+12%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="refresh-btn" onclick="refreshData()">🔄 Atualizar Dados</button>
+        </div>
+    </div>
+
+    <script>
+        // Função para alternar tema
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-icon');
+            
+            body.classList.toggle('dark-theme');
+            
+            // Atualizar ícone
+            if (body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+                // Atualizar cor padrão dos gráficos para tema escuro
+                Chart.defaults.color = '#fafafa';
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+                // Atualizar cor padrão dos gráficos para tema claro
+                Chart.defaults.color = '#333';
+            }
+            
+            // Recriar gráficos com nova cor
+            updateChartsTheme();
+        }
+
+        // Carregar tema salvo
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-icon');
+            
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                themeIcon.textContent = '☀️';
+                Chart.defaults.color = '#fafafa';
+            } else {
+                themeIcon.textContent = '🌙';
+                Chart.defaults.color = '#333';
+            }
+        }
+
+        // Atualizar tema dos gráficos
+        function updateChartsTheme() {
+            // Recriar todos os gráficos com a nova cor
+            if (typeof formatChart !== 'undefined') formatChart.update();
+            if (typeof ctaChart !== 'undefined') ctaChart.update();
+            if (typeof hashtagChart !== 'undefined') hashtagChart.update();
+            if (typeof imageStyleChart !== 'undefined') imageStyleChart.update();
+        }
+
+        // Carregar tema ao inicializar a página
+        document.addEventListener('DOMContentLoaded', loadSavedTheme);
+
+        // Configuração dos gráficos
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        // Gráfico de Performance por Formato
+        const formatCtx = document.getElementById('formatChart').getContext('2d');
+        const formatChart = new Chart(formatCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Formato Dica', 'Formato Pergunta', 'Formato Citação', 'Formato Lista'],
+                datasets: [{
+                    label: 'Taxa de Engajamento (%)',
+                    data: [4.8, 4.2, 3.9, 4.1],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(40, 167, 69, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(102, 126, 234, 1)',
+                        'rgba(118, 75, 162, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(40, 167, 69, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 6
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Engajamento ao Longo do Tempo
+        const timeCtx = document.getElementById('timeChart').getContext('2d');
+        const timeChart = new Chart(timeCtx, {
+            type: 'line',
+            data: {
+                labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Engajamento Médio',
+                    data: [3.8, 4.1, 4.5, 4.2, 4.8, 5.2, 4.9],
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 6
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Performance por Hashtag
+        const hashtagCtx = document.getElementById('hashtagChart').getContext('2d');
+        const hashtagChart = new Chart(hashtagCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Trending', 'Nicho', 'Otimizadas'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)',
+                        'rgba(40, 167, 69, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(102, 126, 234, 1)',
+                        'rgba(118, 75, 162, 1)',
+                        'rgba(40, 167, 69, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Performance por Estilo de Imagem
+        const imageStyleCtx = document.getElementById('imageStyleChart').getContext('2d');
+        const imageStyleChart = new Chart(imageStyleCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Impressões', 'Alcance', 'Engajamento', 'Saves', 'Shares'],
+                datasets: [{
+                    label: 'Dinâmico',
+                    data: [85, 78, 92, 88, 75],
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                    borderWidth: 2
+                }, {
+                    label: 'Minimalista',
+                    data: [75, 82, 85, 90, 70],
+                    borderColor: 'rgba(118, 75, 162, 1)',
+                    backgroundColor: 'rgba(118, 75, 162, 0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Função para carregar dados da API
+        async function loadData() {
+            try {
+                // Carregar estatísticas gerais
+                const statsResponse = await fetch('/api/stats');
+                const stats = await statsResponse.json();
+                
+                document.getElementById('active-tests').textContent = stats.active_tests;
+                document.getElementById('total-posts').textContent = stats.total_posts;
+                document.getElementById('avg-engagement').textContent = stats.avg_engagement + '%';
+                document.getElementById('best-variant').textContent = stats.best_format;
+
+                // Carregar performance por formato
+                const formatResponse = await fetch('/api/format-performance');
+                const formatData = await formatResponse.json();
+                
+                if (formatData.labels && formatData.data) {
+                    formatChart.data.labels = formatData.labels;
+                    formatChart.data.datasets[0].data = formatData.data;
+                    formatChart.update();
+                }
+
+                // Carregar timeline de engajamento
+                const timelineResponse = await fetch('/api/engagement-timeline');
+                const timelineData = await timelineResponse.json();
+                
+                if (timelineData.labels && timelineData.data) {
+                    timeChart.data.labels = timelineData.labels;
+                    timeChart.data.datasets[0].data = timelineData.data;
+                    timeChart.update();
+                }
+
+                // Carregar resultados dos testes A/B
+                const abResponse = await fetch('/api/ab-results');
+                const abResults = await abResponse.json();
+                
+                updateTestResults(abResults);
+
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+            }
+        }
+
+        // Função para atualizar resultados dos testes
+        function updateTestResults(results) {
+            const container = document.querySelector('.test-results');
+            const existingItems = container.querySelectorAll('.test-item');
+            
+            // Remover itens existentes (exceto o título)
+            existingItems.forEach(item => item.remove());
+
+            // Adicionar novos resultados
+            results.forEach(result => {
+                const statusClass = result.status === 'active' ? 'status-active' : 
+                                  result.status === 'completed' ? 'status-completed' : 'status-paused';
+                
+                const testItem = document.createElement('div');
+                testItem.className = 'test-item';
+                testItem.innerHTML = `
+                    <h4><span class="status-indicator ${statusClass}"></span>${result.name}</h4>
+                    <p><strong>Vencedor:</strong> ${result.winner} (+${result.lift}% melhoria)</p>
+                    <div class="test-metrics">
+                        <div class="metric">
+                            <div class="label">Confiança</div>
+                            <div class="value">${result.confidence}%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Amostras</div>
+                            <div class="value">${result.sample_size}</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Duração</div>
+                            <div class="value">${result.duration_days} dias</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Lift</div>
+                            <div class="value">+${result.lift}%</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(testItem);
+            });
+        }
+
+        // Função para atualizar dados
+        async function refreshData() {
+            const button = document.querySelector('.refresh-btn');
+            button.textContent = '🔄 Atualizando...';
+            button.disabled = true;
+
+            try {
+                await fetch('/api/refresh');
+                await loadData();
+            } catch (error) {
+                console.error('Erro ao atualizar dados:', error);
+            } finally {
+                button.textContent = '🔄 Atualizar Dados';
+                button.disabled = false;
+            }
+        }
+
+        // Carregar dados iniciais
+        document.addEventListener('DOMContentLoaded', loadData);
+
+        // Atualização automática a cada 30 segundos
+        setInterval(() => {
+            if (!document.querySelector('.refresh-btn').disabled) {
+                refreshData();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

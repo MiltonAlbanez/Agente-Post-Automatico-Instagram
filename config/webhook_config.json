@@ -1,0 +1,22 @@
+{
+  "webhook": {
+    "verify_token": "albanez_webhook_2024",
+    "app_secret": "SEU_APP_SECRET_AQUI",
+    "port": 5000,
+    "host": "0.0.0.0",
+    "debug": false
+  },
+  "instagram": {
+    "subscribed_fields": [
+      "comments",
+      "likes",
+      "story_insights",
+      "media"
+    ]
+  },
+  "processing": {
+    "auto_update_metrics": true,
+    "send_notifications": true,
+    "log_all_events": true
+  }
+}

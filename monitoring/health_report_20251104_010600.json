@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-11-04T01:06:00.605146",
+  "services": {
+    "telegram": {
+      "service": "telegram",
+      "status": "healthy",
+      "response_time": 0.8532719612121582,
+      "error": null,
+      "timestamp": "2025-11-04T01:05:57.921412"
+    },
+    "instagram": {
+      "service": "instagram",
+      "status": "healthy",
+      "response_time": 0.648087739944458,
+      "error": null,
+      "timestamp": "2025-11-04T01:05:58.777587"
+    },
+    "openai": {
+      "service": "openai",
+      "status": "healthy",
+      "response_time": 1.1754529476165771,
+      "error": null,
+      "timestamp": "2025-11-04T01:05:59.427345"
+    },
+    "file_system": {
+      "service": "file_system",
+      "status": "healthy",
+      "missing_files": [],
+      "corrupted_files": [],
+      "timestamp": "2025-11-04T01:06:00.603883"
+    },
+    "scheduler": {
+      "service": "scheduler",
+      "status": "warning",
+      "scheduled_jobs": 0,
+      "next_run": null,
+      "timestamp": "2025-11-04T01:06:00.604496",
+      "error": "Agendamento das 21h não encontrado"
+    }
+  },
+  "alerts": [
+    {
+      "timestamp": "2025-11-04T01:06:00.604796",
+      "service": "scheduler",
+      "type": "missing_schedule",
+      "message": "Agendamento das 21h não configurado",
+      "severity": "critical"
+    }
+  ],
+  "healthy_services": 4,
+  "total_services": 5,
+  "critical_alerts": 1,
+  "warning_alerts": 0
+}

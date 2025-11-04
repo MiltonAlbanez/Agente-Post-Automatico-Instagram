@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "generated_at": "2025-10-23T21:18:15.642768",
+    "diagnosis_type": "SIMULATION_VS_REAL_POSTING",
+    "version": "1.0"
+  },
+  "executive_summary": {
+    "primary_issue": "Sistema executando apenas simulações",
+    "total_issues_found": 3,
+    "critical_recommendations": 1,
+    "requires_immediate_action": true
+  },
+  "detailed_analysis": {
+    "railway_configuration": {
+      "timestamp": "2025-10-23T21:18:15.642768",
+      "railway_files": {
+        "railway.yaml": {
+          "exists": true,
+          "error": "No module named 'yaml'"
+        },
+        "Procfile": {
+          "exists": true,
+          "content": "# AGENDADOR AUTOMÁTICO 24/7 - COMANDO PRINCIPAL\nscheduler: python railway_scheduler.py\n\n# COMANDOS MANUAIS (para testes)\nunposted: python src/main.py unposted --limit ${LIMIT:-10}\nautopost: python src/main.py autopost --style \"${STYLE:-}\"\nteste: python railway_automation_teste.py\n\n# AGENDADOR AUTOMÁTICO:\n# O comando 'scheduler' executa o sistema 24/7 com agendamentos automáticos:\n# - Feed: 06:00, 12:00, 18:00, 19:00 BRT (09:00, 15:00, 21:00, 22:00 UTC)\n# - Stories: 09:00, 15:00, 21:00 BRT (12:00, 18:00, 00:00 UTC)\n# - Processa TODAS as contas do accounts.json automaticamente\n# - Funciona de forma completamente autônoma na nuvem\n\n# COMANDOS MANUAIS ANTIGOS (para referência):\n# - ACCOUNT_NAME: nome da conta do accounts.json (default: Milton_Albanez)\n# - LIMIT: limite de itens (default: 1)\n# - STYLE: estilo opcional para autopost (ex.: \"street, portrait, natural light\")",
+          "size_bytes": 884
+        },
+        "railway.json": {
+          "exists": true,
+          "content": {
+            "$schema": "https://railway.com/railway.schema.json",
+            "build": {
+              "builder": "NIXPACKS"
+            },
+            "deploy": {
+              "startCommand": "python railway_scheduler.py",
+              "sleepApplication": false,
+              "restartPolicyType": "ON_FAILURE",
+              "restartPolicyMaxRetries": 10
+            }
+          },
+          "size_bytes": 276
+        }
+      },
+      "environment_variables": {
+        "DRY_RUN": null,
+        "SIMULATION_MODE": null,
+        "PRODUCTION_MODE": null,
+        "REAL_POSTING": null,
+        "TEST_MODE": null,
+        "DEBUG_MODE": null
+      },
+      "configuration_issues": [],
+      "status": "UNKNOWN"
+    },
+    "system_mode_analysis": {
+      "timestamp": "2025-10-23T21:18:15.642768",
+      "core_file_analysis": {
+        "file_exists": true,
+        "file_size": 8877,
+        "simulation_indicators": []
+      },
+      "mode_indicators": [],
+      "simulation_triggers": [],
+      "status": "UNKNOWN"
+    },
+    "accounts_configuration": {
+      "timestamp": "2025-10-23T21:18:15.642768",
+      "accounts_found": 2,
+      "posting_mode_settings": [
+        {
+          "account_name": "Account_1",
+          "dry_run": "not_set",
+          "simulation_mode": "not_set",
+          "test_mode": "not_set",
+          "production_mode": "not_set",
+          "real_posting": "not_set",
+          "posting_enabled": "not_set"
+        },
+        {
+          "account_name": "Account_2",
+          "dry_run": "not_set",
+          "simulation_mode": "not_set",
+          "test_mode": "not_set",
+          "production_mode": "not_set",
+          "real_posting": "not_set",
+          "posting_enabled": "not_set"
+        }
+      ],
+      "configuration_issues": [],
+      "status": "UNKNOWN"
+    },
+    "scheduler_log_analysis": {
+      "timestamp": "2025-10-23T21:18:15.642768",
+      "simulation_patterns": [],
+      "real_posting_patterns": [],
+      "execution_summary": {
+        "simulation_executions": 2,
+        "real_posting_executions": 0,
+        "total_executions": 2
+      },
+      "identified_issues": [
+        "Sistema executando apenas simulações",
+        "Nenhuma postagem real detectada nos logs",
+        "Modo de simulação ativo durante execução"
+      ]
+    }
+  },
+  "consolidated_issues": [
+    "Sistema executando apenas simulações",
+    "Nenhuma postagem real detectada nos logs",
+    "Modo de simulação ativo durante execução"
+  ],
+  "immediate_actions": [
+    "🔧 Alterar modo de operação para postagem real"
+  ],
+  "next_steps": [
+    "1. Verificar e corrigir variáveis de ambiente do Railway",
+    "2. Atualizar configurações das contas se necessário",
+    "3. Modificar código fonte se modo simulação estiver hardcoded",
+    "4. Testar postagem real imediata",
+    "5. Monitorar logs após correções"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "OPENAI_API_KEY": "<coloque_sua_chave_openai>",
+  "REPLICATE_TOKEN": "<coloque_seu_token_replicate>",
+  "INSTAGRAM_BUSINESS_ACCOUNT_ID": "<id_conta_instagram>",
+  "INSTAGRAM_ACCESS_TOKEN": "<token_instagram_graph_api>",
+  "TELEGRAM_BOT_TOKEN": "<token_bot_telegram>",
+  "TELEGRAM_CHAT_ID": "<chat_id_telegram>",
+  "RAPIDAPI_KEY": "<chave_rapidapi>",
+  "RAPIDAPI_HOST": "instagram-scraper-api2.p.rapidapi.com",
+  "RAPIDAPI_ALT_HOSTS": "instagram-scraper.p.rapidapi.com,instagram-scraper-api.p.rapidapi.com,instagram-bulk-scraper-latest.p.rapidapi.com",
+  "POSTGRES_DSN": "<postgres_dsn_ou_vazio>",
+  "DATABASE_URL": "<fornecido_pelo_railway_ou_vazio>",
+  "SUPABASE_URL": "<url_supabase_ou_vazio>",
+  "SUPABASE_SERVICE_KEY": "<chave_supabase_ou_vazio>",
+  "SUPABASE_BUCKET": "<bucket_supabase_ou_vazio>",
+  "RAILWAY_ENVIRONMENT": "production",
+  "AUTOCMD": "scheduler",
+  "ACCOUNT_NAME_DEFAULT": "Milton_Albanez",
+  "SOURCE_IMAGE_URL_DEFAULT": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
+  "DISABLE_REPLICATE": "false",
+  "STORIES_BACKGROUND_TYPE": "gradient",
+  "WEEKLY_THEMES_ENABLED": "true"
+}

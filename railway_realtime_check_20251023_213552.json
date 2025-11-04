@@ -1,0 +1,418 @@
+{
+  "timestamp": "2025-10-23T21:35:52.901151",
+  "environment": "unknown",
+  "critical_variables": {
+    "INSTAGRAM_BUSINESS_ACCOUNT_ID": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "INSTAGRAM_ACCESS_TOKEN": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "TELEGRAM_CHAT_ID": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "TELEGRAM_BOT_TOKEN": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "RAPIDAPI_KEY": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "RAPIDAPI_HOST": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "OPENAI_API_KEY": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "DATABASE_URL": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "SUPABASE_URL": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "SUPABASE_SERVICE_KEY": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    }
+  },
+  "portuguese_variables": {
+    "TOKEN_DE_ACESSO_DO_INSTAGRAM": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "ID_DA_CONTA_COMERCIAL_DO_INSTAGRAM": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "VERIFICAÇÕES_DE_ENQUETE_MÁXIMO": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "INTERVALO_DE_ENQUETE_DO_INSTAGRAM": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "TEMPO_LIMITE_DO_INSTAGRAM": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "AUTOCMD": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    }
+  },
+  "other_variables": {
+    "RAPIDAPI_ALT_HOSTS": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "REPLICATE_TOKEN": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "SUPABASE_BUCKET": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "SUPABASE_ANON_KEY": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "POSTGRES_DSN": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    },
+    "DATABASE_PUBLIC_URL": {
+      "exists": false,
+      "has_value": false,
+      "length": 0
+    }
+  },
+  "all_env_variables": {
+    "AHA_CHROME_CRASHPAD_PIPE_NAME": {
+      "length": 39,
+      "has_value": true
+    },
+    "ALLUSERSPROFILE": {
+      "length": 14,
+      "has_value": true
+    },
+    "APPDATA": {
+      "length": 31,
+      "has_value": true
+    },
+    "CHOCOLATEYINSTALL": {
+      "length": 25,
+      "has_value": true
+    },
+    "CHOCOLATEYLASTPATHUPDATE": {
+      "length": 18,
+      "has_value": true
+    },
+    "COMMONPROGRAMFILES": {
+      "length": 29,
+      "has_value": true
+    },
+    "COMMONPROGRAMFILES(X86)": {
+      "length": 35,
+      "has_value": true
+    },
+    "COMMONPROGRAMW6432": {
+      "length": 29,
+      "has_value": true
+    },
+    "COMPUTERNAME": {
+      "length": 15,
+      "has_value": true
+    },
+    "COMSPEC": {
+      "length": 27,
+      "has_value": true
+    },
+    "CURL_CA_BUNDLE": {
+      "length": 54,
+      "has_value": true
+    },
+    "DRIVERDATA": {
+      "length": 38,
+      "has_value": true
+    },
+    "EFC_2040_1262719628": {
+      "length": 1,
+      "has_value": true
+    },
+    "EFC_2040_1592913036": {
+      "length": 1,
+      "has_value": true
+    },
+    "EFC_2040_2283032206": {
+      "length": 1,
+      "has_value": true
+    },
+    "EFC_2040_2775293581": {
+      "length": 1,
+      "has_value": true
+    },
+    "EFC_2040_3789132940": {
+      "length": 1,
+      "has_value": true
+    },
+    "FPS_BROWSER_APP_PROFILE_STRING": {
+      "length": 17,
+      "has_value": true
+    },
+    "FPS_BROWSER_USER_PROFILE_STRING": {
+      "length": 7,
+      "has_value": true
+    },
+    "GDAL_DATA": {
+      "length": 40,
+      "has_value": true
+    },
+    "LOCALAPPDATA": {
+      "length": 29,
+      "has_value": true
+    },
+    "LOGONSERVER": {
+      "length": 17,
+      "has_value": true
+    },
+    "NUMBER_OF_PROCESSORS": {
+      "length": 2,
+      "has_value": true
+    },
+    "NVIDIAWHITELISTED": {
+      "length": 4,
+      "has_value": true
+    },
+    "ONEDRIVE": {
+      "length": 24,
+      "has_value": true
+    },
+    "OPENSSL_CONF": {
+      "length": 52,
+      "has_value": true
+    },
+    "ORIGINAL_XDG_CURRENT_DESKTOP": {
+      "length": 9,
+      "has_value": true
+    },
+    "OS": {
+      "length": 10,
+      "has_value": true
+    },
+    "POSTGIS_ENABLE_OUTDB_RASTERS": {
+      "length": 1,
+      "has_value": true
+    },
+    "POSTGIS_GDAL_ENABLED_DRIVERS": {
+      "length": 43,
+      "has_value": true
+    },
+    "PROCESSOR_ARCHITECTURE": {
+      "length": 5,
+      "has_value": true
+    },
+    "PROCESSOR_IDENTIFIER": {
+      "length": 51,
+      "has_value": true
+    },
+    "PROCESSOR_LEVEL": {
+      "length": 1,
+      "has_value": true
+    },
+    "PROCESSOR_REVISION": {
+      "length": 4,
+      "has_value": true
+    },
+    "PROGRAMDATA": {
+      "length": 14,
+      "has_value": true
+    },
+    "PROGRAMFILES": {
+      "length": 16,
+      "has_value": true
+    },
+    "PROGRAMFILES(X86)": {
+      "length": 22,
+      "has_value": true
+    },
+    "PROGRAMW6432": {
+      "length": 16,
+      "has_value": true
+    },
+    "PROJ_LIB": {
+      "length": 61,
+      "has_value": true
+    },
+    "PSMODULEPATH": {
+      "length": 155,
+      "has_value": true
+    },
+    "PUBLIC": {
+      "length": 15,
+      "has_value": true
+    },
+    "PYENV": {
+      "length": 32,
+      "has_value": true
+    },
+    "PYENV_HOME": {
+      "length": 32,
+      "has_value": true
+    },
+    "PYENV_ROOT": {
+      "length": 32,
+      "has_value": true
+    },
+    "SESSIONNAME": {
+      "length": 7,
+      "has_value": true
+    },
+    "SHIM_MCCOMPAT": {
+      "length": 11,
+      "has_value": true
+    },
+    "STYLE": {
+      "length": 23,
+      "has_value": true
+    },
+    "STYLE_06": {
+      "length": 29,
+      "has_value": true
+    },
+    "STYLE_12": {
+      "length": 35,
+      "has_value": true
+    },
+    "STYLE_19": {
+      "length": 32,
+      "has_value": true
+    },
+    "SYSTEMDRIVE": {
+      "length": 2,
+      "has_value": true
+    },
+    "SYSTEMROOT": {
+      "length": 10,
+      "has_value": true
+    },
+    "TEMP": {
+      "length": 34,
+      "has_value": true
+    },
+    "TMP": {
+      "length": 34,
+      "has_value": true
+    },
+    "VIRTUAL_ENV": {
+      "length": 108,
+      "has_value": true
+    },
+    "VIRTUAL_ENV_PROMPT": {
+      "length": 5,
+      "has_value": true
+    },
+    "VSCODE_PYTHON_AUTOACTIVATE_GUARD": {
+      "length": 1,
+      "has_value": true
+    },
+    "WINDIR": {
+      "length": 10,
+      "has_value": true
+    },
+    "ZES_ENABLE_SYSMAN": {
+      "length": 1,
+      "has_value": true
+    },
+    "TRAE_AI_SHELL_ID": {
+      "length": 1,
+      "has_value": true
+    },
+    "LANG": {
+      "length": 11,
+      "has_value": true
+    },
+    "COLORTERM": {
+      "length": 9,
+      "has_value": true
+    },
+    "GIT_ASKPASS": {
+      "length": 88,
+      "has_value": true
+    },
+    "VSCODE_GIT_ASKPASS_NODE": {
+      "length": 52,
+      "has_value": true
+    },
+    "VSCODE_GIT_ASKPASS_EXTRA_ARGS": {
+      "length": 0,
+      "has_value": false
+    },
+    "VSCODE_GIT_ASKPASS_MAIN": {
+      "length": 93,
+      "has_value": true
+    },
+    "VSCODE_GIT_IPC_HANDLE": {
+      "length": 35,
+      "has_value": true
+    },
+    "PYDEVD_DISABLE_FILE_VALIDATION": {
+      "length": 1,
+      "has_value": true
+    },
+    "VSCODE_DEBUGPY_ADAPTER_ENDPOINTS": {
+      "length": 131,
+      "has_value": true
+    },
+    "BUNDLED_DEBUGPY_PATH": {
+      "length": 91,
+      "has_value": true
+    },
+    "VSCODE_INJECTION": {
+      "length": 1,
+      "has_value": true
+    }
+  },
+  "summary": {
+    "critical_variables_found": 0,
+    "critical_variables_total": 10,
+    "critical_variables_percentage": 0.0,
+    "portuguese_variables_found": 0,
+    "portuguese_variables_total": 6,
+    "portuguese_variables_percentage": 0.0,
+    "other_variables_found": 0,
+    "other_variables_total": 6,
+    "total_relevant_variables": 71,
+    "environment_status": "LOCAL"
+  }
+}

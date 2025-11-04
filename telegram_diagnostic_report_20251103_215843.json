@@ -1,0 +1,128 @@
+{
+  "timestamp": "2025-11-03T21:58:39.761253",
+  "diagnostic_version": "1.0",
+  "status": "CRITICAL_ISSUES_FOUND",
+  "issues_found": [
+    {
+      "type": "MISSING_BOT_TOKEN",
+      "description": "TELEGRAM_BOT_TOKEN não está definido",
+      "severity": "CRITICAL"
+    },
+    {
+      "type": "MISSING_CHAT_ID",
+      "description": "TELEGRAM_CHAT_ID não está definido",
+      "severity": "CRITICAL"
+    }
+  ],
+  "fixes_applied": [
+    {
+      "type": "ENVIRONMENT_VARIABLES_LOADED",
+      "description": "Credenciais carregadas do railway_env_commands.txt",
+      "success": true
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "SET_ENVIRONMENT_VARIABLES",
+      "description": "Configurar variáveis de ambiente do Telegram",
+      "steps": [
+        "1. railway variables set TELEGRAM_BOT_TOKEN=\"seu_token_aqui\"",
+        "2. railway variables set TELEGRAM_CHAT_ID=\"seu_chat_id_aqui\"",
+        "3. Verificar com: railway variables",
+        "4. Reiniciar o serviço: railway up"
+      ]
+    },
+    {
+      "priority": "CRITICAL",
+      "action": "SET_ENVIRONMENT_VARIABLES",
+      "description": "Configurar variáveis de ambiente do Telegram",
+      "steps": [
+        "1. railway variables set TELEGRAM_BOT_TOKEN=\"seu_token_aqui\"",
+        "2. railway variables set TELEGRAM_CHAT_ID=\"seu_chat_id_aqui\"",
+        "3. Verificar com: railway variables",
+        "4. Reiniciar o serviço: railway up"
+      ]
+    },
+    {
+      "priority": "LOW",
+      "action": "PREVENTIVE_MONITORING",
+      "description": "Implementar monitoramento preventivo",
+      "steps": [
+        "1. Configurar health check para Telegram API",
+        "2. Implementar retry automático para falhas temporárias",
+        "3. Adicionar alertas para problemas de conectividade",
+        "4. Criar backup de configurações"
+      ]
+    }
+  ],
+  "environment_check": {
+    "bot_token": {
+      "exists": false,
+      "format_valid": false,
+      "length": 0
+    },
+    "chat_id": {
+      "exists": false,
+      "format_valid": false,
+      "value": null
+    }
+  },
+  "configuration_files": {
+    "accounts.json": {
+      "exists": true,
+      "telegram_config": []
+    },
+    "config/notification_config.json": {
+      "exists": true,
+      "telegram_config": {
+        "has_bot_token": true,
+        "has_chat_id": true,
+        "enabled": true
+      }
+    },
+    "railway_env_commands.txt": {
+      "exists": true,
+      "telegram_vars": {
+        "has_bot_token": true,
+        "has_chat_id": true,
+        "bot_token_value": "8266651844:AAGOOdsohWoAf_4GDZC6o40Yg8jzuBqRZyI",
+        "chat_id_value": "-1003116293827"
+      }
+    },
+    "CREDENCIAIS_PERMANENTES.json": {
+      "exists": true,
+      "telegram_config": {
+        "has_bot_token": false,
+        "has_chat_id": false
+      }
+    }
+  },
+  "api_connectivity": {
+    "getMe": {
+      "status": "SUCCESS",
+      "response": {
+        "bot_id": 8266651844,
+        "bot_username": "AgentePostInsta_bot",
+        "bot_name": "Agente Post Atomatico Instagram"
+      },
+      "error": null
+    },
+    "getChat": {
+      "status": "SUCCESS",
+      "response": {
+        "chat_type": "supergroup",
+        "chat_title": "Agente Post Atomatico Instagram"
+      },
+      "error": null
+    },
+    "sendMessage": {
+      "status": "SUCCESS",
+      "response": {
+        "message_id": 352,
+        "sent_at": 1762217923
+      },
+      "error": null
+    }
+  }
+}

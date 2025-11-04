@@ -1,0 +1,137 @@
+{
+  "timestamp": "2025-10-23T20:02:28.874147",
+  "test_type": "supabase_real_configuration",
+  "components": {
+    "railway_variables": {
+      "name": "Railway Environment Variables",
+      "status": "NOT_CONFIGURED",
+      "details": {},
+      "tests": [
+        {
+          "name": "Railway CLI Available",
+          "status": "FAIL",
+          "details": "Railway CLI não instalado"
+        },
+        {
+          "name": "Deploy Script Config",
+          "status": "FAIL",
+          "details": "Nenhuma configuração do Supabase no script de deploy"
+        }
+      ],
+      "score": 0,
+      "max_score": 3
+    },
+    "local_configurations": {
+      "name": "Local Configuration Files",
+      "status": "CONFIGURED",
+      "details": {
+        "config_py_lines": [
+          "# Supabase Storage (opcional)",
+          "\"SUPABASE_URL\": os.getenv(\"SUPABASE_URL\", \"\"),",
+          "\"SUPABASE_SERVICE_KEY\": os.getenv(\"SUPABASE_SERVICE_KEY\", \"\"),",
+          "\"SUPABASE_BUCKET\": os.getenv(\"SUPABASE_BUCKET\", \"\"),"
+        ],
+        "accounts_with_supabase": [
+          "Milton_Albanez",
+          "Albanez Assistência Técnica"
+        ]
+      },
+      "tests": [
+        {
+          "name": "Environment Variables",
+          "status": "FAIL",
+          "details": "Nenhuma variável de ambiente configurada"
+        },
+        {
+          "name": "Config.py File",
+          "status": "PASS",
+          "details": "Encontradas 4 linhas com Supabase"
+        },
+        {
+          "name": "Accounts.json File",
+          "status": "PASS",
+          "details": "Contas com Supabase: ['Milton_Albanez', 'Albanez Assistência Técnica']"
+        },
+        {
+          "name": "Permanent Credentials",
+          "status": "FAIL",
+          "details": "Nenhuma credencial do Supabase encontrada"
+        }
+      ],
+      "score": 2,
+      "max_score": 4
+    },
+    "supabase_implementation": {
+      "name": "Supabase Implementation",
+      "status": "IMPLEMENTED",
+      "details": {
+        "uploader_methods": [
+          "upload_from_url",
+          "__init__"
+        ],
+        "pipeline_occurrences": 15
+      },
+      "tests": [
+        {
+          "name": "SupabaseUploader Class",
+          "status": "PASS",
+          "details": "Métodos encontrados: ['upload_from_url', '__init__']"
+        },
+        {
+          "name": "Pipeline Integration",
+          "status": "PASS",
+          "details": "Supabase integrado no pipeline"
+        },
+        {
+          "name": "Supabase Imports",
+          "status": "FAIL",
+          "details": "Nenhum import do Supabase encontrado"
+        }
+      ],
+      "score": 2,
+      "max_score": 3
+    },
+    "connectivity_test": {
+      "name": "Connectivity Test",
+      "status": "NOT_CONNECTED",
+      "details": {
+        "config_source": "No valid configuration found"
+      },
+      "tests": [
+        {
+          "name": "Configuration Available",
+          "status": "FAIL",
+          "details": "Nenhuma configuração válida encontrada"
+        }
+      ],
+      "score": 0,
+      "max_score": 2
+    }
+  },
+  "overall_status": "LIMITADO",
+  "score": 4,
+  "max_score": 12,
+  "errors": [],
+  "warnings": [],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Railway",
+      "issue": "Variáveis do Supabase não configuradas no Railway",
+      "solution": "Configurar SUPABASE_URL, SUPABASE_SERVICE_KEY e SUPABASE_BUCKET no Railway"
+    },
+    {
+      "priority": "CRITICAL",
+      "category": "Connectivity",
+      "issue": "Não foi possível conectar ao Supabase",
+      "solution": "Verificar credenciais e configurações de rede"
+    },
+    {
+      "priority": "HIGH",
+      "category": "General",
+      "issue": "Supabase não está configurado no sistema",
+      "solution": "Criar projeto no Supabase e configurar todas as credenciais necessárias"
+    }
+  ],
+  "found_configurations": []
+}

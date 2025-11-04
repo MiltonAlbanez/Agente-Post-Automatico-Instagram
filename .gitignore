@@ -1,0 +1,56 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment secrets
+.env
+*.env
+.env.*
+
+# Secret-bearing files (ignored)
+accounts.json
+accounts_backup.json
+accounts_corrected.json
+CREDENCIAIS_PERMANENTES.json
+railway_env_commands.txt
+deploy_*_vars.py
+
+# Logs and caches
+logs/
+audit/
+cache/
+*.log
+
+# Backups and generated artifacts
+backups/
+backup_pos_implementacao_final/
+backup_correcoes_qualidade_*/
+LTM_BACKUP_*/
+*.zip
+data/*.db
+data/*_backup_*.db
+*scheduler_verification_report_*.json
+ltm_update_report_*.json
+performance_metrics.json
+*.jsonl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor
+.vscode/
+.idea/
+
+# Local emergency scripts or setup files that may contain example secrets
+fix_railway_automation.py
+railway_production_setup.txt
+CONFIGURAR_RAILWAY_AGORA.py
+SOLUCAO_RAILWAY_URGENTE.md
+deploy_railway_complete.py

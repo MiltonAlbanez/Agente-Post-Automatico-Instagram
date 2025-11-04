@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-11-03T22:02:11.623375",
+  "tests": {
+    "environment_loading": true,
+    "telegram_connectivity": true,
+    "instagram_credentials": true,
+    "scheduler_configuration": true,
+    "generate_and_publish": false,
+    "brt_timezone": true
+  },
+  "summary": {
+    "passed_tests": 5,
+    "total_tests": 6,
+    "success_rate": 83.33333333333334,
+    "status": "PARTIAL"
+  }
+}

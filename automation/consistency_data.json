@@ -1,0 +1,349 @@
+{
+  "post_history": [
+    {
+      "id": "18062379935149593",
+      "created_at": "2025-10-30T23:38:50.909276",
+      "content_hash": "669bd3b756565a0a4b82a3421ce4aa63",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Empreendedorismo e Vendas (Conexão com o Negócio)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "17931857463112571",
+      "created_at": "2025-10-30T23:40:31.786168",
+      "content_hash": "20b6f4e53be18e6c1e2f93ed6fa7a863",
+      "image_hash": "0000e76e1f02003c",
+      "visual_style": {
+        "quality_mode": "high",
+        "style_applied": "professional",
+        "enhancement_level": "maximum"
+      },
+      "concept": "Empreendedorismo e Vendas (Conexão com o Negócio)",
+      "quality_score": 0.8833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18068695508360158",
+      "created_at": "2025-10-30T23:41:15.431287",
+      "content_hash": "d638a5f0fb64d6b762aa8eb76d7ed8e0",
+      "image_hash": "ffffffc7c3e3ffff",
+      "visual_style": {
+        "quality_mode": "high",
+        "style_applied": "professional",
+        "enhancement_level": "maximum"
+      },
+      "concept": "Empreendedorismo e Vendas (Conexão com o Negócio)",
+      "quality_score": 0.8333333333333334,
+      "engagement_data": null
+    },
+    {
+      "id": "17956311630008341",
+      "created_at": "2025-10-31T00:06:27.048192",
+      "content_hash": "5fa7d2e7d8f38066950430c9a7fd4180",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Liberdade e Visão (Motivação para o Fim de Semana)",
+      "quality_score": 0.8333333333333334,
+      "engagement_data": null
+    },
+    {
+      "id": "18132437416468831",
+      "created_at": "2025-10-31T00:13:04.787107",
+      "content_hash": "b87c4e48d1bb62f78d844af90f44d7c3",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Liberdade e Visão (Motivação para o Fim de Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "17861163549530202",
+      "created_at": "2025-10-31T00:13:54.786871",
+      "content_hash": "1afe3c827bc50c18ac8e55308d3358c4",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Liberdade e Visão (Motivação para o Fim de Semana)",
+      "quality_score": 0.8333333333333334,
+      "engagement_data": null
+    },
+    {
+      "id": "18209817532310314",
+      "created_at": "2025-10-31T00:14:59.756155",
+      "content_hash": "70fa68768ea7d023ad0cc15a5925a4ef",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Liberdade e Visão (Motivação para o Fim de Semana)",
+      "quality_score": 0.8333333333333334,
+      "engagement_data": null
+    },
+    {
+      "id": "18316884283173772",
+      "created_at": "2025-10-31T00:16:59.095418",
+      "content_hash": "ec96b850e6947f9628a6fa7b3a6b6a66",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Liberdade e Visão (Motivação para o Fim de Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18537240187044238",
+      "created_at": "2025-10-31T00:21:09.739707",
+      "content_hash": "8527f3c8ea630c9d332fa4fc091f42e3",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Liberdade e Visão (Motivação para o Fim de Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18028114604757568",
+      "created_at": "2025-11-02T15:12:55.037794",
+      "content_hash": "9f7cecf01aecf523153df815d02d9d4a",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18045215453691529",
+      "created_at": "2025-11-02T18:30:05.779984",
+      "content_hash": "591da71d7334e015fd7b13787b6b3bee",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "17974652162944362",
+      "created_at": "2025-11-02T15:32:54.140503",
+      "content_hash": "f0d49d8c5d147f4313d79e1d37064241",
+      "image_hash": "7fb7f3f8f06008c8",
+      "visual_style": {
+        "quality_mode": "high",
+        "style_applied": "professional",
+        "enhancement_level": "maximum"
+      },
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.9333333333333332,
+      "engagement_data": null
+    },
+    {
+      "id": "17883599778280864",
+      "created_at": "2025-11-02T22:20:11.738539",
+      "content_hash": "c70ea1db51feaa6b1ade19b8944de52b",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18073131626265353",
+      "created_at": "2025-11-02T22:27:50.630918",
+      "content_hash": "467f9e5b718d4149ecd0cfc82432a146",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "17912480508232003",
+      "created_at": "2025-11-02T20:53:15.386482",
+      "content_hash": "01a387392b029dffb064641ebc655a9e",
+      "image_hash": "fcfff0e0381e3c04",
+      "visual_style": {
+        "quality_mode": "high",
+        "style_applied": "professional",
+        "enhancement_level": "maximum"
+      },
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.8833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18112720819573643",
+      "created_at": "2025-11-02T20:54:13.375027",
+      "content_hash": "a3d646f2fd614df1a7b670814928cc34",
+      "image_hash": "ff0078383c3e7edf",
+      "visual_style": {
+        "quality_mode": "high",
+        "style_applied": "professional",
+        "enhancement_level": "maximum"
+      },
+      "concept": "Recarga e Planejamento (Preparação para a Semana)",
+      "quality_score": 0.8833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "17865255159482179",
+      "created_at": "2025-11-03T00:54:30.364174",
+      "content_hash": "137f1b2cdc5d88468e9aeec443be4a63",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7333333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18208373656313360",
+      "created_at": "2025-11-03T00:55:36.672253",
+      "content_hash": "d62b44e7839b005bdbdf119118267218",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7333333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18096950575693698",
+      "created_at": "2025-11-03T01:00:24.946972",
+      "content_hash": "6df9da32d822782fb2825aac3545d67e",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7333333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18298217053250516",
+      "created_at": "2025-11-03T01:04:56.718165",
+      "content_hash": "f2a30714af0afa903838371d746fc996",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7833333333333332,
+      "engagement_data": null
+    },
+    {
+      "id": "18344866627204795",
+      "created_at": "2025-11-03T01:06:30.138782",
+      "content_hash": "215f156ec32db3efbaab5cd993512f19",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7333333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18296802289284131",
+      "created_at": "2025-11-03T15:02:59.809599",
+      "content_hash": "7f1ac392696f0368c805b07f2e5e6758",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7833333333333332,
+      "engagement_data": null
+    },
+    {
+      "id": "18342227869201622",
+      "created_at": "2025-11-03T12:04:54.336176",
+      "content_hash": "9c05b82caf3003525831a653f3dc3063",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18043916891692029",
+      "created_at": "2025-11-03T18:13:08.491742",
+      "content_hash": "de2246fbdeb8066ab3965edbf23d25cd",
+      "image_hash": "003c7ef01c3c3c38",
+      "visual_style": {
+        "quality_mode": "high",
+        "style_applied": "professional",
+        "enhancement_level": "maximum"
+      },
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.9333333333333332,
+      "engagement_data": null
+    },
+    {
+      "id": "17923217499161140",
+      "created_at": "2025-11-03T18:33:27.021214",
+      "content_hash": "38cbba15d0708077d65e5b86e73643cc",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18065892806087815",
+      "created_at": "2025-11-03T21:02:00.096128",
+      "content_hash": "c86e313d51ac261d1b7098d479fc57f5",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.7833333333333333,
+      "engagement_data": null
+    },
+    {
+      "id": "18080142977120838",
+      "created_at": "2025-11-03T23:36:35.596270",
+      "content_hash": "d801d3d1b983adf8fbde655dda7e8fd7",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Mindset de Crescimento (Foco/Produtividade)",
+      "quality_score": 0.8333333333333334,
+      "engagement_data": null
+    },
+    {
+      "id": "18077632190140509",
+      "created_at": "2025-11-04T09:51:33.291691",
+      "content_hash": "a80dedef1b0a56678abf22a14a29dd9a",
+      "image_hash": null,
+      "visual_style": {},
+      "concept": "Quebra de Crenças (Identificação e Solução)",
+      "quality_score": 0.7333333333333333,
+      "engagement_data": null
+    }
+  ],
+  "style_usage": {
+    "unknown": 28
+  },
+  "concept_frequency": {
+    "Empreendedorismo e Vendas (Conexão com o Negócio)": 3,
+    "Liberdade e Visão (Motivação para o Fim de Semana)": 6,
+    "Recarga e Planejamento (Preparação para a Semana)": 7,
+    "Mindset de Crescimento (Foco/Produtividade)": 11,
+    "Quebra de Crenças (Identificação e Solução)": 1
+  },
+  "quality_scores": [
+    0.7833333333333333,
+    0.8833333333333333,
+    0.8333333333333334,
+    0.8333333333333334,
+    0.7833333333333333,
+    0.8333333333333334,
+    0.8333333333333334,
+    0.7833333333333333,
+    0.7833333333333333,
+    0.7833333333333333,
+    0.7833333333333333,
+    0.9333333333333332,
+    0.7833333333333333,
+    0.7833333333333333,
+    0.8833333333333333,
+    0.8833333333333333,
+    0.7333333333333333,
+    0.7333333333333333,
+    0.7333333333333333,
+    0.7833333333333332,
+    0.7333333333333333,
+    0.7833333333333332,
+    0.7833333333333333,
+    0.9333333333333332,
+    0.7833333333333333,
+    0.7833333333333333,
+    0.8333333333333334,
+    0.7333333333333333
+  ],
+  "last_update": "2025-11-04T09:51:33.292030"
+}

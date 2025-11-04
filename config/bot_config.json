@@ -1,0 +1,38 @@
+{
+  "optimizations": {
+    "content_format": {
+      "value": "tip",
+      "applied_at": "2025-10-12 16:21:21",
+      "confidence": 96,
+      "lift": 18
+    },
+    "hashtag_strategy": {
+      "value": "trending",
+      "applied_at": "2025-10-12 16:21:21",
+      "confidence": 92,
+      "lift": 12
+    },
+    "image_style": {
+      "value": "dynamic",
+      "applied_at": "2025-10-12 16:21:21",
+      "confidence": 89,
+      "lift": 15
+    }
+  },
+  "health_checks": {
+    "timeouts": {
+      "supabase": 5,
+      "telegram": 5,
+      "storage": 5,
+      "network": 5
+    },
+    "retries": 2,
+    "retry_delay_seconds": 2,
+    "alerts": {
+      "enabled": false,
+      "on_critical": true,
+      "on_dependency_error": true,
+      "throttle_minutes": 30
+    }
+  }
+}

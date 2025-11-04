@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "generated_at": "2025-10-23T20:59:49.493940",
+    "test_type": "CONNECTION_AUTHENTICATION_TEST",
+    "version": "1.0"
+  },
+  "overall_status": "MOSTLY_VALID",
+  "test_summary": {
+    "total_tests": 5,
+    "passed_tests": 4,
+    "success_rate": "80.0%"
+  },
+  "detailed_results": {
+    "instagram_tokens": {
+      "status": "PASSED",
+      "accounts_tested": 2,
+      "valid_tokens": 2,
+      "token_issues": [],
+      "token_details": [
+        {
+          "account_name": "Milton_Albanez",
+          "has_token": true,
+          "token_format_valid": true,
+          "token_length": 216,
+          "instagram_id_present": true,
+          "issues": []
+        },
+        {
+          "account_name": "Albanez Assistência Técnica",
+          "has_token": true,
+          "token_format_valid": true,
+          "token_length": 211,
+          "instagram_id_present": true,
+          "issues": []
+        }
+      ]
+    },
+    "supabase_credentials": {
+      "status": "PASSED",
+      "accounts_tested": 2,
+      "valid_credentials": 2,
+      "credential_issues": [],
+      "credential_details": [
+        {
+          "account_name": "Milton_Albanez",
+          "has_url": true,
+          "has_service_key": true,
+          "has_bucket": true,
+          "url_format_valid": true,
+          "service_key_format_valid": true,
+          "issues": []
+        },
+        {
+          "account_name": "Albanez Assistência Técnica",
+          "has_url": true,
+          "has_service_key": true,
+          "has_bucket": true,
+          "url_format_valid": true,
+          "service_key_format_valid": true,
+          "issues": []
+        }
+      ]
+    },
+    "database_connections": {
+      "status": "PASSED",
+      "databases_tested": 5,
+      "successful_connections": 5,
+      "connection_issues": [],
+      "database_details": [
+        {
+          "database_name": "performance.db",
+          "file_exists": true,
+          "connection_successful": true,
+          "integrity_check": true,
+          "tables_accessible": true,
+          "write_permissions": true,
+          "issues": []
+        },
+        {
+          "database_name": "engagement_monitor.db",
+          "file_exists": true,
+          "connection_successful": true,
+          "integrity_check": true,
+          "tables_accessible": true,
+          "write_permissions": true,
+          "issues": []
+        },
+        {
+          "database_name": "error_reflection.db",
+          "file_exists": true,
+          "connection_successful": true,
+          "integrity_check": true,
+          "tables_accessible": true,
+          "write_permissions": true,
+          "issues": []
+        },
+        {
+          "database_name": "performance_optimizer.db",
+          "file_exists": true,
+          "connection_successful": true,
+          "integrity_check": true,
+          "tables_accessible": true,
+          "write_permissions": true,
+          "issues": []
+        },
+        {
+          "database_name": "ab_testing.db",
+          "file_exists": true,
+          "connection_successful": true,
+          "integrity_check": true,
+          "tables_accessible": true,
+          "write_permissions": true,
+          "issues": []
+        }
+      ]
+    },
+    "environment_variables": {
+      "status": "PARTIAL",
+      "variables_tested": 6,
+      "variables_found": 1,
+      "missing_variables": [
+        "TZ",
+        "PYTHONPATH"
+      ],
+      "variable_details": [
+        {
+          "variable_name": "TZ",
+          "is_important": true,
+          "found": false,
+          "value_length": 0,
+          "has_value": false
+        },
+        {
+          "variable_name": "PYTHONPATH",
+          "is_important": true,
+          "found": false,
+          "value_length": 0,
+          "has_value": false
+        },
+        {
+          "variable_name": "PATH",
+          "is_important": true,
+          "found": true,
+          "value_length": 1306,
+          "has_value": true
+        },
+        {
+          "variable_name": "RAILWAY_ENVIRONMENT",
+          "is_important": false,
+          "found": false,
+          "value_length": 0,
+          "has_value": false
+        },
+        {
+          "variable_name": "PORT",
+          "is_important": false,
+          "found": false,
+          "value_length": 0,
+          "has_value": false
+        },
+        {
+          "variable_name": "RAILWAY_PROJECT_ID",
+          "is_important": false,
+          "found": false,
+          "value_length": 0,
+          "has_value": false
+        }
+      ]
+    },
+    "file_permissions": {
+      "status": "PASSED",
+      "files_tested": 4,
+      "accessible_files": 4,
+      "permission_issues": [],
+      "file_details": [
+        {
+          "file_path": "accounts.json",
+          "exists": true,
+          "readable": true,
+          "writable": true,
+          "size": 8217,
+          "issues": []
+        },
+        {
+          "file_path": "trae_ia_core.py",
+          "exists": true,
+          "readable": true,
+          "writable": true,
+          "size": 9079,
+          "issues": []
+        },
+        {
+          "file_path": "core/system_prompt_manager.py",
+          "exists": true,
+          "readable": true,
+          "writable": true,
+          "size": 11554,
+          "issues": []
+        },
+        {
+          "file_path": "src/services/error_reflection_manager.py",
+          "exists": true,
+          "readable": true,
+          "writable": true,
+          "size": 22197,
+          "issues": []
+        }
+      ]
+    }
+  },
+  "security_recommendations": [
+    "⚠️ Maioria das conexões válidas",
+    "🔧 Revisar itens com problemas",
+    "🔒 Verificar segurança antes da produção"
+  ],
+  "connection_readiness": {
+    "instagram_ready": true,
+    "supabase_ready": true,
+    "databases_ready": true,
+    "environment_ready": true,
+    "files_ready": true
+  }
+}

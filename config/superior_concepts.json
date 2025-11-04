@@ -1,0 +1,202 @@
+{
+  "superior_visual_concepts": {
+    "description": "Conceitos visuais extraídos das 3 imagens superiores para manter qualidade e harmonia",
+    "concept_categories": {
+      "professional_animal_portrait": {
+        "description": "Retratos de animais com qualidade cinematográfica profissional",
+        "visual_elements": {
+          "subject": "Animal doméstico (cão, gato) em pose natural e expressiva",
+          "lighting": "Iluminação cinematográfica suave, destacando textura e expressão",
+          "composition": "Foco no animal, fundo desfocado (bokeh), enquadramento próximo",
+          "color_palette": "Tons terrosos, marrons quentes, contrastes suaves",
+          "mood": "Intimista, emocional, conexão direta com o observador"
+        },
+        "prompt_template": "Professional pet portrait of {animal_type}, cinematic lighting, shallow depth of field, expressive eyes, ultra-detailed fur texture, warm earth tones, emotional connection, award-winning photography, studio quality, soft bokeh background",
+        "animals": ["black labrador", "golden retriever", "persian cat", "husky", "border collie", "maine coon cat"],
+        "weight": 0.25
+      },
+      "unique_beach_composition": {
+        "description": "Composições artísticas únicas combinando objetos elegantes com cenários naturais",
+        "visual_elements": {
+          "objects": "Objetos elegantes e sofisticados (chás, cafés, livros, elementos decorativos)",
+          "setting": "Praia, areia, ondas suaves ao fundo",
+          "lighting": "Pôr do sol dourado, luz quente e envolvente",
+          "composition": "Objetos em primeiro plano, oceano e céu como backdrop",
+          "color_palette": "Dourados, laranjas suaves, azuis do oceano, tons pastéis",
+          "mood": "Sereno, contemplativo, luxuoso mas acessível"
+        },
+        "prompt_template": "Elegant {objects} artistically arranged on pristine beach sand, golden sunset lighting, gentle ocean waves in background, warm golden hour colors, professional product photography, cinematic composition, luxury lifestyle aesthetic, soft natural lighting",
+        "object_sets": [
+          "tea cups and saucer with steam",
+          "coffee setup with vintage books",
+          "meditation stones and candles",
+          "elegant glassware with flowers",
+          "artisanal pottery with herbs",
+          "vintage camera with travel items"
+        ],
+        "weight": 0.35
+      },
+      "iconic_coastal_landscape": {
+        "description": "Paisagens costeiras icônicas com marcos arquitetônicos famosos",
+        "visual_elements": {
+          "landmark": "Ponte ou estrutura icônica reconhecível",
+          "foreground": "Praia com ondas, areia escura ou clara",
+          "lighting": "Luz natural suave, golden hour ou blue hour",
+          "composition": "Landmark ao fundo, praia em primeiro plano, perspectiva ampla",
+          "color_palette": "Azuis do oceano, tons de areia, cores arquitetônicas icônicas",
+          "mood": "Majestoso, inspirador, conexão com grandeza"
+        },
+        "prompt_template": "Breathtaking coastal view of {landmark} from beach perspective, gentle waves washing shore, {time_of_day} lighting, professional landscape photography, iconic architecture, natural beauty, cinematic wide shot, travel photography masterpiece",
+        "landmarks": [
+          "Golden Gate Bridge",
+          "Sydney Harbour Bridge", 
+          "Tower Bridge London",
+          "Brooklyn Bridge",
+          "Ponte 25 de Abril Lisbon",
+          "Rialto Bridge Venice"
+        ],
+        "times_of_day": ["golden hour", "blue hour", "soft morning light", "warm afternoon sun"],
+        "weight": 0.20
+      },
+      "minimalist_workspace": {
+        "description": "Espaços de trabalho minimalistas e inspiradores para empreendedores",
+        "visual_elements": {
+          "workspace": "Mesa limpa e organizada com elementos essenciais",
+          "objects": "Laptop, caderno, caneta, planta, café",
+          "lighting": "Luz natural suave vinda de janela lateral",
+          "composition": "Vista superior ou ângulo diagonal, espaço negativo abundante",
+          "color_palette": "Brancos, cinzas suaves, madeira natural, verde das plantas",
+          "mood": "Produtivo, focado, clareza mental, organização"
+        },
+        "prompt_template": "Clean minimalist workspace from above, {workspace_elements}, natural window lighting, organized and inspiring, professional photography, productivity aesthetic, soft shadows, modern design, entrepreneur lifestyle",
+        "workspace_elements": [
+          "laptop with notebook and coffee cup",
+          "tablet with stylus and plant",
+          "journal with pen and glasses",
+          "computer with books and succulent",
+          "notepad with phone and tea",
+          "planner with laptop and flowers"
+        ],
+        "weight": 0.15
+      },
+      "urban_lifestyle": {
+        "description": "Cenas urbanas sofisticadas que representam sucesso e ambição",
+        "visual_elements": {
+          "setting": "Ambiente urbano moderno (café, coworking, terraço)",
+          "subject": "Pessoa profissional ou objetos de lifestyle",
+          "lighting": "Luz urbana suave, golden hour ou iluminação ambiente",
+          "composition": "Profundidade urbana, arquitetura moderna ao fundo",
+          "color_palette": "Tons urbanos: cinzas, azuis, dourados, pretos elegantes",
+          "mood": "Ambicioso, sofisticado, conectado, moderno"
+        },
+        "prompt_template": "Sophisticated urban lifestyle scene, {urban_elements}, modern city background, professional lighting, contemporary aesthetic, success and ambition theme, cinematic urban photography, elegant composition",
+        "urban_elements": [
+          "business person with coffee in modern cafe",
+          "laptop and documents on rooftop terrace",
+          "professional meeting in glass office",
+          "entrepreneur walking in financial district",
+          "networking event in modern space",
+          "startup team in coworking space"
+        ],
+        "weight": 0.15
+      },
+      "nature_mindfulness": {
+        "description": "Cenas naturais que evocam mindfulness e crescimento pessoal",
+        "visual_elements": {
+          "nature": "Elementos naturais puros (floresta, montanha, lago)",
+          "objects": "Objetos de meditação, livros, elementos zen",
+          "lighting": "Luz natural filtrada, raios de sol entre árvores",
+          "composition": "Harmonia entre natureza e objetos, perspectiva contemplativa",
+          "color_palette": "Verdes naturais, marrons terrosos, dourados suaves",
+          "mood": "Contemplativo, equilibrado, crescimento, conexão interior"
+        },
+        "prompt_template": "Serene nature scene with {mindfulness_elements}, filtered natural lighting, peaceful forest or mountain setting, mindfulness and personal growth theme, zen aesthetic, professional nature photography, contemplative mood",
+        "mindfulness_elements": [
+          "meditation stones balanced on log",
+          "journal and pen by mountain lake",
+          "tea ceremony setup in forest clearing",
+          "yoga mat in peaceful meadow",
+          "books and crystals by stream",
+          "candles and flowers in nature"
+        ],
+        "weight": 0.15
+      },
+      "luxury_details": {
+        "description": "Detalhes luxuosos que representam qualidade e sofisticação",
+        "visual_elements": {
+          "objects": "Objetos de alta qualidade com foco em detalhes",
+          "textures": "Texturas ricas: couro, metal, tecidos nobres",
+          "lighting": "Iluminação dramática destacando qualidade",
+          "composition": "Macro ou close-up, foco em craftsmanship",
+          "color_palette": "Dourados, pretos elegantes, marrons ricos, metálicos",
+          "mood": "Exclusivo, qualidade premium, atenção aos detalhes"
+        },
+        "prompt_template": "Luxury detail shot of {luxury_elements}, dramatic lighting highlighting quality, premium materials and craftsmanship, professional product photography, sophisticated aesthetic, rich textures and colors",
+        "luxury_elements": [
+          "premium leather wallet with gold details",
+          "luxury watch on marble surface",
+          "high-end pen on elegant paper",
+          "crystal glass with premium beverage",
+          "silk tie with gold cufflinks",
+          "artisan coffee beans and equipment"
+        ],
+        "weight": 0.10
+      },
+      "creative_inspiration": {
+        "description": "Cenas que evocam criatividade e inovação",
+        "visual_elements": {
+          "creative_tools": "Ferramentas criativas e artísticas",
+          "workspace": "Ambiente criativo organizado mas inspirador",
+          "lighting": "Luz criativa, às vezes colorida ou artística",
+          "composition": "Dinâmica, ângulos interessantes, movimento",
+          "color_palette": "Cores vibrantes mas harmoniosas, contrastes criativos",
+          "mood": "Inspirador, inovador, energia criativa, possibilidades"
+        },
+        "prompt_template": "Creative workspace scene with {creative_elements}, inspiring lighting, artistic composition, innovation and creativity theme, dynamic angles, professional creative photography, energetic mood",
+        "creative_elements": [
+          "design sketches with colorful markers",
+          "camera equipment with mood boards",
+          "art supplies arranged creatively",
+          "digital tablet with design tools",
+          "brainstorming session materials",
+          "creative studio with projects"
+        ],
+        "weight": 0.10
+      }
+    },
+    "harmony_principles": {
+      "color_consistency": "Manter paletas de cores harmoniosas entre tons terrosos, dourados e azuis naturais",
+      "lighting_quality": "Priorizar sempre iluminação natural ou cinematográfica de alta qualidade",
+      "composition_balance": "Equilibrar elementos em primeiro plano com fundos interessantes mas não competitivos",
+      "emotional_connection": "Cada imagem deve evocar uma emoção específica: intimidade, serenidade ou inspiração",
+      "technical_excellence": "Manter sempre padrões técnicos profissionais de fotografia"
+    },
+    "rotation_strategy": {
+      "sequence_pattern": "Rotação inteligente entre 6 conceitos baseada em pesos e performance",
+      "weight_distribution": {
+        "professional_animal_portrait": 0.25,
+        "unique_beach_composition": 0.35,
+        "iconic_coastal_landscape": 0.20,
+        "minimalist_workspace": 0.15,
+        "urban_lifestyle": 0.15,
+        "nature_mindfulness": 0.15,
+        "luxury_details": 0.10,
+        "creative_inspiration": 0.10
+      },
+      "variation_within_concept": "Dentro de cada conceito, variar elementos específicos para evitar repetição",
+      "seasonal_adaptation": "Adaptar elementos sazonais mantendo a essência do conceito",
+      "content_theme_integration": "Integrar o tema do conteúdo de forma sutil nos elementos visuais",
+      "performance_based_adjustment": "Ajustar pesos baseado na performance de engagement",
+      "mood_matching": "Selecionar conceito que melhor combine com o tom da mensagem",
+      "diversity_enforcement": "Garantir que não se repita o mesmo conceito em posts consecutivos"
+    },
+    "concept_mood_mapping": {
+      "motivacional": ["urban_lifestyle", "iconic_coastal_landscape", "creative_inspiration"],
+      "reflexivo": ["nature_mindfulness", "professional_animal_portrait", "minimalist_workspace"],
+      "aspiracional": ["luxury_details", "urban_lifestyle", "unique_beach_composition"],
+      "produtivo": ["minimalist_workspace", "urban_lifestyle", "creative_inspiration"],
+      "contemplativo": ["nature_mindfulness", "unique_beach_composition", "professional_animal_portrait"],
+      "inspirador": ["creative_inspiration", "iconic_coastal_landscape", "nature_mindfulness"]
+    }
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "timestamp": "2025-10-23T20:00:31.863647",
+  "test_type": "supabase_public_demo",
+  "components": {
+    "service_availability": {
+      "name": "Supabase Service Availability",
+      "status": "HEALTHY",
+      "details": {},
+      "tests": [
+        {
+          "name": "Supabase Website",
+          "status": "PASS",
+          "details": "Site principal acessível"
+        },
+        {
+          "name": "API Documentation",
+          "status": "PASS",
+          "details": "Documentação acessível"
+        },
+        {
+          "name": "Service Status",
+          "status": "PASS",
+          "details": "Página de status acessível"
+        },
+        {
+          "name": "Global Infrastructure",
+          "status": "PASS",
+          "details": "Informações de infraestrutura disponíveis"
+        }
+      ],
+      "score": 4,
+      "max_score": 4
+    },
+    "project_structure": {
+      "name": "Project Structure",
+      "status": "UNHEALTHY",
+      "details": {
+        "project_ref": "xyzcompany",
+        "rest api_available": false,
+        "auth api_available": false,
+        "storage api_available": false,
+        "realtime_available": false,
+        "edge functions_available": false
+      },
+      "tests": [
+        {
+          "name": "URL Format",
+          "status": "PASS",
+          "details": "Formato de URL válido"
+        },
+        {
+          "name": "Standard Endpoints",
+          "status": "FAIL",
+          "details": "Apenas 0/5 endpoints acessíveis"
+        },
+        {
+          "name": "Response Headers",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /rest/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E33250>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "CORS Policy",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /rest/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E31F90>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        }
+      ],
+      "score": 1,
+      "max_score": 5
+    },
+    "api_capabilities": {
+      "name": "API Capabilities",
+      "status": "UNHEALTHY",
+      "details": {},
+      "tests": [
+        {
+          "name": "REST API Basic",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /rest/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E31950>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "Auth API",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /auth/v1/settings (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E33890>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "Storage API",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /storage/v1/bucket (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045E33C50>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        },
+        {
+          "name": "Edge Functions",
+          "status": "FAIL",
+          "details": "Erro: HTTPSConnectionPool(host='xyzcompany.supabase.co', port=443): Max retries exceeded with url: /functions/v1/ (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002B045F58050>: Failed to resolve 'xyzcompany.supabase.co' ([Errno 11001] getaddrinfo failed)\"))"
+        }
+      ],
+      "score": 0,
+      "max_score": 4
+    },
+    "local_configuration": {
+      "name": "Local Configuration",
+      "status": "MINIMAL",
+      "details": {
+        "env_vars_configured": [],
+        "accounts_with_supabase": []
+      },
+      "tests": [
+        {
+          "name": "Environment Variables",
+          "status": "FAIL",
+          "details": "Nenhuma variável configurada"
+        },
+        {
+          "name": "Accounts Configuration",
+          "status": "FAIL",
+          "details": "Nenhuma conta configurada com Supabase"
+        },
+        {
+          "name": "Supabase Implementation",
+          "status": "PASS",
+          "details": "SupabaseUploader implementado"
+        }
+      ],
+      "score": 1,
+      "max_score": 3
+    }
+  },
+  "overall_status": "LIMITADO",
+  "score": 6,
+  "max_score": 16,
+  "errors": [],
+  "warnings": [],
+  "recommendations": [
+    {
+      "priority": "MEDIUM",
+      "category": "Configuration",
+      "issue": "Configuração do Supabase incompleta",
+      "solution": "Completar todas as variáveis necessárias para funcionalidade completa"
+    },
+    {
+      "priority": "HIGH",
+      "category": "APIs",
+      "issue": "APIs do Supabase com problemas",
+      "solution": "Verificar chaves de API e permissões do projeto"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-10-23 20:39:53",
+  "railway_cli_status": "INSTALLED",
+  "authentication_status": "AUTHENTICATED",
+  "project_status": "CONNECTED",
+  "variables_configured": [],
+  "failed_variables": [
+    {
+      "name": "SUPABASE_URL",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    },
+    {
+      "name": "SUPABASE_SERVICE_KEY",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    },
+    {
+      "name": "SUPABASE_ANON_KEY",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    },
+    {
+      "name": "SUPABASE_BUCKET",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    },
+    {
+      "name": "SUPABASE_PROJECT_REF",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    },
+    {
+      "name": "SUPABASE_DB_URL",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    },
+    {
+      "name": "SUPABASE_ACCESS_TOKEN",
+      "status": "FAILED",
+      "error": "error: unexpected argument 'set' found\n\nUsage: railway.exe variables [OPTIONS]\n\nFor more information, try '--help'."
+    }
+  ],
+  "overall_status": "CONFIGURATION_FAILED",
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Configuration",
+      "issue": "7 variáveis falharam na configuração",
+      "solution": "Verificar permissões e tentar novamente"
+    }
+  ],
+  "railway_cli_version": "railway 4.11.0",
+  "railway_user": "Logged in as albanezcontabilidade@gmail.com ðŸ‘‹",
+  "project_info": "Project: Agente_Post_Auto_Insta\nEnvironment: production\nService: Stories 9h"
+}

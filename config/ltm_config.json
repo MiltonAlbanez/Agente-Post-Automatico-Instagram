@@ -1,0 +1,21 @@
+{
+  "service_name": "AgentePostAutoInstagram",
+  "environment": "production",
+  "health_check": {
+    "url": "http://localhost:8000/health",
+    "method": "GET",
+    "expected_status": 200,
+    "interval_seconds": 30,
+    "timeout_seconds": 15,
+    "retries": 5
+  },
+  "balancer": {
+    "strategy": "round_robin",
+    "max_connections": 200,
+    "failover_enabled": true
+  },
+  "nodes": [
+    { "name": "primary", "host": "app-primary", "port": 8000 },
+    { "name": "secondary", "host": "app-secondary", "port": 8000 }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "telegram": {
+    "enabled": true,
+    "bot_token": "8266651844:AAGOOdsohWoAf_4GDZC6o40Yg8jzuBqRZyI",
+    "chat_id": "-1003116293827",
+    "alerts": {
+      "low_engagement": true,
+      "high_performance": true,
+      "daily_summary": true,
+      "error_alerts": true
+    }
+  },
+  "email": {
+    "enabled": false,
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "username": "seu_email@gmail.com",
+    "password": "sua_senha_de_app",
+    "recipients": [
+      "destinatario@email.com"
+    ],
+    "alerts": {
+      "weekly_report": true,
+      "critical_alerts": true
+    }
+  },
+  "thresholds": {
+    "low_engagement_rate": 2.0,
+    "high_engagement_rate": 8.0,
+    "min_likes_threshold": 50,
+    "error_count_threshold": 3
+  },
+  "schedule": {
+    "daily_summary_time": "20:00",
+    "weekly_report_day": "sunday",
+    "check_interval_minutes": 30
+  }
+}

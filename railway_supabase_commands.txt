@@ -1,0 +1,10 @@
+# Comandos para configurar Supabase no Railway
+# Execute estes comandos no terminal com Railway CLI instalado
+
+railway variables set SUPABASE_URL="https://ccvfdupucmsjxwtfwzkd.supabase.co"
+railway variables set SUPABASE_SERVICE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjdmZkdXB1Y21zanh3dGZ3emtkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTg3OTgwNywiZXhwIjoyMDc1NDU1ODA3fQ.HcQb9CpoF9sQcRUBQWmcmx6RmokXd64FbGpBV3GVUzM"
+railway variables set SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjdmZkdXB1Y21zanh3dGZ3emtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4Nzk4MDcsImV4cCI6MjA3NTQ1NTgwN30.2M9-ieZ-PMnO7NQ-aDHjxor4ytAHa0pKwH7j1gsrXjI"
+railway variables set SUPABASE_BUCKET="instagram-images"
+railway variables set SUPABASE_PROJECT_REF="ccvfdupucmsjxwtfwzkd"
+railway variables set SUPABASE_DB_URL="postgresql://postgres:HVt^le2l0QaDZ0JS@db.ccvfdupucmsjxwtfwzkd.supabase.co:5432/postgres"
+railway variables set SUPABASE_ACCESS_TOKEN="sbp_a497779d74107ea60b909508cc9ad2f784429b01"

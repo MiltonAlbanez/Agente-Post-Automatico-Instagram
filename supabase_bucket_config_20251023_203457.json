@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-10-23T20:34:53.944608",
+  "bucket_status": {
+    "exists": true,
+    "info": {
+      "id": "instagram-images",
+      "name": "instagram-images",
+      "owner": "",
+      "public": true,
+      "type": "STANDARD",
+      "file_size_limit": null,
+      "allowed_mime_types": null,
+      "created_at": "2025-10-08T00:11:17.022Z",
+      "updated_at": "2025-10-08T00:11:17.022Z"
+    }
+  },
+  "policies_status": {
+    "list_files": "ERROR: HTTP Error 400: Bad Request",
+    "upload_permission": "SUCCESS",
+    "anonymous_upload": "HTTP_400",
+    "public_access": "SUCCESS"
+  },
+  "configuration_applied": {},
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "category": "Status",
+      "issue": "Bucket configurado corretamente",
+      "action": "Configuração adequada para uso em produção"
+    }
+  ]
+}

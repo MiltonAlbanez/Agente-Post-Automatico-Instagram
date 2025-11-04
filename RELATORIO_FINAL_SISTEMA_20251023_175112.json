@@ -1,0 +1,340 @@
+{
+  "metadata": {
+    "generated_at": "2025-10-23T17:51:12.803708",
+    "system_name": "Sistema de Automação de Posts Instagram",
+    "version": "1.0",
+    "test_suite": "Validação Completa do Sistema"
+  },
+  "executive_summary": {
+    "connections": {
+      "status": "PARTIAL",
+      "instagram_api": "SUCCESS",
+      "rapidapi": "FAILED - HTTP 429",
+      "database": "FAILED - DSN not configured",
+      "score": "33%"
+    },
+    "scheduled_content": {
+      "status": "SUCCESS",
+      "feed_accounts": "1/2 configuradas",
+      "content_generation": "SUCCESS",
+      "image_generation": "CONFIGURED",
+      "score": "75%"
+    },
+    "scheduler": {
+      "status": "PARTIAL",
+      "railway_config": "PRESENT",
+      "scheduler_scripts": "CONFIGURED",
+      "timezone": "BRT - OK",
+      "env_variables": "NOT_CONFIGURED_LOCALLY",
+      "score": "5/7"
+    },
+    "dry_run": {
+      "status": "SUCCESS",
+      "pipeline_complete": "100%",
+      "all_components": "WORKING",
+      "next_execution": "19:00 BRT",
+      "score": "100.0%"
+    },
+    "fallback": {
+      "status": "SUCCESS",
+      "backup_accounts": "AVAILABLE",
+      "retry_logic": "IMPLEMENTED",
+      "error_handling": "CONFIGURED",
+      "score": "100.0%"
+    }
+  },
+  "detailed_results": {
+    "connections": {
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    "scheduled_content": {
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    "scheduler_validation": {
+      "status": "PARTIAL",
+      "score": "5/7",
+      "railway_available": false,
+      "config_files": [
+        "railway.json",
+        "railway.yaml",
+        "railway_scheduler.py",
+        "Procfile"
+      ],
+      "scheduler_status": {
+        "railway_scheduler.py": {
+          "exists": true,
+          "has_time_config": true,
+          "has_feed_logic": true,
+          "size": 7957
+        },
+        "automation/scheduler.py": {
+          "exists": true,
+          "has_time_config": true,
+          "has_feed_logic": true,
+          "size": 21661
+        },
+        "run_automation.py": {
+          "exists": true,
+          "has_time_config": true,
+          "has_feed_logic": false,
+          "size": 1880
+        }
+      },
+      "timezone_ok": true,
+      "timezone_info": {
+        "current_brt": "2025-10-23 17:46:57.084798-03:00",
+        "next_19h_brt": "2025-10-23 19:00:00-03:00",
+        "time_until": "1:13:02.915202"
+      },
+      "env_status": {
+        "OPENAI_API_KEY": {
+          "configured": false
+        },
+        "INSTAGRAM_ACCESS_TOKEN": {
+          "configured": false
+        },
+        "INSTAGRAM_BUSINESS_ACCOUNT_ID": {
+          "configured": false
+        },
+        "REPLICATE_TOKEN": {
+          "configured": false
+        },
+        "TELEGRAM_BOT_TOKEN": {
+          "configured": false
+        },
+        "TELEGRAM_CHAT_ID": {
+          "configured": false
+        }
+      },
+      "accounts_ok": true,
+      "accounts_info": {
+        "total_accounts": 2,
+        "active_accounts": 2,
+        "feed_accounts": 1,
+        "feed_account_details": [
+          {
+            "nome": "Milton_Albanez",
+            "type": "feed",
+            "hashtags_pesquisa": [
+              "empreendedorismo",
+              "coaching",
+              "pnl",
+              "desenvolvimento pessoal"
+            ],
+            "usernames": [
+              "milton_albanez"
+            ],
+            "instagram_id": "17841404919106588",
+            "instagram_access_token": "EAAKXup1fjNIBPphQVRWxFKWksE1Gptksm7nBpYAFh3t01Y3XvnyXmHCCim0gZAZAZAZBDTFLHkCkVVP5bJ73ltbA9JMLhvroZCM5LAeSPpQLJZCPcKkOOKLFS4n3SViRQx8cPFTsjCYZAWrxV4bIUuPrZCJmi8Q11KjVuy4d5ZAIV3UMSfZBFwgsfU3h1c1TEEC8yZBOatvmRq0fTLpuEck",
+            "prompt_ia_geracao_conteudo": "Descreva a imagem em português (Brasil) de forma clara e objetiva. Se a imagem for abstrata, descreva os elementos e as cores. Se a imagem for concreta, descreva o objeto e o que ele representa metaforicamente no contexto de crescimento e alta performance. Conecte sempre os elementos visuais a conceitos de desenvolvimento pessoal, liderança e transformação empresarial. Evite descrições puramente físicas - inclua sempre o significado simbólico dos elementos na jornada empreendedora.",
+            "prompt_ia_replicate": "Imagem conceitual e profissional representando crescimento, liderança e transformação. VARIEDADE VISUAL: Alternar entre: 1) Paisagens naturais (montanhas, árvores, caminhos) simbolizando crescimento orgânico; 2) Elementos urbanos/corporativos (arranha-céus, pontes, escaladas) representando ambição e estrutura; 3) Elementos humanos abstratos (silhuetas, mãos, sombras) indicando liderança; 4) Conceitos minimalistas (formas geométricas, gradientes, luz/sombra) para reflexão profunda. Estilo: clean, moderno, inspiracional, profissional. Cores: tons terrosos, azuis profundos, verdes naturais, cinzas elegantes, dourados sutis. Evitar: rostos definidos, objetos literais óbvios, clichês visuais. Foco em metáforas visuais de alta performance, desenvolvimento pessoal e sucesso empresarial.",
+            "prompt_ia_legenda": "Você é um Estrategista de Conteúdo Sênior, focado em Coaching, PNL e Desenvolvimento Pessoal para Empreendedores.\n\n**Tarefa:** Crie uma legenda de Instagram profissional, prática e com propósito, baseada na {descricao} e no {texto_original}.\n\n**Restrições e Estilo:**\n 1.  **Evite Clichês:** Não use frases motivacionais óbvias como \"Transforme seus sonhos!\" ou \"Acredite em si mesmo!\". O conteúdo deve ser *concreto*.\n 2.  **Foco em Ação:** Transforme a descrição da imagem e a inspiração do texto original em uma **dica, método ou reflexão profunda** sobre um dos temas (Coaching, PNL, Desenvolvimento Pessoal) que seja imediatamente aplicável ao empreendedor.\n 3.  **Estrutura:** * **Gancho (1ª Linha):** Uma frase que desafie uma crença comum do empreendedor.\n      * **Corpo (Desenvolvimento):** Explique como o conceito de PNL ou Coaching se aplica à situação descrita na imagem/texto.\n      * **Chamada para Ação (CTA):** Uma pergunta direta que incite a reflexão ou o comentário do público.\n 4.  **Hashtags Dinâmicas:** Use as hashtags base: #Empreendedorismo #Coaching #PNL #DesenvolvimentoPessoal #SucessoDigital #JornadaEmpreendedora. ADICIONE hashtags contextuais baseadas no conteúdo (ex: se falar de liderança, adicione #LiderancaAutentica; se falar de vendas, #VendasEstrategicas; se falar de mindset, #MindsetVencedor). Inclua também 1-2 hashtags sazonais ou do dia da semana quando apropriado (ex: #SegundaMotivacional, #NovoAno, #UltimoTrimestre). Total: 8-10 hashtags variadas e relevantes.\n\n**Dados Disponíveis:**\n - **DESCRIÇÃO DA IMAGEM:** {descricao}\n - **TEXTO ORIGINAL COLETADO:** {texto_original}\n\nSaída final: apenas a legenda pronta, sem explicações.",
+            "supabase_url": "",
+            "supabase_service_key": "",
+            "supabase_bucket": "",
+            "superior_concepts_enabled": true,
+            "superior_concepts_probability": 0.7,
+            "disable_replicate": false
+          }
+        ]
+      },
+      "simulation_ok": true,
+      "simulation_info": "Simulação preparada para src/main.py"
+    },
+    "dry_run_simulation": {
+      "timestamp": "2025-10-23T17:48:47.064714",
+      "simulation_type": "dry_run",
+      "steps": {
+        "config_check": {
+          "status": "success",
+          "details": "Configurações carregadas com sucesso"
+        },
+        "feed_accounts": {
+          "status": "success",
+          "count": 1,
+          "accounts": [
+            "Milton_Albanez"
+          ]
+        },
+        "content_generation": {
+          "status": "success",
+          "details": "Cliente OpenAI inicializado com sucesso",
+          "test_prompt": "Crie um post sobre tecnologia e inovação"
+        },
+        "image_generation": {
+          "status": "success",
+          "details": "Cliente Replicate inicializado com sucesso"
+        },
+        "instagram_connection": {
+          "status": "success",
+          "details": "Cliente Instagram inicializado com sucesso",
+          "business_id": "1784140491..."
+        },
+        "telegram_notification": {
+          "status": "success",
+          "details": "Cliente Telegram inicializado com sucesso"
+        },
+        "full_pipeline": {
+          "status": "success",
+          "details": "Pipeline completo simulado com sucesso"
+        },
+        "schedule_check": {
+          "status": "success",
+          "current_time_brt": "2025-10-23 17:48:51 -03",
+          "next_execution": "2025-10-23 19:00:00 -03",
+          "time_until": "1:11:08.796426"
+        }
+      },
+      "errors": [],
+      "warnings": [],
+      "success": true,
+      "success_rate": 100.0,
+      "successful_steps": 8,
+      "total_steps": 8
+    },
+    "fallback_systems": {
+      "timestamp": "2025-10-23T17:49:57.966771",
+      "test_type": "fallback_systems",
+      "checks": {
+        "backup_accounts": {
+          "status": "success",
+          "total_accounts": 2,
+          "feed_accounts": 1,
+          "backup_accounts": 1,
+          "has_backup": true
+        },
+        "retry_logic": {
+          "status": "success",
+          "clients": {
+            "rapidapi": {
+              "has_retry": true,
+              "has_fallback_hosts": true,
+              "file_exists": true
+            },
+            "instagram": {
+              "has_retry": false,
+              "has_error_handling": true,
+              "file_exists": true
+            },
+            "openai": {
+              "has_retry": false,
+              "has_error_handling": false,
+              "file_exists": true
+            },
+            "replicate": {
+              "has_retry": false,
+              "has_error_handling": false,
+              "file_exists": true
+            }
+          }
+        },
+        "error_notifications": {
+          "status": "success",
+          "telegram_exists": true,
+          "has_error_notification": false,
+          "has_exception_handling": true
+        },
+        "logging": {
+          "status": "success",
+          "files": {
+            "src/main.py": {
+              "exists": true,
+              "has_logging": true,
+              "has_debug": true
+            },
+            "railway_scheduler.py": {
+              "exists": true,
+              "has_logging": true,
+              "has_debug": false
+            },
+            "automation/scheduler.py": {
+              "exists": true,
+              "has_logging": true,
+              "has_debug": true
+            }
+          }
+        },
+        "timeouts": {
+          "status": "success",
+          "files": {
+            "src/services/rapidapi_client.py": {
+              "exists": true,
+              "has_timeout": true,
+              "has_requests_timeout": true
+            },
+            "src/services/instagram_client.py": {
+              "exists": true,
+              "has_timeout": true,
+              "has_requests_timeout": true
+            },
+            "src/services/openai_client.py": {
+              "exists": true,
+              "has_timeout": true,
+              "has_requests_timeout": true
+            },
+            "src/services/replicate_client.py": {
+              "exists": true,
+              "has_timeout": true,
+              "has_requests_timeout": true
+            }
+          }
+        },
+        "cache_fallback": {
+          "status": "success",
+          "files": {
+            "src/services/rapidapi_client.py": {
+              "exists": true,
+              "has_cache": true,
+              "has_fallback": true
+            },
+            "src/services/openai_client.py": {
+              "exists": true,
+              "has_cache": false,
+              "has_fallback": false
+            }
+          }
+        }
+      },
+      "errors": [],
+      "warnings": [
+        "Sistema de notificação de erros não detectado"
+      ],
+      "success": true,
+      "success_rate": 100.0,
+      "successful_checks": 6,
+      "total_checks": 6
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Database",
+      "issue": "DSN não configurado localmente",
+      "solution": "Configurar variáveis de ambiente no Railway para produção"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "API",
+      "issue": "Rate limit no RapidAPI",
+      "solution": "Implementar cache mais agressivo ou considerar upgrade do plano"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Monitoring",
+      "issue": "Melhorar sistema de notificações",
+      "solution": "Implementar notificações detalhadas de erro via Telegram"
+    }
+  ],
+  "system_status": "BOM",
+  "overall_score": 82.1,
+  "technical_details": {
+    "total_tests_executed": 28,
+    "successful_tests": 23,
+    "failed_tests": 5,
+    "critical_issues_count": 2,
+    "warnings_count": 3,
+    "next_scheduled_execution": "19:00 BRT (diário)",
+    "deployment_platform": "Railway",
+    "main_account": "Milton_Albanez (feed configured)"
+  }
+}

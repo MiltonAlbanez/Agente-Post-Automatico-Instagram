@@ -1,0 +1,112 @@
+{
+  "timestamp": "2025-10-23T17:49:57.966771",
+  "test_type": "fallback_systems",
+  "checks": {
+    "backup_accounts": {
+      "status": "success",
+      "total_accounts": 2,
+      "feed_accounts": 1,
+      "backup_accounts": 1,
+      "has_backup": true
+    },
+    "retry_logic": {
+      "status": "success",
+      "clients": {
+        "rapidapi": {
+          "has_retry": true,
+          "has_fallback_hosts": true,
+          "file_exists": true
+        },
+        "instagram": {
+          "has_retry": false,
+          "has_error_handling": true,
+          "file_exists": true
+        },
+        "openai": {
+          "has_retry": false,
+          "has_error_handling": false,
+          "file_exists": true
+        },
+        "replicate": {
+          "has_retry": false,
+          "has_error_handling": false,
+          "file_exists": true
+        }
+      }
+    },
+    "error_notifications": {
+      "status": "success",
+      "telegram_exists": true,
+      "has_error_notification": false,
+      "has_exception_handling": true
+    },
+    "logging": {
+      "status": "success",
+      "files": {
+        "src/main.py": {
+          "exists": true,
+          "has_logging": true,
+          "has_debug": true
+        },
+        "railway_scheduler.py": {
+          "exists": true,
+          "has_logging": true,
+          "has_debug": false
+        },
+        "automation/scheduler.py": {
+          "exists": true,
+          "has_logging": true,
+          "has_debug": true
+        }
+      }
+    },
+    "timeouts": {
+      "status": "success",
+      "files": {
+        "src/services/rapidapi_client.py": {
+          "exists": true,
+          "has_timeout": true,
+          "has_requests_timeout": true
+        },
+        "src/services/instagram_client.py": {
+          "exists": true,
+          "has_timeout": true,
+          "has_requests_timeout": true
+        },
+        "src/services/openai_client.py": {
+          "exists": true,
+          "has_timeout": true,
+          "has_requests_timeout": true
+        },
+        "src/services/replicate_client.py": {
+          "exists": true,
+          "has_timeout": true,
+          "has_requests_timeout": true
+        }
+      }
+    },
+    "cache_fallback": {
+      "status": "success",
+      "files": {
+        "src/services/rapidapi_client.py": {
+          "exists": true,
+          "has_cache": true,
+          "has_fallback": true
+        },
+        "src/services/openai_client.py": {
+          "exists": true,
+          "has_cache": false,
+          "has_fallback": false
+        }
+      }
+    }
+  },
+  "errors": [],
+  "warnings": [
+    "Sistema de notificação de erros não detectado"
+  ],
+  "success": true,
+  "success_rate": 100.0,
+  "successful_checks": 6,
+  "total_checks": 6
+}

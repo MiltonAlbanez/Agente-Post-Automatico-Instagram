@@ -1,0 +1,51 @@
+{
+  "timestamp": "2025-11-03T11:55:16.018847",
+  "simulation_type": "dry_run",
+  "steps": {
+    "config_check": {
+      "status": "success",
+      "details": "Configurações carregadas com sucesso"
+    },
+    "feed_accounts": {
+      "status": "success",
+      "count": 1,
+      "accounts": [
+        "Milton_Albanez"
+      ]
+    },
+    "content_generation": {
+      "status": "success",
+      "details": "Cliente OpenAI inicializado com sucesso",
+      "test_prompt": "Crie um post sobre tecnologia e inovação"
+    },
+    "image_generation": {
+      "status": "success",
+      "details": "Cliente Replicate inicializado com sucesso"
+    },
+    "instagram_connection": {
+      "status": "success",
+      "details": "Cliente Instagram inicializado com sucesso",
+      "business_id": "1784140491..."
+    },
+    "telegram_notification": {
+      "status": "success",
+      "details": "Cliente Telegram inicializado com sucesso"
+    },
+    "full_pipeline": {
+      "status": "success",
+      "details": "Pipeline completo simulado com sucesso"
+    },
+    "schedule_check": {
+      "status": "success",
+      "current_time_brt": "2025-11-03 11:55:23 -03",
+      "next_execution": "2025-11-03 19:00:00 -03",
+      "time_until": "7:04:36.398077"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "success": true,
+  "success_rate": 100.0,
+  "successful_steps": 8,
+  "total_steps": 8
+}

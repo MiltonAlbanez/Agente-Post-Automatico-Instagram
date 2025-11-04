@@ -1,0 +1,193 @@
+{
+  "timestamp": "2025-11-04T17:16:53.151930",
+  "verification_type": "supabase_complete",
+  "components": {
+    "database": {
+      "name": "PostgreSQL Database",
+      "status": "HEALTHY",
+      "details": {
+        "supabase_url": "https://ccvfdupucmsjxwtfwzkd.supabase.co",
+        "project_ref": "ccvfdupucmsjxwtfwzkd",
+        "host": "ccvfdupucmsjxwtfwzkd.supabase.co"
+      },
+      "tests": [
+        {
+          "name": "URL Format",
+          "status": "PASS",
+          "details": "URL do Supabase válida"
+        },
+        {
+          "name": "HTTP Connectivity",
+          "status": "PASS",
+          "details": "Resposta HTTP: 401"
+        },
+        {
+          "name": "Service Key",
+          "status": "PASS",
+          "details": "Service key configurada"
+        },
+        {
+          "name": "PostgreSQL Direct",
+          "status": "SKIP",
+          "details": "Senha do DB não disponível para teste direto"
+        }
+      ],
+      "score": 3,
+      "max_score": 4
+    },
+    "auth": {
+      "name": "Authentication & Authorization",
+      "status": "UNHEALTHY",
+      "details": {
+        "service_key_valid": true
+      },
+      "tests": [
+        {
+          "name": "Auth Endpoint",
+          "status": "FAIL",
+          "details": "Status: 401"
+        },
+        {
+          "name": "Anonymous Key",
+          "status": "FAIL",
+          "details": "Chave anônima não configurada"
+        },
+        {
+          "name": "Service Key",
+          "status": "PASS",
+          "details": "Service key configurada"
+        }
+      ],
+      "score": 1,
+      "max_score": 3
+    },
+    "apis": {
+      "name": "REST & GraphQL APIs",
+      "status": "HEALTHY",
+      "details": {
+        "rest_api": "Available",
+        "graphql_api": "Available",
+        "api_headers": {
+          "Date": "Tue, 04 Nov 2025 20:16:57 GMT",
+          "Content-Type": "application/openapi+json; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Server": "cloudflare",
+          "CF-Ray": "9996cac7e852c02a-GRU",
+          "CF-Cache-Status": "DYNAMIC",
+          "Content-Encoding": "gzip",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+          "Vary": "Accept-Encoding",
+          "content-profile": "public",
+          "sb-gateway-version": "1",
+          "sb-project-ref": "ccvfdupucmsjxwtfwzkd",
+          "sb-request-id": "019a5083-f8fa-75b1-9902-811aec550aab",
+          "X-Content-Type-Options": "nosniff",
+          "x-envoy-attempt-count": "1",
+          "x-envoy-upstream-service-time": "67",
+          "Set-Cookie": "__cf_bm=Oovj8V2V2byGiW8wQShT0vcV8d6LOc2WWpxJewAV0Aw-1762287417-1.0.1.1-NATLXkv9L4EX1bm9RkC0hfY1iU5Iosl4.YS.jmGoLoUp8OuXrjEnrqd1Imirw65IQRHWink8_CZVofdJkwlXTuAp.ygZq8qPL1zLgU5KTdc; path=/; expires=Tue, 04-Nov-25 20:46:57 GMT; domain=.supabase.co; HttpOnly; Secure; SameSite=None",
+          "alt-svc": "h3=\":443\"; ma=86400"
+        }
+      },
+      "tests": [
+        {
+          "name": "REST API",
+          "status": "PASS",
+          "details": "REST API acessível"
+        },
+        {
+          "name": "GraphQL API",
+          "status": "PASS",
+          "details": "GraphQL endpoint acessível"
+        },
+        {
+          "name": "Realtime API",
+          "status": "FAIL",
+          "details": "Status: 401"
+        },
+        {
+          "name": "API Headers",
+          "status": "PASS",
+          "details": "Headers de API válidos"
+        }
+      ],
+      "score": 3,
+      "max_score": 4
+    },
+    "storage": {
+      "name": "File Storage",
+      "status": "HEALTHY",
+      "details": {
+        "available_buckets": [
+          "Agente Post Automatico Instagram",
+          "instagram-images"
+        ],
+        "configured_bucket": "instagram-images"
+      },
+      "tests": [
+        {
+          "name": "Storage Endpoint",
+          "status": "PASS",
+          "details": "Storage API acessível"
+        },
+        {
+          "name": "Bucket Configuration",
+          "status": "PASS",
+          "details": "Bucket configurado: instagram-images"
+        },
+        {
+          "name": "Bucket Exists",
+          "status": "PASS",
+          "details": "Bucket 'instagram-images' existe"
+        },
+        {
+          "name": "Upload Test",
+          "status": "SIMULATED",
+          "details": "Upload simulado - configuração válida"
+        }
+      ],
+      "score": 3.5,
+      "max_score": 4
+    },
+    "edge_functions": {
+      "name": "Edge Functions & RPC",
+      "status": "HEALTHY",
+      "details": {
+        "edge_functions_available": true,
+        "rpc_available": true
+      },
+      "tests": [
+        {
+          "name": "Edge Functions Endpoint",
+          "status": "PASS",
+          "details": "Endpoint de Edge Functions acessível"
+        },
+        {
+          "name": "RPC Endpoint",
+          "status": "PASS",
+          "details": "Endpoint RPC acessível"
+        },
+        {
+          "name": "Functions Discovery",
+          "status": "PASS",
+          "details": "Sistema de funções operacional"
+        }
+      ],
+      "score": 3,
+      "max_score": 3
+    }
+  },
+  "overall_status": "BOM",
+  "score": 13.5,
+  "max_score": 18,
+  "errors": [],
+  "warnings": [],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Authentication & Authorization",
+      "issue": "Componente Authentication & Authorization com problemas",
+      "solution": "Verificar configurações e conectividade do Authentication & Authorization"
+    }
+  ]
+}

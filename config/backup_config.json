@@ -1,0 +1,52 @@
+{
+  "backup": {
+    "directory": "backups",
+    "retention_days": 30,
+    "max_backups": 50,
+    "compress": true,
+    "include_logs": true
+  },
+  "schedule": {
+    "daily_backup": "02:00",
+    "weekly_full_backup": "sunday",
+    "monthly_cleanup": 1
+  },
+  "targets": {
+    "database": {
+      "enabled": true,
+      "path": "data/engagement_data.db"
+    },
+    "configs": {
+      "enabled": true,
+      "paths": [
+        "accounts.json",
+        "config/",
+        "prompts/"
+      ],
+      "ignore_patterns": [
+        "__pycache__",
+        "*.pyc",
+        "*.pyo",
+        "*.lock",
+        "*.tmp",
+        ".DS_Store",
+        "Thumbs.db",
+        ".venv"
+      ]
+    },
+    "logs": {
+      "enabled": true,
+      "paths": [
+        "logs/",
+        "data/performance_logs/"
+      ]
+    },
+    "generated_content": {
+      "enabled": false,
+      "paths": [
+        "generated_images/",
+        "generated_content/"
+      ]
+    }
+  }
+}
