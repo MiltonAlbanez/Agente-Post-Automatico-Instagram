@@ -3,6 +3,7 @@ import sys
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
+from typing import Optional
 
 
 def _strip_newlines_and_whitespace(value: str | None) -> str:
@@ -10,6 +11,32 @@ def _strip_newlines_and_whitespace(value: str | None) -> str:
         return ""
     # Remove CR/LF e espaços extras
     return value.replace("\r", "").strip()
+
+
+def _env_value_or_file(name: str, default: str = "") -> str:
+    """Obtém o valor da variável de ambiente `name`.
+    Se o valor parecer ser um caminho de arquivo e o arquivo existir,
+    lê o conteúdo do arquivo e retorna seu conteúdo sanitizado.
+
+    Isso torna o código compatível com ambientes que montam secrets
+    como arquivos (ex.: Railway), enquanto também funciona com
+    variáveis de ambiente comuns em texto.
+    """
+    val = os.getenv(name)
+    if not val:
+        return default
+    val = _strip_newlines_and_whitespace(val)
+    try:
+        # Se for um caminho absoluto/relativo e o arquivo existir, ler conteúdo
+        if (val.startswith("/") or val.startswith(".\") or val.startswith(".//") or 
+            val.startswith("\\") or "/" in val or "\\" in val) and os.path.isfile(val):
+            with open(val, "r", encoding="utf-8") as f:
+                file_content = f.read()
+            return _strip_newlines_and_whitespace(file_content)
+    except Exception:
+        # Em caso de qualquer falha, retorna o valor em memória
+        return val
+    return val
 
 
 def _sanitize_env_in_place() -> dict:
@@ -187,20 +214,20 @@ def load_config():
             postgres_dsn = public_dsn
 
     return {
-        "INSTAGRAM_BUSINESS_ACCOUNT_ID": os.getenv("INSTAGRAM_BUSINESS_ACCOUNT_ID", ""),
-        "INSTAGRAM_ACCESS_TOKEN": os.getenv("INSTAGRAM_ACCESS_TOKEN", ""),
-        "TELEGRAM_CHAT_ID": os.getenv("TELEGRAM_CHAT_ID", ""),
-        "TELEGRAM_BOT_TOKEN": os.getenv("TELEGRAM_BOT_TOKEN", ""),
-        "RAPIDAPI_KEY": os.getenv("RAPIDAPI_KEY", ""),
+        "INSTAGRAM_BUSINESS_ACCOUNT_ID": _env_value_or_file("INSTAGRAM_BUSINESS_ACCOUNT_ID", ""),
+        "INSTAGRAM_ACCESS_TOKEN": _env_value_or_file("INSTAGRAM_ACCESS_TOKEN", ""),
+        "TELEGRAM_CHAT_ID": _env_value_or_file("TELEGRAM_CHAT_ID", ""),
+        "TELEGRAM_BOT_TOKEN": _env_value_or_file("TELEGRAM_BOT_TOKEN", ""),
+        "RAPIDAPI_KEY": _env_value_or_file("RAPIDAPI_KEY", ""),
         "RAPIDAPI_HOST": os.getenv("RAPIDAPI_HOST", "instagram-scraper-api2.p.rapidapi.com"),
-        "RAPIDAPI_ALT_HOSTS": os.getenv("RAPIDAPI_ALT_HOSTS", ""),
-        "REPLICATE_TOKEN": os.getenv("REPLICATE_TOKEN", ""),
-        "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY", ""),
+        "RAPIDAPI_ALT_HOSTS": _env_value_or_file("RAPIDAPI_ALT_HOSTS", ""),
+        "REPLICATE_TOKEN": _env_value_or_file("REPLICATE_TOKEN", ""),
+        "OPENAI_API_KEY": _env_value_or_file("OPENAI_API_KEY", ""),
         "POSTGRES_DSN": postgres_dsn,
-        # Supabase Storage (opcional)
-        "SUPABASE_URL": os.getenv("SUPABASE_URL", ""),
-        "SUPABASE_SERVICE_KEY": os.getenv("SUPABASE_SERVICE_KEY", ""),
-        "SUPABASE_BUCKET": os.getenv("SUPABASE_BUCKET", ""),
+        # Supabase Storage (compatível com secrets montados como arquivos)
+        "SUPABASE_URL": _env_value_or_file("SUPABASE_URL", ""),
+        "SUPABASE_SERVICE_KEY": _env_value_or_file("SUPABASE_SERVICE_KEY", ""),
+        "SUPABASE_BUCKET": _env_value_or_file("SUPABASE_BUCKET", ""),
         # Observability
         "TZ": os.getenv("TZ", "America/Sao_Paulo"),
     }
