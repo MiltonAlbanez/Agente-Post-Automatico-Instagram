@@ -15,6 +15,48 @@ O Railway **NÃO** lê configurações de cron do `railway.yaml`. Os cron jobs d
 - **Comando base**: usar `AUTOCMD` para definir a ação (`autopost`, `autopost --stories`)
 - **Execução**: o processo deve iniciar, executar a tarefa e ENCERRAR ao término (sem manter web servers ou processos em background em jobs de cron).
 
+### Lista consolidada de variáveis de ambiente (Railway)
+Configure estas variáveis na UI do Railway (ou CLI). Não mantenha segredos no código.
+
+- `AUTOCMD` — define a ação do job (ex.: `autopost`)
+- `OPENAI_API_KEY` — chave da API OpenAI
+- `REPLICATE_TOKEN` — token da API Replicate
+- `RAPIDAPI_KEY` — chave da RapidAPI
+- `RAPIDAPI_HOST` — host principal da API do Instagram via RapidAPI
+- `RAPIDAPI_ALT_HOSTS` — hosts alternativos (fallback)
+- `TELEGRAM_BOT_TOKEN` — token do bot para notificações
+- `TELEGRAM_CHAT_ID` — chat id para notificações
+- `INSTAGRAM_BUSINESS_ACCOUNT_ID_MILTON` — ID da conta business (Milton)
+- `INSTAGRAM_ACCESS_TOKEN_MILTON` — access token da conta (Milton)
+- `INSTAGRAM_BUSINESS_ACCOUNT_ID_ALBANEZ` — ID da conta business (Albanez)
+- `INSTAGRAM_ACCESS_TOKEN_ALBANEZ` — access token da conta (Albanez)
+- `POSTGRES_DSN` — DSN do banco (opcional; Railway pode injetar)
+- `SUPABASE_URL` — URL do projeto Supabase (opcional)
+- `SUPABASE_SERVICE_KEY` — chave de serviço do Supabase (opcional)
+- `SUPABASE_BUCKET` — bucket de imagens (opcional)
+- `RAILWAY_ENVIRONMENT` — ambiente (`production` recomendado)
+- `TZ` — timezone (ex.: `America/Sao_Paulo`)
+- `PYTHONUNBUFFERED` — `1` para logs sem buffer
+
+Exemplo (CLI):
+```
+railway variables set AUTOCMD="autopost"
+railway variables set OPENAI_API_KEY="..."
+railway variables set REPLICATE_TOKEN="..."
+railway variables set RAPIDAPI_KEY="..."
+railway variables set RAPIDAPI_HOST="instagram-scraper-api2.p.rapidapi.com"
+railway variables set RAPIDAPI_ALT_HOSTS="instagram-scraper.p.rapidapi.com,instagram-scraper-api.p.rapidapi.com,instagram-bulk-scraper-latest.p.rapidapi.com"
+railway variables set TELEGRAM_BOT_TOKEN="..."
+railway variables set TELEGRAM_CHAT_ID="..."
+railway variables set INSTAGRAM_BUSINESS_ACCOUNT_ID_MILTON="..."
+railway variables set INSTAGRAM_ACCESS_TOKEN_MILTON="..."
+railway variables set INSTAGRAM_BUSINESS_ACCOUNT_ID_ALBANEZ="..."
+railway variables set INSTAGRAM_ACCESS_TOKEN_ALBANEZ="..."
+railway variables set RAILWAY_ENVIRONMENT="production"
+railway variables set TZ="America/Sao_Paulo"
+railway variables set PYTHONUNBUFFERED="1"
+```
+
 ### 2. Como Configurar os Cron Jobs na Interface Railway
 
 #### Serviço Principal (Feed Posts)
