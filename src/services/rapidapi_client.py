@@ -59,10 +59,10 @@ class RapidAPIClient:
                         return json.load(f)
         except Exception:
             pass
-        delay = 1.0
-        for attempt in range(6):
+        delay = 0.5
+        for attempt in range(3):  # Reduzido de 6 para 3 tentativas
             try:
-                resp = requests.get(url, headers=self.headers, params=params, timeout=30)
+                resp = requests.get(url, headers=self.headers, params=params, timeout=2)  # Reduzido de 3 para 2 segundos
                 if resp.status_code in (429, 500, 502, 503, 504):
                     raise RuntimeError(f"HTTP {resp.status_code}")
                 resp.raise_for_status()
@@ -88,10 +88,10 @@ class RapidAPIClient:
                     pass
                 return data
             except Exception as e:
-                if attempt >= 5:
+                if attempt >= 2:  # Ajustado para 3 tentativas (0,1,2)
                     raise e
-                time.sleep(delay + random.uniform(0.2, 0.6))
-                delay = min(delay * 2, 20.0)
+                time.sleep(delay + random.uniform(0.1, 0.3))  # Delay muito menor
+                delay = min(delay * 1.5, 3.0)  # Delay máximo de 3 segundos
 
     def get_top_by_hashtag(self, hashtag: str) -> Dict[str, Any]:
         # Suportar diferentes APIs/hosts

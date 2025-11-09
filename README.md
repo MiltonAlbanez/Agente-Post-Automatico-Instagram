@@ -2,6 +2,193 @@
 
 Automatiza coleta de tendências, geração de imagens conceituais e publicação no Instagram, com coerência entre imagem e legenda.
 
+## 🚀 Como Usar
+
+### Instalação
+```bash
+pip install -r requirements.txt
+```
+
+### Executar o Dashboard Principal
+```bash
+streamlit run dashboard/dashboard_server.py
+```
+
+### Comandos Principais
+
+1. **🚀 Modo Standalone (Recomendado)**:
+   ```bash
+   # Geração independente com tema específico
+   python src/main.py standalone --theme motivacional --disable_replicate
+   
+   # Com prompt personalizado
+   python src/main.py standalone --content_prompt "Crie uma mensagem sobre liderança" --style profissional
+   
+   # Para stories
+   python src/main.py standalone --theme produtividade --stories
+   ```
+
+2. **Coleta de dados** (Opcional - requer RapidAPI):
+   ```bash
+   python src/main.py collect --hashtag motivacao --limit 10
+   ```
+
+3. **Geração e publicação** (Modo tradicional):
+   ```bash
+   python src/main.py generate --account miltonalcantara --style "motivacional, inspirador"
+   ```
+
+### Sistema de Automação
+
+#### Executar Automação Completa
+```bash
+python run_automation.py start
+```
+
+#### Dashboard de Automação
+```bash
+python run_automation.py dashboard
+```
+
+### 🔧 Auto-Inicialização dos Dashboards (Windows)
+
+Para resolver o problema de portas inativas (5000 e 8502) após reinicialização do computador:
+
+#### Configurar Auto-Inicialização
+```powershell
+# Configurar para iniciar automaticamente no boot
+.\scripts\setup_auto_start.ps1 -Install
+
+# Verificar status da configuração
+.\scripts\setup_auto_start.ps1 -Status
+
+# Remover auto-inicialização
+.\scripts\setup_auto_start.ps1 -Uninstall
+```
+
+#### Inicialização Manual Rápida
+```batch
+# Executar arquivo .bat para iniciar dashboards imediatamente
+.\start_dashboards.bat
+```
+
+#### Dashboards Disponíveis
+- **Dashboard A/B Testing**: http://localhost:5000
+- **Dashboard de Automação**: http://localhost:8502
+
+> **Nota**: A auto-inicialização resolve o problema de configurações perdidas após desligar o computador, garantindo que os dashboards estejam sempre disponíveis.
+
+#### Executar Ciclo Manual
+```bash
+python run_automation.py manual
+```
+
+#### Ver Configurações
+```bash
+python run_automation.py config
+```
+
+#### Ver Status do Sistema
+```bash
+python run_automation.py status
+```
+
+### Gerar Post Automaticamente
+```python
+from core.post_generator import PostGenerator
+
+generator = PostGenerator()
+post = generator.generate_post()
+print(post)
+```
+
+## 🚀 Modo Standalone - Geração Independente
+
+O **Modo Standalone** é a nova funcionalidade principal que permite gerar e publicar conteúdo de alta qualidade **sem depender de APIs externas** como RapidAPI.
+
+### ✨ Benefícios do Modo Standalone
+
+- **🔒 Totalmente Independente**: Não requer RapidAPI ou outras APIs externas
+- **🎨 Conteúdo 100% Original**: Geração personalizada com OpenAI
+- **⚡ Sem Limitações**: Não há rate limits de APIs externas
+- **🖼️ Imagens de Qualidade**: Usa Unsplash ou Replicate para imagens
+- **🎯 Sistema Temático**: Temas pré-configurados (motivacional, produtividade, liderança, etc.)
+- **⚙️ Configuração por Conta**: Suporte a múltiplas contas Instagram
+
+### 🎨 Temas Disponíveis
+
+- **motivacional**: Mensagens inspiradoras sobre superação e crescimento
+- **produtividade**: Dicas práticas sobre organização e gestão de tempo
+- **lideranca**: Insights sobre liderança e desenvolvimento profissional
+- **mindset**: Conceitos de mindset de crescimento e mentalidade positiva
+- **negocios**: Estratégias sobre empreendedorismo e inovação
+
+### 📋 Exemplos de Uso
+
+```bash
+# Publicação motivacional básica
+python src/main.py standalone --theme motivacional
+
+# Com conta específica
+python src/main.py standalone --account miltonalcantara --theme lideranca
+
+# Com prompt personalizado
+python src/main.py standalone --content_prompt "Fale sobre a importância da persistência" --style inspirador
+
+# Para stories
+python src/main.py standalone --theme produtividade --stories
+
+# Sem usar Replicate (mais rápido)
+python src/main.py standalone --theme mindset --disable_replicate
+```
+
+## 🤖 Sistema de Automação
+
+O sistema de automação implementa os **Próximos Passos Recomendados**:
+
+### 1. 📊 Monitoramento
+- **Engagement Tracker**: Monitora curtidas, comentários, salvamentos e alcance
+- **Análise de Tendências**: Identifica padrões de performance
+- **Alertas Automáticos**: Notifica sobre mudanças significativas
+
+### 2. 🔄 Expansão de Conceitos
+- **Conceitos Superiores**: Sistema expandido com 50+ conceitos visuais
+- **Categorização Avançada**: Organização por temas e estilos
+- **Adaptação Dinâmica**: Novos conceitos baseados em performance
+
+### 3. ⚡ Otimização Automática
+- **Performance Optimizer**: Ajusta conceitos baseado em dados reais
+- **Machine Learning**: Aprende com histórico de engagement
+- **A/B Testing**: Testa variações automaticamente
+
+### 4. 🎯 Automação Consistente
+- **Agendamento Inteligente**: Posts automáticos em horários otimizados
+- **Controle de Qualidade**: Validação automática antes da publicação
+- **Consistência de Marca**: Mantém tom de voz e estilo visual
+
+## 📈 Funcionalidades de Automação
+
+### Agendamento
+- ⏰ **Posts Automáticos**: 3 posts diários em horários otimizados
+- 🔄 **Otimização Noturna**: Análise e ajustes automáticos às 23h
+- 📊 **Monitoramento Contínuo**: Coleta de dados a cada hora
+
+### Qualidade
+- ✅ **Validação Automática**: Verifica qualidade antes da publicação
+- 🎨 **Consistência Visual**: Mantém padrões de design
+- 📝 **Otimização de Texto**: Ajusta legendas e hashtags
+
+### Monitoramento
+- 📈 **Métricas em Tempo Real**: Acompanha performance dos posts
+- 🎯 **Identificação de Tendências**: Detecta conceitos em alta
+- 🚨 **Alertas Inteligentes**: Notifica sobre oportunidades
+
+### Dashboard
+- 📊 **Visão Geral**: Métricas principais e status do sistema
+- ⚙️ **Configurações**: Controle completo dos parâmetros
+- 📈 **Análise de Performance**: Gráficos e relatórios detalhados
+- 🔄 **Controle de Consistência**: Monitoramento de qualidade
+
 ## Comandos rápidos (Railway — Windows)
 - Listar não postados: `railway run python src/main.py unposted --limit 10`
 - Publicar primeiro não postado: `railway run python src/main.py autopost --no-replicate --style "isometric, minimalista"`
@@ -21,9 +208,11 @@ Automatiza coleta de tendências, geração de imagens conceituais e publicaçã
 - Limpar cache RapidAPI: `railway run python src/main.py clear_cache --older 3600`
 
 ## Variáveis úteis (Railway)
-- Obrigatórias: `INSTAGRAM_BUSINESS_ACCOUNT_ID`, `INSTAGRAM_ACCESS_TOKEN`, `OPENAI_API_KEY`, `RAPIDAPI_KEY`, `RAPIDAPI_HOST`, `POSTGRES_DSN` (ou `DATABASE_URL`)
-- Opcionais: `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_BUCKET`, `ACCOUNT_NAME`, `LIMIT`, `STYLE`, `REPLICATE_PROMPT`
+- Obrigatórias: `INSTAGRAM_BUSINESS_ACCOUNT_ID`, `INSTAGRAM_ACCESS_TOKEN`, `OPENAI_API_KEY`, `POSTGRES_DSN` (ou `DATABASE_URL`)
+- Opcionais: `RAPIDAPI_KEY`, `RAPIDAPI_HOST`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_BUCKET`, `ACCOUNT_NAME`, `LIMIT`, `STYLE`, `REPLICATE_PROMPT`
 - Fallback de RapidAPI (opcional): `RAPIDAPI_ALT_HOSTS` com uma lista separada por vírgulas de hosts alternativos a tentar caso o host principal falhe (ex.: `instagram-scraper-api2.p.rapidapi.com,instagram-scraper.p.rapidapi.com`).
+
+**⚠️ Importante**: O sistema agora funciona completamente sem RapidAPI usando o **Modo Standalone**
 - Definir via CLI sem deploy:
   `railway variables --set "INSTAGRAM_BUSINESS_ACCOUNT_ID=<id>" --set "INSTAGRAM_ACCESS_TOKEN=<token>" --set "OPENAI_API_KEY=<key>" --set "RAPIDAPI_KEY=<key>" --set "RAPIDAPI_HOST=instagram-scraper-api2.p.rapidapi.com" --set "POSTGRES_DSN=<dsn>" --set "ACCOUNT_NAME=Milton_Albanez" --set "LIMIT=1" --set "STYLE=isometric, minimalista" --skip-deploys`
 

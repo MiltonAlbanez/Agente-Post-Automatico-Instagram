@@ -27,8 +27,8 @@ if ($Style -eq "") {
 # Fallback geral
 if ($Style -eq "") { $Style = $env:STYLE }
 
-# Montar comando de autopost com fotos reais (usar alias compatível)
-$cmd = "python src/main.py autopost --no-replicate"
+# Montar comando de autopost com geração de imagens coerentes
+$cmd = "python src/main.py autopost"
 if ($Style -ne "" -and $null -ne $Style) { $cmd += " --style `"$Style`"" }
 
 Write-Host "Executando: $cmd"

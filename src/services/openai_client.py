@@ -73,3 +73,14 @@ class OpenAIClient:
             messages=[{"role": "user", "content": caption_prompt}],
         )
         return resp.choices[0].message.content
+
+    def generate_content_from_prompt(self, content_prompt: str) -> str:
+        """
+        Gera conteúdo inicial baseado em um prompt personalizado.
+        Este método é usado no novo fluxo texto-primeiro.
+        """
+        resp = self.client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": content_prompt}],
+        )
+        return resp.choices[0].message.content

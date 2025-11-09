@@ -1,6 +1,5 @@
 import psycopg
 from typing import Dict
-from typing import Dict
 
 
 SCHEMA_SQL = """

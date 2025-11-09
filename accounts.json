@@ -1,28 +1,5 @@
 [
   {
-    "nome": "advogado_conta",
-    "hashtags_pesquisa": ["blender3d", "isometric"],
-    "usernames": ["natgeo", "nasa"],
-    "prompt_ia_geracao_conteudo": "Crie um post sobre tendências em direito digital...",
-    "prompt_ia_legenda": "Resuma o conteúdo sobre direito digital em uma legenda...",
-    "supabase_url": "",
-    "supabase_service_key": "",
-    "supabase_bucket": "",
-    "disable_replicate": false
-  },
-  {
-    "nome": "dentista_conta",
-    "hashtags_pesquisa": ["blender3d", "isometric"],
-    "usernames": ["natgeo", "nasa"],
-    "prompt_ia_geracao_conteudo": "Crie um post sobre dicas de higiene bucal...",
-    "prompt_ia_legenda": "Resuma o conteúdo sobre higiene bucal em uma legenda...",
-    "supabase_url": "",
-    "supabase_service_key": "",
-    "supabase_bucket": "",
-    "disable_replicate": true
-  }
-  ,
-  {
     "nome": "Milton_Albanez",
     "hashtags_pesquisa": ["empreendedorismo", "coaching", "pnl", "desenvolvimento pessoal"],
     "usernames": ["milton_albanez"],

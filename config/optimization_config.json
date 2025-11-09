@@ -1,0 +1,38 @@
+{
+  "enabled": true,
+  "min_confidence": 85,
+  "min_sample_size": 30,
+  "min_duration_days": 5,
+  "check_interval_hours": 0,
+  "performance_monitoring_days": 7,
+  "rollback_threshold": -10,
+  "notification_settings": {
+    "telegram_enabled": true,
+    "email_enabled": false,
+    "webhook_enabled": false
+  },
+  "optimization_rules": {
+    "content_format": {
+      "enabled": true,
+      "priority": "high"
+    },
+    "hashtag_strategy": {
+      "enabled": true,
+      "priority": "medium"
+    },
+    "image_style": {
+      "enabled": true,
+      "priority": "medium"
+    },
+    "posting_time": {
+      "enabled": false,
+      "priority": "low"
+    }
+  },
+  "safety_settings": {
+    "max_optimizations_per_day": 5,
+    "require_manual_approval": false,
+    "backup_config_before_changes": true,
+    "auto_rollback_enabled": true
+  }
+}

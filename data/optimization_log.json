@@ -1,0 +1,50 @@
+[
+  {
+    "timestamp": "2025-10-12 16:21:21",
+    "test_name": "Teste de Formatos de Conteúdo",
+    "winner": "tip",
+    "confidence": 96,
+    "lift": 18,
+    "sample_size": 45
+  },
+  {
+    "timestamp": "2025-10-12 16:21:21",
+    "test_name": "Teste de Estratégias de Hashtag",
+    "winner": "trending",
+    "confidence": 92,
+    "lift": 12,
+    "sample_size": 38
+  },
+  {
+    "timestamp": "2025-10-12 16:21:21",
+    "test_name": "Teste de Estilos de Imagem",
+    "winner": "dynamic",
+    "confidence": 89,
+    "lift": 15,
+    "sample_size": 52
+  },
+  {
+    "timestamp": "2025-10-12 16:21:21",
+    "test_name": "Teste de Formatos de Conteúdo",
+    "winner": "tip",
+    "confidence": 96,
+    "lift": 18,
+    "sample_size": 45
+  },
+  {
+    "timestamp": "2025-10-12 16:21:21",
+    "test_name": "Teste de Estratégias de Hashtag",
+    "winner": "trending",
+    "confidence": 92,
+    "lift": 12,
+    "sample_size": 38
+  },
+  {
+    "timestamp": "2025-10-12 16:21:21",
+    "test_name": "Teste de Estilos de Imagem",
+    "winner": "dynamic",
+    "confidence": 89,
+    "lift": 15,
+    "sample_size": 52
+  }
+]

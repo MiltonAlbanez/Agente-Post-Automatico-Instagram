@@ -1,0 +1,87 @@
+{
+  "high_quality_prompts": {
+    "professional_photography": {
+      "description": "Prompts que geram imagens com qualidade fotográfica profissional",
+      "templates": [
+        "Professional photography of {subject}, shot with Canon EOS R5, 85mm lens, golden hour lighting, shallow depth of field, cinematic composition, ultra-detailed, 8K resolution",
+        "Award-winning photograph of {subject}, perfect lighting, rule of thirds composition, professional color grading, sharp focus, bokeh background",
+        "High-end commercial photography featuring {subject}, studio lighting, pristine composition, luxury aesthetic, ultra-sharp details"
+      ]
+    },
+    "iconic_locations": {
+      "description": "Prompts que incluem landmarks icônicos como nas primeiras imagens",
+      "templates": [
+        "Stunning view of {landmark} during {time_of_day}, professional photography, perfect composition, vibrant colors, architectural beauty",
+        "Iconic {landmark} photographed from unique angle, golden hour lighting, cinematic perspective, travel photography masterpiece",
+        "Breathtaking landscape featuring {landmark}, natural lighting, panoramic view, professional travel photography"
+      ],
+      "landmarks": [
+        "Golden Gate Bridge",
+        "Christ the Redeemer",
+        "Eiffel Tower",
+        "Sydney Opera House",
+        "Machu Picchu",
+        "Taj Mahal",
+        "Big Ben",
+        "Statue of Liberty"
+      ]
+    },
+    "unique_compositions": {
+      "description": "Composições únicas como chás na praia",
+      "templates": [
+        "Artistic composition of {objects} placed on {location}, sunset lighting, professional product photography, cinematic mood",
+        "Creative still life featuring {objects} in unexpected {environment}, golden hour, artistic photography, perfect composition",
+        "Minimalist arrangement of {objects} against {backdrop}, professional lighting, artistic vision, ultra-detailed"
+      ],
+      "object_combinations": [
+        "elegant tea cups on pristine beach",
+        "vintage books on mountain peak",
+        "coffee setup in forest clearing",
+        "meditation stones on urban rooftop",
+        "plants in modern office space",
+        "art supplies in natural cave"
+      ]
+    },
+    "animal_portraits": {
+      "description": "Retratos de animais com qualidade profissional",
+      "templates": [
+        "Professional pet portrait of {animal}, studio lighting, shallow depth of field, expressive eyes, ultra-detailed fur texture, award-winning photography",
+        "Majestic {animal} portrait, natural lighting, perfect focus on eyes, professional wildlife photography, emotional connection",
+        "Artistic portrait of {animal}, dramatic lighting, professional composition, gallery-quality photography"
+      ]
+    }
+  },
+  "quality_enhancers": {
+    "technical_specs": [
+      "ultra-detailed",
+      "8K resolution",
+      "professional photography",
+      "award-winning",
+      "cinematic lighting",
+      "perfect composition",
+      "sharp focus",
+      "color grading"
+    ],
+    "lighting_conditions": [
+      "golden hour lighting",
+      "studio lighting",
+      "natural lighting",
+      "dramatic lighting",
+      "soft diffused light",
+      "rim lighting"
+    ],
+    "composition_rules": [
+      "rule of thirds",
+      "leading lines",
+      "symmetrical composition",
+      "depth of field",
+      "negative space",
+      "framing"
+    ]
+  },
+  "style_variations": {
+    "minimalist_premium": "Ultra-minimalist composition, premium aesthetic, clean lines, sophisticated color palette, luxury brand photography style",
+    "dynamic_professional": "Dynamic composition with movement, professional sports photography style, action captured perfectly, high-speed photography",
+    "artistic_cinematic": "Cinematic composition, movie poster aesthetic, dramatic lighting, artistic vision, gallery-worthy photography"
+  }
+}

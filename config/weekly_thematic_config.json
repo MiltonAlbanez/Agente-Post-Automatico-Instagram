@@ -1,0 +1,250 @@
+{
+  "weekly_thematic_system": {
+    "description": "Sistema de postagem semanal temático com cunho espiritual para coaching e mindset",
+    "version": "1.0",
+    "spiritual_focus_rule": "Todas as postagens no slot 'morning' devem ter CUNHO ESPIRITUAL obrigatório",
+    "saturday_special_rule": "Sábado tem tema principal 'RESTAURAÇÃO E PROPÓSITO' focado no descanso bíblico",
+    
+    "daily_themes": {
+      "1": {
+        "day_name": "Segunda-feira",
+        "main_theme": "Mindset de Crescimento (Foco/Produtividade)",
+        "objective": "Iniciar a semana com foco e produtividade",
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "clean, organized, energetic, sunrise light",
+          "prompt_focus": "Cunho Espiritual Matinal. Crie uma mensagem motivacional que ligue a fé e a Confiança em Deus (força divina) ao primeiro passo da semana. Use um tom de 'você não está sozinho na jornada'. CTA para 'Começar a semana com fé'.",
+          "content_type": "Motivação espiritual + Produtividade",
+          "cta_suggestion": "Começar a semana com fé"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "high contrast, bold text, focused expression",
+          "prompt_focus": "Gere uma 'Pergunta Poderosa de Coaching' sobre um obstáculo comum na segunda-feira. Deve ser uma quebra de padrão mental. Exemplo: 'O que você está evitando que te levaria ao próximo nível?'",
+          "content_type": "Pergunta Poderosa de Coaching (Quebra de Padrão)",
+          "cta_suggestion": "Reflita e responda nos comentários"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "professional, diagram/flowchart aesthetic",
+          "prompt_focus": "Crie uma 'Estratégia Empresarial' focada em Mindset: como o planejamento de bloco de tempo (Time Blocking) pode ser um ato de fé e produtividade. CTA para 'Planeje sua semana agora'.",
+          "content_type": "Estratégia Empresarial (Foco/Produtividade no trabalho)",
+          "cta_suggestion": "Planeje sua semana agora"
+        }
+      },
+      
+      "2": {
+        "day_name": "Terça-feira",
+        "main_theme": "Quebra de Crenças (Identificação e Solução)",
+        "objective": "Identificar e quebrar crenças limitantes",
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "abstract, ethereal, light source from within",
+          "prompt_focus": "Cunho Espiritual Matinal. Crie um texto que explore como a nossa identidade (como 'filhos de Deus') nos dá Autoridade Espiritual para quebrar Crenças Limitantes. Foco em auto-valor e propósito. CTA para 'Reescrever sua história com a verdade'.",
+          "content_type": "Identidade espiritual + Quebra de crenças",
+          "cta_suggestion": "Reescrever sua história com a verdade"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "simple graphic, clear instruction list",
+          "prompt_focus": "Crie um 'Ato Simples' e imediato para mudar um hábito destrutivo (ex: a regra dos 5 segundos). CTA para 'Aplique agora e sinta a diferença'.",
+          "content_type": "Ato Simples para Mudar um Hábito",
+          "cta_suggestion": "Aplique agora e sinta a diferença"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "warm, authentic portrait, storytelling vibe",
+          "prompt_focus": "Desenvolva um 'Storytelling de Transformação' (exemplo de um 'cliente' ou experiência pessoal) que superou uma grande crença limitante, ligando a superação à força interior e fé. Título: 'Do medo à missão'.",
+          "content_type": "Storytelling de Transformação (Um exemplo de cliente/pessoal)",
+          "cta_suggestion": "Compartilhe sua transformação nos comentários"
+        }
+      },
+      
+      "3": {
+        "day_name": "Quarta-feira",
+        "main_theme": "Autoridade e Liderança (Posicionamento)",
+        "objective": "Desenvolver liderança pessoal e autoridade",
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "majestic, mountain top view, person gazing at horizon",
+          "prompt_focus": "Cunho Espiritual Matinal. Desenvolva uma reflexão que alinhe o Propósito Divino com a Liderança Pessoal. A verdadeira liderança começa com a descoberta de sua missão. CTA para 'Busque sua bússola interior'.",
+          "content_type": "Propósito divino + Liderança pessoal",
+          "cta_suggestion": "Busque sua bússola interior"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "infographic, tool visual (e.g., a wheel or matrix)",
+          "prompt_focus": "Apresente uma 'Ferramenta/Modelo' de Coaching (ex: Roda da Vida ou Matriz de Eisenhower), explicando como ela ajuda a organizar a vida e focar no que é eterno. CTA para 'Faça seu diagnóstico em 5 minutos'.",
+          "content_type": "Ferramenta/Modelo (Ex: Roda da Vida, Matriz Eisenhower)",
+          "cta_suggestion": "Faça seu diagnóstico em 5 minutos"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "deep contrast, cinematic, focused reading",
+          "prompt_focus": "Crie um 'Conteúdo Educacional' aprofundado sobre PNL: como a 'Modelagem de Excelência' é uma forma de honrar e replicar o sucesso (incluindo modelos de fé). CTA para 'Aprenda o segredo dos gigantes'.",
+          "content_type": "Conteúdo Educacional aprofundado sobre PNL/Mindset",
+          "cta_suggestion": "Aprenda o segredo dos gigantes"
+        }
+      },
+      
+      "4": {
+        "day_name": "Quinta-feira",
+        "main_theme": "Empreendedorismo e Vendas (Conexão com o Negócio)",
+        "objective": "Conectar fé com abundância e negócios",
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "golden light, hands open in receiving gesture, abundance feel",
+          "prompt_focus": "Cunho Espiritual Matinal. Mensagem sobre a ligação entre a Provisão de Deus e a Abundância no Empreendedorismo. Use a Gratidão como a base para o sucesso e a atração. CTA para 'Agradecer e Multiplicar'.",
+          "content_type": "Provisão divina + Abundância empresarial",
+          "cta_suggestion": "Agradecer e Multiplicar"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "classic typography, bold, clean look",
+          "prompt_focus": "Gere uma 'Citação Inspiracional' de um empreendedor de sucesso (ex: Henry Ford, Walt Disney), com uma breve aplicação ao Mindset do coach. CTA: 'Inspire-se para a ação'.",
+          "content_type": "Citação Inspiracional de Empreendedor de sucesso",
+          "cta_suggestion": "Inspire-se para a ação"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "subtle, psychological visual, human interaction",
+          "prompt_focus": "Crie uma 'Técnica de Persuasão Ética' em Vendas (uso da Reciprocidade ou Prova Social) alinhada aos valores de integridade. CTA para 'Conecte-se com propósito e venda mais'.",
+          "content_type": "Técnica de Persuasão (Ética em PNL/Vendas)",
+          "cta_suggestion": "Conecte-se com propósito e venda mais"
+        }
+      },
+      
+      "5": {
+        "day_name": "Sexta-feira",
+        "main_theme": "Liberdade e Visão (Motivação para o Fim de Semana)",
+        "objective": "Preparar para descanso com visão de futuro",
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "open road, person looking forward, sense of freedom",
+          "prompt_focus": "Cunho Espiritual Matinal. Reflexão sobre a fé como a âncora para a Visão de futuro (esperança). O poder de Descansar no Plano de Deus. CTA para 'Confiar e Avançar'.",
+          "content_type": "Fé como âncora + Visão de futuro",
+          "cta_suggestion": "Confiar e Avançar"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "checklist design, minimalist, clear to-do items",
+          "prompt_focus": "Crie um 'Checklist Rápido' de 3 itens para preparar a mente para o descanso do fim de semana. Foco: Desconexão Digital e Presença. CTA para 'Desligar para Recarregar'.",
+          "content_type": "Checklist Rápido para Metas do Fim de Semana",
+          "cta_suggestion": "Desligar para Recarregar"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "vibrant, question mark, interactive elements",
+          "prompt_focus": "Crie um 'Conteúdo Leve/Interativo' (Enquete ou Quiz) sobre um dilema de Mindset comum ('Trabalhar no final de semana vs. Descansar'). CTA para 'Vote nos Stories'.",
+          "content_type": "Conteúdo Leve/Interativo (Enquete/Quiz nos Stories)",
+          "cta_suggestion": "Vote nos Stories"
+        }
+      },
+      
+      "6": {
+        "day_name": "Sábado",
+        "main_theme": "RESTAURAÇÃO E PROPÓSITO (Descanso Bíblico/Bem-Estar)",
+        "objective": "Descanso sagrado e restauração espiritual",
+        "special_day": true,
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "serene, cathedral light, soft focus, nature elements",
+          "prompt_focus": "Crie uma legenda que explore o Sábado como um 'reset' mental e físico, citando os benefícios de tirar um dia para adoração e descanso dos afazeres. Use a PNL para ligar o descanso à máxima performance semanal. CTA para 'Respire Fundo e Conecte-se'.",
+          "content_type": "Benefícios da Adoração e do Descanso Físico e Mental",
+          "cta_suggestion": "Respire Fundo e Conecte-se"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "warm, family moment, genuine connection, shared meal visual",
+          "prompt_focus": "Gere uma reflexão sobre a importância da Comunhão e do Serviço no Sábado. Como o 'fazer o bem' (misericórdia) recarrega nossa energia. CTA para 'Compartilhe este momento com quem você ama'.",
+          "content_type": "Conexão Familiar e Boas Obras (Misericórdia e Serviço)",
+          "cta_suggestion": "Compartilhe este momento com quem você ama"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "cosmic, deep blue, stars, visionary, sense of wonder",
+          "prompt_focus": "Desenvolva uma citação ou texto reflexivo sobre o Sábado como memorial da Criação (conexão com o Criador). Ligue este descanso divino à nossa capacidade humana de reconstrução e propósito de vida. CTA para 'Reflita sobre sua Visão'.",
+          "content_type": "Reflexão sobre a Criação e o Poder Divino (Grande Visão)",
+          "cta_suggestion": "Reflita sobre sua Visão"
+        }
+      },
+      
+      "7": {
+        "day_name": "Domingo",
+        "main_theme": "Recarga e Planejamento (Preparação para a Semana)",
+        "objective": "Preparação espiritual e prática para nova semana",
+        
+        "morning": {
+          "slot_name": "Despertar com Propósito (06:00 UTC - Feed)",
+          "spiritual_focus": true,
+          "style": "calm, journal/bible open, morning coffee, reflective",
+          "prompt_focus": "Cunho Espiritual Matinal. Desenvolva uma reflexão que ligue a Oração/Meditação Matinal (pedir sabedoria e direção) ao Planejamento de Metas da semana. Tema: 'Sabedoria para Definir Prioridades'. CTA para 'Comece com a Direção Certa'.",
+          "content_type": "Oração/Meditação + Planejamento de metas",
+          "cta_suggestion": "Comece com a Direção Certa"
+        },
+        
+        "midday": {
+          "slot_name": "Ação Rápida (12:00 UTC - Feed)",
+          "style": "notebook with checkmarks, structured, goal-oriented",
+          "prompt_focus": "Crie um prompt para o leitor planejar 1 Meta Realista e acionável para a próxima semana. CTA para 'Escrever sua meta nos comentários e selar o compromisso'.",
+          "content_type": "Planejamento de Metas (Call to Action para a próxima semana)",
+          "cta_suggestion": "Escrever sua meta nos comentários e selar o compromisso"
+        },
+        
+        "evening": {
+          "slot_name": "Reflexão Profunda (19:00 UTC - Feed)",
+          "style": "personable, direct to camera feel, casual",
+          "prompt_focus": "Gere um 'Pergunte ao Coach' com um tom convidativo (ex: 'Qual seu maior desafio para a próxima semana?'), focado em gerar interação no Stories e DMs.",
+          "content_type": "Pergunte ao Coach (CTA para DMs ou Link na Bio)",
+          "cta_suggestion": "Envie sua pergunta no direct"
+        }
+      }
+    },
+    
+    "tone_guidelines": {
+      "base_tone": "Inspirador, Autoridade, Cristão-orientado",
+      "morning_tone": "Espiritual, motivacional, esperançoso, conectado com Deus",
+      "midday_tone": "Prático, acionável, direto, focado em resultados",
+      "evening_tone": "Reflexivo, profundo, educacional, transformador"
+    },
+    
+    "content_rules": {
+      "spiritual_morning_rule": "OBRIGATÓRIO: Todas as manhãs devem ter cunho espiritual",
+      "saturday_special_rule": "Sábado foca em descanso bíblico e restauração",
+      "cta_requirement": "Cada post deve ter um Call to Action específico",
+      "theme_consistency": "Manter coerência temática durante todo o dia",
+      "pnl_integration": "Integrar conceitos de PNL de forma natural"
+    },
+    
+    "hashtag_suggestions": {
+      "spiritual": ["#FéEPropósito", "#DeusNoControle", "#PropósitoDivino", "#ForçaEspiritual"],
+      "coaching": ["#CoachingCristão", "#DesenvolvimentoPessoal", "#Mindset", "#Transformação"],
+      "business": ["#EmpreendedorismoCristão", "#Abundância", "#Sucesso", "#Liderança"],
+      "weekend": ["#DescansoSagrado", "#Sábado", "#Restauração", "#Família"]
+    }
+  }
+}

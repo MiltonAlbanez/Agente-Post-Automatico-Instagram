@@ -431,12 +431,22 @@ def main():
                         except Exception as e:
                             elapsed = time_module.time() - start_time
                             print(f"⚠️ Erro na coleta de hashtags após {elapsed:.1f}s: {str(e)}")
+                            # Detecção específica de "Acesso negado" para fallback instantâneo
+                            error_str = str(e).lower()
+                            if ("acesso negado" in error_str or 
+                                "access denied" in error_str or 
+                                "403" in str(e) or 
+                                "forbidden" in error_str or 
+                                "timeout" in error_str):
+                                print(f"🚫 ERRO CRÍTICO DETECTADO: {str(e)}")
+                                print(f"🔄 Ativando fallback IMEDIATO para {nome}...")
+                                rapidapi_failed = True
                             # Para Stories, ativar fallback imediatamente em qualquer erro
-                            if is_stories_mode:
+                            elif is_stories_mode:
                                 print(f"🔄 STORIES: Erro detectado - Ativando modo fallback para {nome}...")
                                 rapidapi_failed = True
-                            elif elapsed > 25 or "403" in str(e) or "Forbidden" in str(e) or "timeout" in str(e).lower():
-                                print(f"🔄 RapidAPI com problemas. Ativando modo fallback para {nome}...")
+                            elif elapsed > 15:  # Reduzido de 25 para 15 segundos
+                                print(f"🔄 RapidAPI lento ({elapsed:.1f}s). Ativando modo fallback para {nome}...")
                                 rapidapi_failed = True
                 
                     if users and not rapidapi_failed:
@@ -445,7 +455,14 @@ def main():
                             inserted += collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
                         except Exception as e:
                             print(f"⚠️ Erro na coleta de usuários: {str(e)}")
-                            if "403" in str(e) or "Forbidden" in str(e) or "timeout" in str(e).lower():
+                            error_str = str(e).lower()
+                            if ("acesso negado" in error_str or 
+                                "access denied" in error_str or 
+                                "403" in str(e) or 
+                                "forbidden" in error_str or 
+                                "timeout" in error_str):
+                                print(f"🚫 ERRO CRÍTICO na coleta de usuários: {str(e)}")
+                                print(f"🔄 Ativando fallback IMEDIATO para {nome}...")
                                 rapidapi_failed = True
                     
                     if not rapidapi_failed:

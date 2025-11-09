@@ -83,142 +83,185 @@ class AutomationScheduler:
             json.dump(self.config, f, indent=2, ensure_ascii=False)
             
     def create_scheduled_post(self):
-        """Criar post agendado automaticamente (apenas Feed)"""
+        """Criar post agendado automaticamente (apenas Feed) para todas as contas"""
         try:
-            self.logger.info("Iniciando criação de post agendado (Feed)...")
+            self.logger.info("Iniciando criação de post agendado (Feed) para múltiplas contas...")
             
             # Verificar se já atingiu o limite diário
             if self._check_daily_limit():
                 self.logger.warning("Limite diário de posts atingido")
                 return
-                
-            # Executar o pipeline completo de geração e publicação
-            self.logger.info("Executando pipeline de geração e publicação automática (Feed)...")
             
-            # Obter uma imagem de referência (pode ser configurável no futuro)
-            # Por enquanto, usar uma URL padrão ou a última imagem coletada
-            source_image_url = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"  # Placeholder
-            
-            # Chamar a função de geração e publicação com as configurações do sistema (apenas Feed)
-            self.logger.info("Chamando generate_and_publish com parâmetros...")
-            result = generate_and_publish(
-                openai_key=self.system_config["OPENAI_API_KEY"],
-                replicate_token=self.system_config["REPLICATE_TOKEN"],
-                instagram_business_id=self.system_config["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
-                instagram_access_token=self.system_config["INSTAGRAM_ACCESS_TOKEN"],
-                telegram_bot_token=self.system_config["TELEGRAM_BOT_TOKEN"],
-                telegram_chat_id=self.system_config["TELEGRAM_CHAT_ID"],
-                source_image_url=source_image_url,
-                account_name="Milton_Albanez",
-                publish_to_stories=False,  # Explicitamente desabilitar Stories para posts do Feed
-                use_weekly_themes=True  # Habilitar sistema temático semanal
-            )
-            
-            self.logger.info(f"Resultado da função generate_and_publish: {result}")
-            
-            if result and result.get('status') == 'PUBLISHED':
-                self.logger.info(f"[SUCESSO] Post automático criado com sucesso! ID: {result.get('post_id', 'N/A')}")
+            # Carregar contas do accounts.json
+            accounts_file = Path(__file__).parent.parent / "accounts.json"
+            try:
+                with open(accounts_file, 'r', encoding='utf-8') as f:
+                    accounts = json.load(f)
+                self.logger.info(f"Carregadas {len(accounts)} contas do accounts.json")
+            except Exception as e:
+                self.logger.error(f"Erro ao carregar accounts.json: {e}")
+                return
                 
-                # Registrar sucesso para monitoramento
-                post_data = {
-                    "timestamp": datetime.now().isoformat(),
-                    "status": "published",
-                    "type": "automated",
-                    "post_id": result.get('post_id'),
-                    "concept": result.get('concept', 'N/A')
-                }
+            # Processar cada conta
+            for account in accounts:
+                account_name = account.get("nome", "Conta_Desconhecida")
+                instagram_id = account.get("instagram_id")
+                access_token = account.get("instagram_access_token")
                 
-                # Monitorar o post recém-criado
-                self.engagement_monitor.track_post(post_data)
+                if not instagram_id or not access_token:
+                    self.logger.warning(f"Conta {account_name} não possui credenciais válidas, pulando...")
+                    continue
                 
-            else:
-                self.logger.error(f"[ERRO] Falha na criação do post automático. Resultado: {result}")
+                self.logger.info(f"Processando Feed para conta: {account_name}")
                 
-                # Registrar falha para monitoramento
-                post_data = {
-                    "timestamp": datetime.now().isoformat(),
-                    "status": "failed",
-                    "type": "automated",
-                    "error": result.get('error', 'Erro desconhecido') if result else 'Resultado nulo'
-                }
+                # Obter uma imagem de referência (pode ser configurável no futuro)
+                source_image_url = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"  # Placeholder
+                
+                # Chamar a função de geração e publicação com as configurações específicas da conta
+                self.logger.info(f"Chamando generate_and_publish para {account_name}...")
+                result = generate_and_publish(
+                    openai_key=self.system_config["OPENAI_API_KEY"],
+                    replicate_token=self.system_config["REPLICATE_TOKEN"],
+                    instagram_business_id=instagram_id,
+                    instagram_access_token=access_token,
+                    telegram_bot_token=self.system_config["TELEGRAM_BOT_TOKEN"],
+                    telegram_chat_id=self.system_config["TELEGRAM_CHAT_ID"],
+                    source_image_url=source_image_url,
+                    account_name=account_name,
+                    publish_to_stories=False,  # Explicitamente desabilitar Stories para posts do Feed
+                    use_weekly_themes=True  # Habilitar sistema temático semanal
+                )
+                
+                self.logger.info(f"Resultado da função generate_and_publish para {account_name}: {result}")
+                
+                if result and result.get('status') == 'PUBLISHED':
+                    self.logger.info(f"[SUCESSO] Post automático criado com sucesso para {account_name}! ID: {result.get('post_id', 'N/A')}")
+                    
+                    # Registrar sucesso para monitoramento
+                    post_data = {
+                        "timestamp": datetime.now().isoformat(),
+                        "status": "published",
+                        "type": "automated",
+                        "account": account_name,
+                        "post_id": result.get('post_id'),
+                        "concept": result.get('concept', 'N/A')
+                    }
+                    
+                    # Monitorar o post recém-criado
+                    self.engagement_monitor.track_post(post_data)
+                    
+                else:
+                    self.logger.error(f"[ERRO] Falha na criação do post automático para {account_name}. Resultado: {result}")
+                    
+                    # Registrar falha para monitoramento
+                    post_data = {
+                        "timestamp": datetime.now().isoformat(),
+                        "status": "failed",
+                        "type": "automated",
+                        "account": account_name,
+                        "error": result.get('error', 'Erro desconhecido') if result else 'Resultado nulo'
+                    }
+                    self.engagement_monitor.track_post(post_data)
             
-            self.logger.info("Post agendado processado e registrado para monitoramento")
+            self.logger.info("Posts agendados processados e registrados para monitoramento")
                 
         except Exception as e:
             self.logger.error(f"Erro na criação de post agendado: {str(e)}")
             
     def create_scheduled_stories(self):
-        """Criar Stories agendado automaticamente (apenas Stories)"""
+        """Criar Stories agendado automaticamente (apenas Stories) para todas as contas"""
         try:
-            self.logger.info("Iniciando criação de Stories agendado...")
+            self.logger.info("Iniciando criação de Stories agendado para múltiplas contas...")
             
             # Verificar se já atingiu o limite diário
             if self._check_daily_limit():
                 self.logger.warning("Limite diário de posts atingido")
                 return
+            
+            # Carregar contas do accounts.json
+            accounts_file = Path(__file__).parent.parent / "accounts.json"
+            try:
+                with open(accounts_file, 'r', encoding='utf-8') as f:
+                    accounts = json.load(f)
+                self.logger.info(f"Carregadas {len(accounts)} contas do accounts.json para Stories")
+            except Exception as e:
+                self.logger.error(f"Erro ao carregar accounts.json: {e}")
+                return
                 
-            # Executar o pipeline completo de geração e publicação (apenas Stories)
-            self.logger.info("Executando pipeline de geração e publicação automática (Stories)...")
-            
-            # Obter uma imagem de referência
-            source_image_url = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"  # Placeholder
-            
-            # Chamar a função de geração e publicação com as configurações do sistema (apenas Stories)
-            self.logger.info("Chamando generate_and_publish para Stories com parâmetros...")
-            result = generate_and_publish(
-                openai_key=self.system_config["OPENAI_API_KEY"],
-                replicate_token=self.system_config["REPLICATE_TOKEN"],
-                instagram_business_id=self.system_config["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
-                instagram_access_token=self.system_config["INSTAGRAM_ACCESS_TOKEN"],
-                telegram_bot_token=self.system_config["TELEGRAM_BOT_TOKEN"],
-                telegram_chat_id=self.system_config["TELEGRAM_CHAT_ID"],
-                source_image_url=source_image_url,
-                account_name="Milton_Albanez",
-                publish_to_stories=True,  # Habilitar Stories
-                stories_background_type="gradient",  # Usar fundo gradiente
-                stories_text_position="auto",  # Posicionamento inteligente automático
-                use_weekly_themes=True  # Habilitar sistema temático semanal
-            )
-            
-            self.logger.info(f"Resultado da função generate_and_publish para Stories: {result}")
-            
-            if result and result.get('status') == 'PUBLISHED':
-                self.logger.info(f"[SUCESSO] Stories automático criado com sucesso! ID: {result.get('post_id', 'N/A')}")
+            # Processar cada conta
+            for account in accounts:
+                account_name = account.get("nome", "Conta_Desconhecida")
+                instagram_id = account.get("instagram_id")
+                access_token = account.get("instagram_access_token")
                 
-                # Verificar se Stories foi publicado
-                stories_published = result.get('stories_published', False)
-                if stories_published:
-                    stories_result = result.get('stories', {})
-                    stories_id = stories_result.get('media_id', 'N/A')
-                    self.logger.info(f"[SUCESSO] Stories ID: {stories_id}")
+                if not instagram_id or not access_token:
+                    self.logger.warning(f"Conta {account_name} não possui credenciais válidas, pulando...")
+                    continue
+                
+                self.logger.info(f"Processando Stories para conta: {account_name}")
+                
+                # Obter uma imagem de referência
+                source_image_url = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"  # Placeholder
+                
+                # Chamar a função de geração e publicação com as configurações específicas da conta
+                self.logger.info(f"Chamando generate_and_publish para Stories da conta {account_name}...")
+                result = generate_and_publish(
+                    openai_key=self.system_config["OPENAI_API_KEY"],
+                    replicate_token=self.system_config["REPLICATE_TOKEN"],
+                    instagram_business_id=instagram_id,
+                    instagram_access_token=access_token,
+                    telegram_bot_token=self.system_config["TELEGRAM_BOT_TOKEN"],
+                    telegram_chat_id=self.system_config["TELEGRAM_CHAT_ID"],
+                    source_image_url=source_image_url,
+                    account_name=account_name,
+                    publish_to_stories=True,  # Habilitar Stories
+                    stories_background_type="gradient",  # Usar fundo gradiente
+                    stories_text_position="auto",  # Posicionamento inteligente automático
+                    use_weekly_themes=True  # Habilitar sistema temático semanal
+                )
+                
+                self.logger.info(f"Resultado da função generate_and_publish para Stories da conta {account_name}: {result}")
+                
+                if result and result.get('status') == 'PUBLISHED':
+                    self.logger.info(f"[SUCESSO] Stories automático criado com sucesso para {account_name}! ID: {result.get('post_id', 'N/A')}")
+                    
+                    # Verificar se Stories foi publicado
+                    stories_published = result.get('stories_published', False)
+                    if stories_published:
+                        stories_result = result.get('stories', {})
+                        stories_id = stories_result.get('media_id', 'N/A')
+                        self.logger.info(f"[SUCESSO] Stories ID para {account_name}: {stories_id}")
+                    else:
+                        self.logger.warning(f"Stories não foi publicado com sucesso para {account_name}")
+                    
+                    # Registrar sucesso para monitoramento
+                    post_data = {
+                        "timestamp": datetime.now().isoformat(),
+                        "status": "published",
+                        "type": "automated_stories",
+                        "account": account_name,
+                        "post_id": result.get('post_id'),
+                        "stories_id": stories_result.get('media_id') if stories_published else None,
+                        "concept": result.get('concept', 'N/A')
+                    }
+                    
+                    # Monitorar o post recém-criado
+                    self.engagement_monitor.track_post(post_data)
+                    
                 else:
-                    self.logger.warning("Stories não foi publicado com sucesso")
-                
-                # Registrar sucesso para monitoramento
-                post_data = {
-                    "timestamp": datetime.now().isoformat(),
-                    "status": "published",
-                    "type": "automated_stories",
-                    "post_id": result.get('post_id'),
-                    "stories_id": stories_result.get('media_id') if stories_published else None,
-                    "concept": result.get('concept', 'N/A')
-                }
-                
-                # Monitorar o post recém-criado
-                self.engagement_monitor.track_post(post_data)
-                
-            else:
-                self.logger.error(f"[ERRO] Falha na criação do Stories automático. Resultado: {result}")
-                
-                # Registrar falha para monitoramento
-                post_data = {
-                    "timestamp": datetime.now().isoformat(),
-                    "status": "failed",
-                    "type": "automated_stories",
-                    "error": result.get('error', 'Erro desconhecido') if result else 'Resultado nulo'
-                }
+                    self.logger.error(f"[ERRO] Falha na criação do Stories automático para {account_name}. Resultado: {result}")
+                    
+                    # Registrar falha para monitoramento
+                    post_data = {
+                        "timestamp": datetime.now().isoformat(),
+                        "status": "failed",
+                        "type": "automated_stories",
+                        "account": account_name,
+                        "error": result.get('error', 'Erro desconhecido') if result else 'Resultado nulo'
+                    }
+                    self.engagement_monitor.track_post(post_data)
             
-            self.logger.info("Stories agendado processado e registrado para monitoramento")
+            self.logger.info("Stories agendados processados e registrados para monitoramento")
                 
         except Exception as e:
             self.logger.error(f"Erro na criação de Stories agendado: {str(e)}")

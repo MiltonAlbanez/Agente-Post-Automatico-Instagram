@@ -38,10 +38,14 @@ def collect_hashtags(api_key: str, host: str, dsn: str, hashtags: List[str]) -> 
         last_err: Exception | None = None
 
         # Tentar em cada host na ordem até obter dados
-        for current_host in hosts_order:
+        print(f"   🔍 Tentando hashtag '{tag}' em {len(hosts_order)} hosts...")
+        for i, current_host in enumerate(hosts_order, 1):
             try:
+                print(f"   📡 Host {i}/{len(hosts_order)}: {current_host}")
                 rapid = RapidAPIClient(api_key, current_host)
+                print(f"   ⏳ Fazendo requisição para hashtag '{tag}'...")
                 data = rapid.get_top_by_hashtag(tag)
+                print(f"   ✅ Resposta recebida para '{tag}'")
                 try:
                     total_raw = len(
                         data.get("data", {}).get("items", [])
@@ -52,19 +56,23 @@ def collect_hashtags(api_key: str, host: str, dsn: str, hashtags: List[str]) -> 
                 except Exception:
                     total_raw = 0
                 items = RapidAPIClient.filter_images(data)
-                print(
-                    f"Hashtag '{tag}' via host '{current_host}': bruto={total_raw}, imagens={len(items)}"
-                )
                 # Se retornou qualquer dado bruto ou imagens, considerar sucesso
                 if total_raw > 0 or len(items) > 0:
+                    print(f"   ✅ Sucesso! {total_raw} itens brutos, {len(items)} imagens filtradas")
                     break
             except Exception as e:
+                error_msg = str(e)
+                if "timeout" in error_msg.lower():
+                    print(f"   ⏰ Timeout no host {current_host}")
+                elif "403" in error_msg or "forbidden" in error_msg.lower():
+                    print(f"   🚫 Acesso negado no host {current_host}")
+                else:
+                    print(f"   ❌ Erro no host {current_host}: {error_msg[:100]}")
                 last_err = e
-                print(f"Erro RapidAPI no host '{current_host}' para hashtag '{tag}': {e}")
                 continue
 
         if not items and last_err:
-            print(f"Falha final para hashtag '{tag}': {last_err}")
+            pass
 
         for item in items:
             # Garantir que a tag seja preenchida mesmo se a API não retornar
@@ -112,18 +120,14 @@ def collect_userposts(api_key: str, host: str, dsn: str, usernames: List[str]) -
                 except Exception:
                     total_raw = 0
                 items = RapidAPIClient.filter_images(data)
-                print(
-                    f"User '{user}' via host '{current_host}': bruto={total_raw}, imagens={len(items)}"
-                )
                 if total_raw > 0 or len(items) > 0:
                     break
             except Exception as e:
                 last_err = e
-                print(f"Erro RapidAPI no host '{current_host}' para usuário '{user}': {e}")
                 continue
 
         if not items and last_err:
-            print(f"Falha final para usuário '{user}': {last_err}")
+            pass
 
         for item in items:
             if not item.get("tag"):
