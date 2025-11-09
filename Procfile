@@ -1,10 +1,13 @@
-# AGENDADOR AUTOMÁTICO 24/7 - COMANDO PRINCIPAL (processo web)
-web: python railway_scheduler.py
+# PROCESSO WEB — Health server via Gunicorn
+web: gunicorn -w 1 -k gthread -b 0.0.0.0:${PORT:-8000} health_server:app
 
 # COMANDOS MANUAIS (para testes)
 unposted: python -m src.main unposted --limit ${LIMIT:-10}
 autopost: python -m src.main autopost --style "${STYLE:-}"
 teste: python railway_automation_teste.py
+
+# AGENDADOR 24/7 (opcional como worker se necessário)
+#worker: python railway_scheduler.py
 
 # AGENDADOR AUTOMÁTICO:
 # O comando 'scheduler' executa o sistema 24/7 com agendamentos automáticos:

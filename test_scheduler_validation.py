@@ -29,11 +29,27 @@ def check_railway_configuration():
             print(f"✅ Railway CLI: {result.stdout.strip()}")
             railway_available = True
         else:
-            print("❌ Railway CLI não encontrado")
-            railway_available = False
+            # Fallback para ambientes Windows onde .bat/.cmd exigem shell
+            fallback = subprocess.run('railway --version', shell=True, capture_output=True, text=True, timeout=10)
+            if fallback.returncode == 0:
+                print(f"✅ Railway CLI (fallback): {fallback.stdout.strip()}")
+                railway_available = True
+            else:
+                print("❌ Railway CLI não encontrado")
+                railway_available = False
     except Exception as e:
-        print(f"❌ Erro ao verificar Railway CLI: {e}")
-        railway_available = False
+        # Tentar fallback com shell=True
+        try:
+            fallback = subprocess.run('railway --version', shell=True, capture_output=True, text=True, timeout=10)
+            if fallback.returncode == 0:
+                print(f"✅ Railway CLI (fallback): {fallback.stdout.strip()}")
+                railway_available = True
+            else:
+                print(f"❌ Erro ao verificar Railway CLI: {e}")
+                railway_available = False
+        except Exception as e2:
+            print(f"❌ Erro ao verificar Railway CLI (fallback): {e2}")
+            railway_available = False
     
     # Verificar arquivos de configuração do Railway
     config_files = [

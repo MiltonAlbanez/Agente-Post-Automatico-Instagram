@@ -1,0 +1,60 @@
+{
+  "services": [
+    {
+      "service_name": "Agente Post 6h Auto Insta 05",
+      "name": "post_6h",
+      "schedule": "0 6 * * *",
+      "description": "Executa postagem automática diária às 06:00 BRT",
+      "start_command": "python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost",
+      "env": {
+        "CRON_NAME": "post_6h",
+        "CRON_LOCK_TIMEOUT_MIN": "30"
+      }
+    },
+    {
+      "service_name": "Agente Post 12h Auto Insta 02",
+      "name": "post_12h",
+      "schedule": "0 12 * * *",
+      "description": "Executa postagem automática diária às 12:00 BRT",
+      "start_command": "python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost",
+      "env": {
+        "CRON_NAME": "post_12h",
+        "CRON_LOCK_TIMEOUT_MIN": "30"
+      }
+    },
+    {
+      "service_name": "Agente Post 15h Auto Insta 01",
+      "name": "post_15h",
+      "schedule": "0 15 * * *",
+      "description": "Executa postagem automática diária às 15:00 BRT",
+      "start_command": "python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost",
+      "env": {
+        "CRON_NAME": "post_15h",
+        "CRON_LOCK_TIMEOUT_MIN": "30"
+      }
+    },
+    {
+      "service_name": "Agente Post 19h Auto Insta 03",
+      "name": "post_19h",
+      "schedule": "0 19 * * *",
+      "description": "Executa postagem automática diária às 19:00 BRT",
+      "start_command": "python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost",
+      "env": {
+        "CRON_NAME": "post_19h",
+        "CRON_LOCK_TIMEOUT_MIN": "30"
+      }
+    },
+    {
+      "service_name": "Agente Post 21h Auto Insta 04",
+      "name": "post_21h",
+      "schedule": "0 21 * * *",
+      "description": "Executa postagem automática diária às 21:00 BRT",
+      "start_command": "python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost",
+      "env": {
+        "CRON_NAME": "post_21h",
+        "CRON_LOCK_TIMEOUT_MIN": "30"
+      }
+    }
+  ],
+  "timezone_note": "Se o Railway estiver em UTC, ajuste: BRT = UTC-3. Ex.: 6h BRT = 9h UTC"
+}

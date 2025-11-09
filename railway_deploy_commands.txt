@@ -47,3 +47,41 @@ railway logs --timestamp | findstr /I /C:"ERROR" /C:"Traceback" /C:"telegram" /C
 python monitor_railway_logs.py --recent --alerts
 # - Validar variáveis de ambiente em caso de falha de alertas
 railway variables
+### Correção dos 5 serviços existentes (cron / worker)
+
+# Pré-requisitos
+# - Railway CLI instalado (https://docs.railway.com/reference/cli)
+# - Autenticado: railway login
+# - Selecionar projeto: railway use
+
+# Variáveis por serviço (aplicação via CLI)
+# Observação: cron schedules ainda precisam ser ajustados na UI.
+
+# Serviço: Agente Post 6h Auto Insta 05
+railway variables set CRON_NAME=post_6h CRON_LOCK_TIMEOUT_MIN=30 TZ=America/Sao_Paulo --service "Agente Post 6h Auto Insta 05"
+# Start Command (ajustar na UI):
+# python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost
+# Cron (UTC): 0 9 * * * (06:00 BRT)
+
+# Serviço: Agente Post 12h Auto Insta 02
+railway variables set CRON_NAME=post_12h CRON_LOCK_TIMEOUT_MIN=30 TZ=America/Sao_Paulo --service "Agente Post 12h Auto Insta 02"
+# Start Command: python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost
+# Cron (UTC): 0 15 * * * (12:00 BRT)
+
+# Serviço: Agente Post 15h Auto Insta 01
+railway variables set CRON_NAME=post_15h CRON_LOCK_TIMEOUT_MIN=30 TZ=America/Sao_Paulo --service "Agente Post 15h Auto Insta 01"
+# Start Command: python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost
+# Cron (UTC): 0 18 * * * (15:00 BRT)
+
+# Serviço: Agente Post 19h Auto Insta 03
+railway variables set CRON_NAME=post_19h CRON_LOCK_TIMEOUT_MIN=30 TZ=America/Sao_Paulo --service "Agente Post 19h Auto Insta 03"
+# Start Command: python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost
+# Cron (UTC): 0 22 * * * (19:00 BRT)
+
+# Serviço: Agente Post 21h Auto Insta 04
+railway variables set CRON_NAME=post_21h CRON_LOCK_TIMEOUT_MIN=30 TZ=America/Sao_Paulo --service "Agente Post 21h Auto Insta 04"
+# Start Command: python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && python main.py autopost
+# Cron (UTC): 0 0 * * * (21:00 BRT)
+
+# Verificação de logs
+railway logs --timestamp | findstr /I /C:"ERROR" /C:"Traceback" /C:"Failed"

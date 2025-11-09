@@ -1,71 +1,60 @@
-# Padrão de Variáveis de Ambiente — Railway (Cron Schedules)
+# Padrão de Ambiente no Railway — Fluxo Padrão e Variáveis
 
-Este documento define o conjunto canônico de variáveis de ambiente que devem existir em TODOS os cron schedules no Railway. Use como referência o schedule "Stories 21h", que está funcionando corretamente.
+Este documento consolida as variáveis de ambiente e observações operacionais para o fluxo “Padrão” no Railway, cobrindo serviço principal, cron schedules e backup.
 
-## Conjunto Canônico (21 variáveis)
+## Fluxo Padrão (Serviço Principal)
+- Builder: selecione “Padrão”.
+- `startCommand` (em `railway.json`):
+  - `bash -lc "python railway_cron_diagnostic.py && python cron_lock_system.py cleanup && (python main.py autopost &) && exec gunicorn -w 1 -k gthread -b 0.0.0.0:${PORT:-8000} health_server:app"`
+- Healthcheck: `healthcheckPath` para `/healthz`.
+- Resultado: diagnóstico inicial, limpeza de locks, `autopost` em background e health server ativo.
 
-- `OPENAI_API_KEY` — chave da OpenAI para geração de conteúdo
-- `REPLICATE_TOKEN` — token do Replicate para geração de imagem
-- `INSTAGRAM_BUSINESS_ACCOUNT_ID` — ID da conta comercial do Instagram (Graph API)
-- `INSTAGRAM_ACCESS_TOKEN` — token de acesso do Instagram (Graph API)
-- `TELEGRAM_BOT_TOKEN` — token do bot Telegram para alertas
-- `TELEGRAM_CHAT_ID` — ID do chat Telegram para alertas
-- `RAPIDAPI_KEY` — chave RapidAPI (scraper opcional)
-- `RAPIDAPI_HOST` — host do serviço RapidAPI
-- `RAPIDAPI_ALT_HOSTS` — hosts alternativos RapidAPI (fallback)
-- `POSTGRES_DSN` — conexão PostgreSQL (ou usar `DATABASE_URL`)
-- `DATABASE_URL` — conexão DB padrão do Railway (fallback)
-- `SUPABASE_URL` — URL do Supabase Storage (opcional)
-- `SUPABASE_SERVICE_KEY` — chave do serviço Supabase (opcional)
-- `SUPABASE_BUCKET` — bucket do Supabase (opcional)
-- `RAILWAY_ENVIRONMENT` — rótulo do ambiente (ex.: `production`)
-- `AUTOCMD` — comando automático principal (ex.: `scheduler`)
-- `ACCOUNT_NAME_DEFAULT` — nome de conta padrão (fallback)
-- `SOURCE_IMAGE_URL_DEFAULT` — URL de imagem padrão (fallback)
-- `DISABLE_REPLICATE` — `true/false` para desativar geração de imagens
-- `STORIES_BACKGROUND_TYPE` — `gradient/blurred` (padrão visual dos Stories)
-- `WEEKLY_THEMES_ENABLED` — `true/false` para Sistema Temático Semanal
+## Conjunto Canônico de Variáveis
+- Núcleo de execução:
+  - `DATABASE_URL` — conexão DB padrão do Railway (preferencial)
+  - `POSTGRES_DSN` — alternativa ao `DATABASE_URL`
+  - `OPENAI_API_KEY` — geração de conteúdo
+  - `INSTAGRAM_BUSINESS_ACCOUNT_ID`, `INSTAGRAM_ACCESS_TOKEN` — Graph API
+  - `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` — alertas
+  - `REPLICATE_TOKEN` — geração de imagem (opcional)
+- Suporte e fallbacks:
+  - `RAPIDAPI_KEY`, `RAPIDAPI_HOST`, `RAPIDAPI_ALT_HOSTS` (opcional)
+  - `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_BUCKET` (opcional)
+  - `RAILWAY_ENVIRONMENT` — rótulo (ex.: `production`)
+  - `ACCOUNT_NAME_DEFAULT`, `SOURCE_IMAGE_URL_DEFAULT` (fallbacks)
+  - `DISABLE_REPLICATE` — `true/false` (opcional)
+  - `STORIES_BACKGROUND_TYPE` — `gradient/blurred` (opcional)
+  - `WEEKLY_THEMES_ENABLED` — `true/false` (opcional)
 
-Observação: algumas variáveis são opcionais e servem de fallback. Mantenha-as mesmo que não sejam usadas diretamente em todos os horários para garantir consistência.
+Observação: mantenha a mesma lista e valores entre serviços/schedules para consistência operacional.
 
-## Como Padronizar no Railway
+## Cron Schedules (UI do Railway)
+- Configuração somente via interface web.
+- Serviços dedicados (exemplos):
+  - Feed: horários em UTC equivalentes a 06h, 12h, 19h BRT.
+  - Stories: horários em UTC equivalentes a 09h, 15h, 21h BRT.
+- Variável opcional por serviço: `AUTOCMD` (ex.: `autopost --stories`). No serviço principal não é necessária.
 
-1. Abra o schedule que funciona ("Stories 21h") e **liste todas as variáveis**.
-2. Nos demais schedules (Feed 06/12/18/19 e Stories 09/15/00), **replique exatamente os mesmos nomes** e **valores**.
-3. Garanta que `INSTAGRAM_BUSINESS_ACCOUNT_ID` e `INSTAGRAM_ACCESS_TOKEN` estão **presentes** e corretos.
-4. Garanta que `OPENAI_API_KEY`, `REPLICATE_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` existem em todos os schedules.
-5. Se usar armazenamento, mantenha `SUPABASE_*` iguais em todos.
-6. Após padronizar, **reinicie** cada serviço/schedule para aplicar.
+## Backup Automático
+- Serviço separado `backup-cron` com schedules:
+  - Diário (02:00 UTC): `python scripts/run_oneoff_backup.py --type daily`
+  - Semanal (Domingo 03:00 UTC): `python scripts/run_oneoff_backup.py --type full`
+- Retenção e compressão: controladas por `config/backup_config.json`.
+- Validação: procurar `Backup concluído:` nos logs do cron.
 
 ## Verificações Rápidas
+- Telegram: sem `TELEGRAM_*` não há alertas.
+- Instagram: sem `INSTAGRAM_*` o post falha.
+- Geração: sem `OPENAI_API_KEY` e `REPLICATE_TOKEN`, cai em fallback.
+- DB: `DATABASE_URL/POSTGRES_DSN` presentes evitam falhas.
+- Health: `/healthz` deve responder 200; `/metrics` e `/status` ajudam diagnóstico.
 
-- Telegram: sem `TELEGRAM_*` não há alertas; o job pode funcionar mas não notifica.
-- Instagram: sem `INSTAGRAM_*` o post falha com erro de token/ID.
-- Geração: sem `OPENAI_API_KEY` e `REPLICATE_TOKEN`, pode cair em fallback (qualidade inferior).
-- DB: `POSTGRES_DSN` ou `DATABASE_URL` presentes evitam erros de tracking.
+## Como sincronizar (CLI)
+- `railway login`, `railway link` e aplicar variáveis com scripts de bootstrap (se existirem).
+- Alternativa: definir manualmente via UI.
+- Confirmar que todos os serviços/schedules compartilham o mesmo conjunto de variáveis.
 
-## Dicas
-
-- Evite nomes customizados em português (ex.: `TOKEN_DE_ACESSO_DO_INSTAGRAM`). Padronize para os nomes acima.
-- Se um schedule tiver menos variáveis, **adicione as que faltam** mesmo que não sejam usadas diretamente naquele horário.
-- Se um schedule tiver variáveis extras não usadas, **mantenha** se não conflitam, ou remova após validar que não há dependências.
-
-## Como sincronizar com Railway (Passo a passo)
-
-1. Instale e autentique-se no Railway CLI:
-   - `railway login`
-   - `railway link` (selecione o projeto correto)
-2. Aplique variáveis padrão com o script:
-   - `./scripts/railway_env_bootstrap.ps1`
-   - Substitua os placeholders (`<...>`) por suas credenciais reais.
-3. Alternativa (manual):
-   - Execute os comandos em `railway_env_commands.txt` e `railway_supabase_commands.txt`.
-4. Confirme configuração:
-   - No painel do Railway, verifique se todos os schedules têm o mesmo conjunto de variáveis e valores.
-5. Valide execução:
-   - Rode localmente: `python -m src.main generate --image_url "https://images.unsplash.com/photo-1506905925346-21bda4d32df4" --disable_replicate --stories`
-   - Em produção, reexecute um schedule e monitore logs/Telegram.
-6. Boas práticas de segurança:
-   - Não versionar segredos em plaintext.
-   - Preferir placeholders em arquivos de referência (ex.: `CREDENCIAIS_PERMANENTES.json`).
-   - Atualizar `.env.example` como contrato de configuração.
+## Boas práticas
+- Não versionar segredos em plaintext.
+- Usar placeholders em arquivos de referência.
+- Manter `.env.example` como contrato de configuração.

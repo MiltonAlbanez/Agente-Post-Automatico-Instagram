@@ -1,21 +1,19 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
-  "build": {
-    "builder": "NIXPACKS"
-  },
   "deploy": {
-    "startCommand": "python railway_scheduler.py",
+    "startCommand": "bash -lc \"if [ -f railway_cron_diagnostic.py ]; then python railway_cron_diagnostic.py; else echo '[diag] Skipping: railway_cron_diagnostic.py not found'; fi && if [ -f cron_lock_system.py ]; then python cron_lock_system.py cleanup || true; else echo '[diag] Skipping: cron_lock_system.py not found'; fi && (python main.py autopost &) && exec gunicorn -w 1 -k gthread -b 0.0.0.0:${PORT:-8000} health_server:app\"",
+    "numReplicas": 1,
     "sleepApplication": false,
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10,
-    "healthcheckPath": "/health",
+    "restartPolicyMaxRetries": 3,
+    "healthcheckPath": "/healthz",
     "healthcheckTimeout": 300
   },
   "environments": {
     "production": {
       "variables": {
         "PYTHONUNBUFFERED": "1",
-        "TZ": "UTC"
+        "TZ": "America/Sao_Paulo"
       }
     }
   }

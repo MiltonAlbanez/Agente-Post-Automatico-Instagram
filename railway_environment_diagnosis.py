@@ -26,6 +26,12 @@ class RailwayEnvironmentDiagnostic:
             "root_cause_analysis": {},
             "immediate_fixes": []
         }
+        # Métricas agregadas do diagnóstico
+        self.metrics = {
+            "errors": [],
+            "warnings": [],
+            "info": []
+        }
         
     def setup_logging(self):
         """Configurar logging"""
@@ -288,6 +294,221 @@ class RailwayEnvironmentDiagnostic:
                     "automation_is_simulation": automation_simulation
                 }
             })
+
+    def _get_database_dsn(self) -> str | None:
+        """Obtém DSN do banco de dados a partir de múltiplas variáveis suportadas."""
+        candidates = [
+            os.getenv("DATABASE_URL"),
+            os.getenv("SUPABASE_DB_URL"),
+            os.getenv("POSTGRES_DSN"),
+        ]
+        for dsn in candidates:
+            if dsn and dsn.strip():
+                return dsn.strip()
+        return None
+
+    def _check_rate_limits(self):
+        """Verifica se há rate limits ativos em logs armazenados no Postgres."""
+        self.logger.info("\n5️⃣ VERIFICANDO RATE LIMITS")
+        self.logger.info("-" * 70)
+
+        dsn = self._get_database_dsn()
+        if not dsn:
+            msg = "DATABASE_URL/POSTGRES_DSN não configurado"
+            self.logger.warning(f"  ⚠️  {msg}")
+            self.metrics["warnings"].append(msg)
+            self.diagnosis_results["rate_limits_analysis"] = {
+                "available": False,
+                "reason": msg
+            }
+            return
+
+        try:
+            import psycopg
+            with psycopg.connect(dsn) as conn:
+                with conn.cursor() as cur:
+                    # Criar tabela de rate limits se não existir
+                    cur.execute(
+                        """
+                        CREATE TABLE IF NOT EXISTS api_rate_limits (
+                            api_name VARCHAR(100),
+                            request_time TIMESTAMPTZ DEFAULT NOW(),
+                            status_code INT
+                        );
+                        """
+                    )
+
+                    summary: dict = {"last_1h": [], "last_24h": []}
+                    for hours in [1, 24]:
+                        cur.execute(
+                            """
+                            SELECT api_name,
+                                   COUNT(*) as total,
+                                   SUM(CASE WHEN status_code = 429 THEN 1 ELSE 0 END) as rate_limited
+                            FROM api_rate_limits
+                            WHERE request_time > NOW() - INTERVAL '%s hours'
+                            GROUP BY api_name
+                            ORDER BY api_name
+                            """,
+                            (hours,),
+                        )
+                        rows = cur.fetchall()
+                        bucket = "last_1h" if hours == 1 else "last_24h"
+                        for api, total, rate_limited in rows:
+                            summary[bucket].append({
+                                "api": api,
+                                "total": int(total or 0),
+                                "rate_limited": int(rate_limited or 0),
+                            })
+                            if rate_limited and int(rate_limited) > 0:
+                                warn = f"{api}: {int(rate_limited)} rate limits em {hours}h"
+                                self.logger.warning(f"     ⚠️  {warn}")
+                                self.metrics["warnings"].append(warn)
+
+                    # Log amigável
+                    for bucket in ["last_1h", "last_24h"]:
+                        if summary[bucket]:
+                            self.logger.info(f"\n  📊 Chamadas nas {bucket.replace('last_', '').replace('1h','última 1h').replace('24h','últimas 24h') }:")
+                            for item in summary[bucket]:
+                                self.logger.info(
+                                    f"     {item['api']}: {item['total']} chamadas ({item['rate_limited']} rate limited)"
+                                )
+
+                    self.diagnosis_results["rate_limits_analysis"] = {
+                        "available": True,
+                        "summary": summary
+                    }
+
+        except ImportError:
+            msg = "psycopg (v3) não instalado"
+            self.logger.warning(f"  ⚠️  {msg}")
+            self.metrics["warnings"].append(msg)
+            self.diagnosis_results["rate_limits_analysis"] = {
+                "available": False,
+                "reason": msg
+            }
+        except Exception as e:
+            err = f"Erro ao verificar rate limits: {e}"
+            self.logger.error(f"  ❌ {err}")
+            self.metrics["errors"].append(err)
+            self.diagnosis_results["rate_limits_analysis"] = {
+                "available": False,
+                "error": str(e)
+            }
+
+    def _check_database(self):
+        """Verifica estado do banco de dados principal (tabela top_trends)."""
+        self.logger.info("\n6️⃣ VERIFICANDO BANCO DE DADOS")
+        self.logger.info("-" * 70)
+
+        dsn = self._get_database_dsn()
+        if not dsn:
+            msg = "DATABASE_URL/POSTGRES_DSN não configurado"
+            self.logger.error(f"  ❌ {msg}")
+            self.metrics["errors"].append(msg)
+            self.diagnosis_results["database_status"] = {
+                "available": False,
+                "reason": msg
+            }
+            return
+
+        try:
+            import psycopg
+            with psycopg.connect(dsn) as conn:
+                with conn.cursor() as cur:
+                    # Verificar conexão
+                    cur.execute("SELECT version();")
+                    version = (cur.fetchone() or ["unknown"])[0]
+                    self.logger.info(f"  ✅ Conectado: {str(version).split(',')[0]}")
+
+                    # Garantir schema básico (caso migrações não tenham rodado)
+                    cur.execute(
+                        """
+                        CREATE TABLE IF NOT EXISTS top_trends (
+                            id SERIAL PRIMARY KEY,
+                            prompt TEXT,
+                            thumbnail_url TEXT,
+                            code TEXT UNIQUE,
+                            tag TEXT,
+                            isposted BOOLEAN DEFAULT FALSE,
+                            created_at TIMESTAMPTZ DEFAULT NOW()
+                        );
+                        """
+                    )
+
+                    # Estatísticas
+                    cur.execute(
+                        """
+                        SELECT COUNT(*) FROM top_trends
+                        WHERE created_at > NOW() - INTERVAL '24 hours'
+                        """
+                    )
+                    posts_24h = int((cur.fetchone() or [0])[0])
+
+                    cur.execute("SELECT COUNT(*) FROM top_trends WHERE isposted = TRUE")
+                    posts_publicados = int((cur.fetchone() or [0])[0])
+
+                    cur.execute("SELECT COUNT(*) FROM top_trends WHERE isposted = FALSE")
+                    posts_pendentes = int((cur.fetchone() or [0])[0])
+
+                    self.logger.info(f"\n  📊 Estatísticas:")
+                    self.logger.info(f"     Posts nas últimas 24h: {posts_24h}")
+                    self.logger.info(f"     Posts publicados: {posts_publicados}")
+                    self.logger.info(f"     Posts pendentes: {posts_pendentes}")
+
+                    if posts_pendentes == 0:
+                        warn = "Sem posts pendentes"
+                        self.logger.warning("  ⚠️  Nenhum post pendente! Pode não ter novos posts para publicar")
+                        self.metrics["warnings"].append(warn)
+
+                    # Último registro
+                    cur.execute(
+                        """
+                        SELECT code, created_at, isposted
+                        FROM top_trends
+                        ORDER BY created_at DESC
+                        LIMIT 1
+                        """
+                    )
+                    ultimo = cur.fetchone()
+                    last_item = None
+                    if ultimo:
+                        last_item = {
+                            "code": ultimo[0],
+                            "created_at": str(ultimo[1]),
+                            "isposted": bool(ultimo[2]),
+                        }
+                        self.logger.info(f"\n  📝 Último registro:")
+                        self.logger.info(f"     Code: {last_item['code']}")
+                        self.logger.info(f"     Data: {last_item['created_at']}")
+                        self.logger.info(f"     Publicado: {'Sim' if last_item['isposted'] else 'Não'}")
+
+                    self.diagnosis_results["database_status"] = {
+                        "available": True,
+                        "stats": {
+                            "posts_last_24h": posts_24h,
+                            "published": posts_publicados,
+                            "pending": posts_pendentes,
+                        },
+                        "last_record": last_item,
+                    }
+
+        except ImportError:
+            msg = "psycopg (v3) não instalado"
+            self.logger.warning(f"  ⚠️  {msg}")
+            self.metrics["warnings"].append(msg)
+            self.diagnosis_results["database_status"] = {
+                "available": False,
+                "reason": msg
+            }
+        except Exception as e:
+            err = f"Erro ao verificar banco de dados: {e}"
+            self.logger.error(f"  ❌ {err}")
+            self.metrics["errors"].append(err)
+            self.diagnosis_results["database_status"] = {
+                "available": False,
+                "error": str(e)
+            }
     
     def determine_root_cause(self):
         """Determinar causa raiz"""
@@ -473,8 +694,12 @@ class RailwayEnvironmentDiagnostic:
             
             # 5. Gerar correções imediatas
             self.generate_immediate_fixes()
-            
-            # 6. Salvar diagnóstico
+
+            # 6. Verificar rate limits e banco (se disponível)
+            self._check_rate_limits()
+            self._check_database()
+
+            # 7. Salvar diagnóstico
             report_filename = self.save_diagnosis()
             
             # Mostrar resumo

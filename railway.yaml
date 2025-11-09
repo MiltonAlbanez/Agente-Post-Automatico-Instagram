@@ -2,8 +2,6 @@ version: 3
 
 services:
   app:
-    build:
-      builder: NIXPACKS
     deploy:
       sleepApplication: false
 

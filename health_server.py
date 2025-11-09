@@ -9,6 +9,7 @@ import json
 import threading
 import time
 from datetime import datetime, timedelta
+from typing import Optional
 from flask import Flask, jsonify
 import logging
 from pathlib import Path
@@ -32,7 +33,7 @@ class HealthServer:
             pass
         # Configurações de health via bot_config.json
         self._settings = self._load_health_settings()
-        self._last_alert_at: datetime | None = None
+        self._last_alert_at: Optional[datetime] = None
         
         # Importar performance monitor se disponível
         try:
@@ -312,7 +313,16 @@ class HealthServer:
                 logger.warning(f"Falha ao registrar health: {e}")
 
             return jsonify(health_data)
-        
+
+        @self.app.route('/healthz')
+        def healthz():
+            """Endpoint leve para healthcheck do orquestrador"""
+            return jsonify({
+                "status": "ok",
+                "timestamp": datetime.now().isoformat(),
+                "uptime_seconds": (datetime.now() - self.start_time).total_seconds()
+            })
+
         @self.app.route('/metrics')
         def metrics():
             """Endpoint específico para métricas detalhadas"""
@@ -377,15 +387,33 @@ class HealthServer:
         self.server_thread.start()
         logger.info(f"✅ Health server thread iniciada na porta {self.port}")
 
-if __name__ == "__main__":
-    # Teste do health server
-    server = HealthServer(port=8000)
-    server.start()
-    
-    import time
-    print("Health server rodando... Pressione Ctrl+C para parar")
+# Exportar app WSGI para servidores como gunicorn
+def build_app():
     try:
-        while True:
-            time.sleep(1)
+        port = int(os.environ.get("PORT", 8000))
+    except Exception:
+        port = 8000
+    hs = HealthServer(port=port)
+    return hs.app
+
+# Variável padrão esperada por servidores WSGI
+app = build_app()
+
+if __name__ == "__main__":
+    # Iniciar o health server de forma bloqueante na porta do ambiente
+    try:
+        port = int(os.environ.get("PORT", 8000))
+    except Exception:
+        port = 8000
+    server = HealthServer(port=port)
+    logger.info(f"🏥 Health server iniciando na porta {port}")
+    try:
+        server.app.run(
+            host='0.0.0.0',
+            port=port,
+            debug=False,
+            use_reloader=False,
+            threaded=True
+        )
     except KeyboardInterrupt:
-        print("Parando health server...")
+        logger.info("Health server interrompido.")

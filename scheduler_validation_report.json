@@ -1,7 +1,7 @@
 {
-  "status": "PARTIAL",
-  "score": "5/7",
-  "railway_available": false,
+  "status": "READY",
+  "score": "7/7",
+  "railway_available": true,
   "config_files": [
     "railway.json",
     "railway.yaml",
@@ -13,7 +13,7 @@
       "exists": true,
       "has_time_config": true,
       "has_feed_logic": true,
-      "size": 7957
+      "size": 25763
     },
     "automation/scheduler.py": {
       "exists": true,
@@ -30,39 +30,44 @@
   },
   "timezone_ok": true,
   "timezone_info": {
-    "current_brt": "2025-10-23 17:46:57.084798-03:00",
-    "next_19h_brt": "2025-10-23 19:00:00-03:00",
-    "time_until": "1:13:02.915202"
+    "current_brt": "2025-11-04 22:47:41.404935-03:00",
+    "next_19h_brt": "2025-11-05 19:00:00-03:00",
+    "time_until": "20:12:18.595065"
   },
   "env_status": {
     "OPENAI_API_KEY": {
-      "configured": false
+      "configured": true,
+      "masked_value": "sk-pro...4RsA"
     },
     "INSTAGRAM_ACCESS_TOKEN": {
-      "configured": false
+      "configured": true,
+      "masked_value": "EAAKXu...uEck"
     },
     "INSTAGRAM_BUSINESS_ACCOUNT_ID": {
-      "configured": false
+      "configured": true,
+      "masked_value": "178414...6588"
     },
     "REPLICATE_TOKEN": {
-      "configured": false
+      "configured": true,
+      "masked_value": "r8_KAT...4BRa"
     },
     "TELEGRAM_BOT_TOKEN": {
-      "configured": false
+      "configured": true,
+      "masked_value": "826665...RZyI"
     },
     "TELEGRAM_CHAT_ID": {
-      "configured": false
+      "configured": true,
+      "masked_value": "-10031...3827"
     }
   },
   "accounts_ok": true,
   "accounts_info": {
-    "total_accounts": 2,
+    "total_accounts": 4,
     "active_accounts": 2,
     "feed_accounts": 1,
     "feed_account_details": [
       {
         "nome": "Milton_Albanez",
-        "type": "feed",
         "hashtags_pesquisa": [
           "empreendedorismo",
           "coaching",
@@ -74,12 +79,13 @@
         ],
         "instagram_id": "17841404919106588",
         "instagram_access_token": "EAAKXup1fjNIBPphQVRWxFKWksE1Gptksm7nBpYAFh3t01Y3XvnyXmHCCim0gZAZAZAZBDTFLHkCkVVP5bJ73ltbA9JMLhvroZCM5LAeSPpQLJZCPcKkOOKLFS4n3SViRQx8cPFTsjCYZAWrxV4bIUuPrZCJmi8Q11KjVuy4d5ZAIV3UMSfZBFwgsfU3h1c1TEEC8yZBOatvmRq0fTLpuEck",
+        "type": "feed",
         "prompt_ia_geracao_conteudo": "Descreva a imagem em português (Brasil) de forma clara e objetiva. Se a imagem for abstrata, descreva os elementos e as cores. Se a imagem for concreta, descreva o objeto e o que ele representa metaforicamente no contexto de crescimento e alta performance. Conecte sempre os elementos visuais a conceitos de desenvolvimento pessoal, liderança e transformação empresarial. Evite descrições puramente físicas - inclua sempre o significado simbólico dos elementos na jornada empreendedora.",
         "prompt_ia_replicate": "Imagem conceitual e profissional representando crescimento, liderança e transformação. VARIEDADE VISUAL: Alternar entre: 1) Paisagens naturais (montanhas, árvores, caminhos) simbolizando crescimento orgânico; 2) Elementos urbanos/corporativos (arranha-céus, pontes, escaladas) representando ambição e estrutura; 3) Elementos humanos abstratos (silhuetas, mãos, sombras) indicando liderança; 4) Conceitos minimalistas (formas geométricas, gradientes, luz/sombra) para reflexão profunda. Estilo: clean, moderno, inspiracional, profissional. Cores: tons terrosos, azuis profundos, verdes naturais, cinzas elegantes, dourados sutis. Evitar: rostos definidos, objetos literais óbvios, clichês visuais. Foco em metáforas visuais de alta performance, desenvolvimento pessoal e sucesso empresarial.",
-        "prompt_ia_legenda": "Você é um Estrategista de Conteúdo Sênior, focado em Coaching, PNL e Desenvolvimento Pessoal para Empreendedores.\n\n**Tarefa:** Crie uma legenda de Instagram profissional, prática e com propósito, baseada na {descricao} e no {texto_original}.\n\n**Restrições e Estilo:**\n 1.  **Evite Clichês:** Não use frases motivacionais óbvias como \"Transforme seus sonhos!\" ou \"Acredite em si mesmo!\". O conteúdo deve ser *concreto*.\n 2.  **Foco em Ação:** Transforme a descrição da imagem e a inspiração do texto original em uma **dica, método ou reflexão profunda** sobre um dos temas (Coaching, PNL, Desenvolvimento Pessoal) que seja imediatamente aplicável ao empreendedor.\n 3.  **Estrutura:** * **Gancho (1ª Linha):** Uma frase que desafie uma crença comum do empreendedor.\n      * **Corpo (Desenvolvimento):** Explique como o conceito de PNL ou Coaching se aplica à situação descrita na imagem/texto.\n      * **Chamada para Ação (CTA):** Uma pergunta direta que incite a reflexão ou o comentário do público.\n 4.  **Hashtags Dinâmicas:** Use as hashtags base: #Empreendedorismo #Coaching #PNL #DesenvolvimentoPessoal #SucessoDigital #JornadaEmpreendedora. ADICIONE hashtags contextuais baseadas no conteúdo (ex: se falar de liderança, adicione #LiderancaAutentica; se falar de vendas, #VendasEstrategicas; se falar de mindset, #MindsetVencedor). Inclua também 1-2 hashtags sazonais ou do dia da semana quando apropriado (ex: #SegundaMotivacional, #NovoAno, #UltimoTrimestre). Total: 8-10 hashtags variadas e relevantes.\n\n**Dados Disponíveis:**\n - **DESCRIÇÃO DA IMAGEM:** {descricao}\n - **TEXTO ORIGINAL COLETADO:** {texto_original}\n\nSaída final: apenas a legenda pronta, sem explicações.",
-        "supabase_url": "",
-        "supabase_service_key": "",
-        "supabase_bucket": "",
+        "prompt_ia_legenda": "Você é um Estrategista de Conteúdo Sênior, focado em Coaching, PNL e Desenvolvimento Pessoal para Empreendedores.\n\n**Tarefa:** Crie uma legenda de Instagram profissional, prática e com propósito, baseada na {descricao} e no {texto_original}.\n\n**Restrições e Estilo:**\n 1.  **Evite Clichês:** Não use frases motivacionais óbvias como \"Transforme seus sonhos!\" ou \"Acredite em si mesmo!\". O conteúdo deve ser *concreto*.\n 2.  **Foco em Ação:** Transforme a descrição da imagem e a inspiração do texto original em uma **dica, método ou reflexão profunda** sobre um dos temas (Coaching, PNL, Desenvolvimento Pessoal) que seja imediatamente aplicável ao empreendedor.\n 3.  **Estrutura:** * **Gancho (1ª Linha):** Uma frase que desafie uma crença comum do empreendedor.\n      * **Corpo (Desenvolvimento):** Explique como o conceito de PNL ou Coaching se aplica à situação descrita na imagem/texto.\n      * **Chamada para Ação (CTA):** Uma pergunta direta que incite a reflexão ou o comentário do público.\n  4.  **Hashtags Dinâmicas:** Use as hashtags base: #Empreendedorismo #Coaching #PNL #DesenvolvimentoPessoal #SucessoDigital #JornadaEmpreendedora. ADICIONE hashtags contextuais baseadas no conteúdo (ex: se falar de liderança, adicione #LiderancaAutentica; se falar de vendas, #VendasEstrategicas; se falar de mindset, #MindsetVencedor). Inclua também 1-2 hashtags sazonais ou do dia da semana quando apropriado (ex: #SegundaMotivacional, #NovoAno, #UltimoTrimestre). Total: 8-10 hashtags variadas e relevantes.\n\n**Dados Disponíveis:**\n - **DESCRIÇÃO DA IMAGEM:** {descricao}\n - **TEXTO ORIGINAL COLETADO:** {texto_original}\n\nSaída final: apenas a legenda pronta, sem explicações.",
+        "supabase_url": "https://ccvfdupucmsjxwtfwzkd.supabase.co",
+        "supabase_service_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjdmZkdXB1Y21zanh3dGZ3emtkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTg3OTgwNywiZXhwIjoyMDc1NDU1ODA3fQ.HcQb9CpoF9sQcRUBQWmcmx6RmokXd64FbGpBV3GVUzM",
+        "supabase_bucket": "instagram-images",
         "superior_concepts_enabled": true,
         "superior_concepts_probability": 0.7,
         "disable_replicate": false
