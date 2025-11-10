@@ -28,3 +28,4 @@ railway_env_commands.txt
 railway_env_commands.sh
 *.local.template
 *.local.sh
+scripts/railway_apply_kv.ps1
