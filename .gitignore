@@ -23,3 +23,8 @@ Thumbs.db
 # IDE/editor
 .vscode/
 .idea/
+# Ignore local Railway env helper files (security-safe)
+railway_env_commands.txt
+railway_env_commands.sh
+*.local.template
+*.local.sh
