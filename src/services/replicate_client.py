@@ -1,5 +1,10 @@
+import os
+import logging
 import requests
 from typing import Dict, Any
+
+
+logger = logging.getLogger(__name__)
 
 
 class ReplicateClient:
@@ -8,7 +13,21 @@ class ReplicateClient:
     )
 
     def __init__(self, token: str):
-        self.headers = {"Authorization": f"Bearer {token}"}
+        """Inicializa cliente Replicate com validação de token.
+
+        - Tenta usar `token` fornecido; se vazio, tenta `REPLICATE_TOKEN` do ambiente.
+        - Em caso de ausência/placeholder, levanta erro com mensagem clara para falha controlada.
+        """
+        tok = (token or "").strip() or os.getenv("REPLICATE_TOKEN", "").strip()
+        placeholder_markers = ["YOUR_", "PLACEHOLDER", "EXAMPLE", "TEMP", "REDACTED"]
+        if not tok or any(m in tok for m in placeholder_markers):
+            msg = (
+                "REPLICATE_TOKEN ausente ou inválido. Configure a variável de ambiente REPLICATE_TOKEN "
+                "ou forneça um token válido para geração de imagens."
+            )
+            logger.warning(msg)
+            raise ValueError(msg)
+        self.headers = {"Authorization": f"Bearer {tok}"}
 
     def generate_image(self, prompt: str) -> str:
         payload: Dict[str, Any] = {"input": {"prompt": prompt}}

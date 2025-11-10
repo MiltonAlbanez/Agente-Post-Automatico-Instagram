@@ -1,14 +1,35 @@
 from typing import Optional
 import base64
+import os
+import logging
 import requests
 
 from openai import OpenAI
 
 
+logger = logging.getLogger(__name__)
+
+
 class OpenAIClient:
     def __init__(self, api_key: str):
-        # Cliente OpenAI v1.x
-        self.client = OpenAI(api_key=api_key)
+        """Inicializa cliente OpenAI com validação de chave.
+
+        - Tenta usar `api_key` fornecida; se vazia, tenta `OPENAI_API_KEY` do ambiente.
+        - Em caso de ausência/placeholder, desativa cliente com motivo e fornece fallbacks controlados.
+        """
+        key = (api_key or "").strip() or os.getenv("OPENAI_API_KEY", "").strip()
+        placeholder_markers = ["YOUR_", "PLACEHOLDER", "EXAMPLE", "TEMP", "REDACTED"]
+        if not key or any(m in key for m in placeholder_markers):
+            self.client = None
+            self._disabled_reason = (
+                "OPENAI_API_KEY ausente ou inválido. Configure a variável de ambiente OPENAI_API_KEY "
+                "ou passe uma chave válida para o cliente."
+            )
+            logger.warning(self._disabled_reason)
+        else:
+            # Cliente OpenAI v1.x
+            self.client = OpenAI(api_key=key)
+            self._disabled_reason = None
 
     def describe_image(self, image_url: str, custom_prompt: Optional[str] = None) -> str:
         # Tentar enviar a imagem como data URL base64 para evitar bloqueios do CDN
@@ -47,6 +68,14 @@ class OpenAIClient:
                 "e evolução, destacando elementos, cores e metáforas relevantes."
             )
 
+        # Fallback controlado se cliente estiver desativado
+        if self.client is None:
+            base_fallback = (
+                custom_prompt
+                or "Descreva brevemente elementos visuais, cores e possível contexto de crescimento e performance."
+            )
+            return f"[OpenAI desativado] {base_fallback}"
+
         resp = self.client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": content}],
@@ -60,6 +89,12 @@ class OpenAIClient:
         )
         if style:
             prompt += f"\nInstruções de estilo: {style}"
+        if self.client is None:
+            hashtags_hint = " #motivacao #crescimento #performance"
+            return (
+                f"[OpenAI desativado] Legenda baseada na descrição: {description[:120]}..."
+                f"{hashtags_hint}"
+            )
         resp = self.client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -68,6 +103,8 @@ class OpenAIClient:
 
     def generate_caption_with_prompt(self, caption_prompt: str) -> str:
         # Usa o prompt fornecido literalmente (já com placeholders processados upstream)
+        if self.client is None:
+            return f"[OpenAI desativado] {caption_prompt[:200]}"
         resp = self.client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": caption_prompt}],
@@ -79,6 +116,8 @@ class OpenAIClient:
         Gera conteúdo inicial baseado em um prompt personalizado.
         Este método é usado no novo fluxo texto-primeiro.
         """
+        if self.client is None:
+            return f"[OpenAI desativado] {content_prompt[:200]}"
         resp = self.client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": content_prompt}],
