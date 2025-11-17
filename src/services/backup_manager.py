@@ -14,6 +14,7 @@ from typing import Dict, List, Optional
 import schedule
 import time
 import threading
+import hashlib
 
 class BackupManager:
     """
@@ -92,10 +93,13 @@ class BackupManager:
         
         # Backup semanal completo
         weekly_day = self.config["schedule"]["weekly_full_backup"]
-        schedule.every().week.at(daily_time).do(self.create_full_backup)
+        try:
+            getattr(schedule.every(), weekly_day).at(daily_time).do(self.create_full_backup)
+        except Exception:
+            schedule.every(7).days.at(daily_time).do(self.create_full_backup)
         
         # Limpeza mensal
-        schedule.every().month.do(self.cleanup_old_backups)
+        schedule.every(30).days.do(self.cleanup_old_backups)
     
     def create_daily_backup(self) -> str:
         """Cria backup diário (apenas dados essenciais)"""
@@ -121,6 +125,12 @@ class BackupManager:
                 shutil.rmtree(backup_path)
                 backup_path = zip_path
             
+            result = self.verify_backup(str(backup_path))
+            report_path = Path(str(backup_path) + ".validation.json")
+            with open(report_path, 'w', encoding='utf-8') as rf:
+                json.dump(result, rf, indent=2, ensure_ascii=False)
+            print(f"🔐 Validação de integridade: {result.get('status')}")
+
             print(f"✅ Backup diário concluído: {backup_path}")
             return str(backup_path)
             
@@ -159,6 +169,12 @@ class BackupManager:
                 shutil.rmtree(backup_path)
                 backup_path = zip_path
             
+            result = self.verify_backup(str(backup_path))
+            report_path = Path(str(backup_path) + ".validation.json")
+            with open(report_path, 'w', encoding='utf-8') as rf:
+                json.dump(result, rf, indent=2, ensure_ascii=False)
+            print(f"🔐 Validação de integridade: {result.get('status')}")
+
             print(f"✅ Backup completo concluído: {backup_path}")
             return str(backup_path)
             
@@ -292,7 +308,8 @@ class BackupManager:
                 "version": "1.0",
                 "components": [],
                 "file_count": 0,
-                "total_size_mb": 0
+                "total_size_mb": 0,
+                "checksums": {}
             }
             
             # Calcular estatísticas do backup
@@ -303,6 +320,7 @@ class BackupManager:
                 if item.is_file():
                     file_count += 1
                     total_size += item.stat().st_size
+                    manifest["checksums"][str(item.relative_to(backup_path))] = self._sha256(item)
             
             manifest["file_count"] = file_count
             manifest["total_size_mb"] = round(total_size / (1024 * 1024), 2)
@@ -321,6 +339,61 @@ class BackupManager:
             
         except Exception as e:
             print(f"❌ Erro ao criar manifesto: {e}")
+
+    def _sha256(self, path: Path) -> str:
+        h = hashlib.sha256()
+        with open(path, 'rb') as f:
+            for chunk in iter(lambda: f.read(8192), b""):
+                h.update(chunk)
+        return h.hexdigest()
+
+    def verify_backup(self, backup_path: str) -> Dict:
+        try:
+            target = Path(backup_path)
+            if target.suffix == '.zip':
+                with zipfile.ZipFile(target, 'r') as zf:
+                    manifest_name = None
+                    for n in zf.namelist():
+                        if n.endswith('backup_manifest.json'):
+                            manifest_name = n
+                            break
+                    if not manifest_name:
+                        return {"status": "error", "detail": "manifesto ausente"}
+                    manifest = json.loads(zf.read(manifest_name).decode('utf-8'))
+                    ok = True
+                    failed: List[Dict] = []
+                    for rel, expected in manifest.get("checksums", {}).items():
+                        try:
+                            data = zf.read(rel)
+                            h = hashlib.sha256(data).hexdigest()
+                            if h != expected:
+                                ok = False
+                                failed.append({"file": rel, "expected": expected, "found": h})
+                        except KeyError:
+                            ok = False
+                            failed.append({"file": rel, "expected": expected, "found": "missing"})
+                    result = {"status": "ok" if ok else "failed", "failed": failed, "checked": len(manifest.get("checksums", {}))}
+                    return result
+            else:
+                manifest_file = Path(backup_path) / "backup_manifest.json"
+                if not manifest_file.exists():
+                    return {"status": "error", "detail": "manifesto ausente"}
+                manifest = json.loads(manifest_file.read_text(encoding='utf-8'))
+                ok = True
+                failed: List[Dict] = []
+                for rel, expected in manifest.get("checksums", {}).items():
+                    fp = Path(backup_path) / rel
+                    if not fp.exists():
+                        ok = False
+                        failed.append({"file": rel, "expected": expected, "found": "missing"})
+                        continue
+                    h = self._sha256(fp)
+                    if h != expected:
+                        ok = False
+                        failed.append({"file": rel, "expected": expected, "found": h})
+                return {"status": "ok" if ok else "failed", "failed": failed, "checked": len(manifest.get("checksums", {}))}
+        except Exception as e:
+            return {"status": "error", "detail": str(e)}
     
     def _compress_backup(self, backup_path: Path) -> Path:
         """Comprime o backup em arquivo ZIP"""

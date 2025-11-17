@@ -11,6 +11,9 @@ from pipeline.generate_and_publish import generate_and_publish
 from services.db import Database
 from services.rapidapi_client import RapidAPIClient
 import json
+from reports.service_status_report import export_service_status
+from reports.ltm_reporter import sign_exports, export_all
+from services.backup_manager import BackupManager
 
 # Configurar logging
 logging.basicConfig(
@@ -123,15 +126,19 @@ def main():
         p_standalone.add_argument("--disable_replicate", action="store_true", help="Usar imagem placeholder")
         p_standalone.add_argument("--theme", required=False, help="Tema específico (ex: motivacional, produtividade)")
 
+        # comandos auxiliares de relatório/validação podem ser adicionados futuramente
+
         args = parser.parse_args()
         if args.cmd == "collect":
             hashtags = [h.strip() for h in args.hashtags.split(",") if h.strip()]
             cmd_collect(hashtags)
+            return 0
         elif args.cmd == "collect_users":
             cfg = load_config()
             users = [u.strip() for u in args.users.split(",") if u.strip()]
             inserted = collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
             print(f"Coleta por usuários concluída. Novos itens inseridos: {inserted}")
+            return 0
         elif args.cmd == "generate":
             # Encaminhar flags Supabase se presentes
             supa_url = getattr(args, "supabase_url", None)
@@ -202,14 +209,16 @@ def main():
                     stories_text_position="auto" if getattr(args, "stories", False) else None,
                 )
                 print("Resultado:", result)
+            return 0
         elif args.cmd == "unposted":
             cfg = load_config()
             rows = Database(cfg["POSTGRES_DSN"]).list_unposted(args.limit)
             for r in rows:
                 print(r)
+            return 0
         elif args.cmd == "seed_demo":
             cfg = load_config()
-            conexao_db = Database(cfg["POSTGRES_DSN"]) 
+            conexao_db = Database(cfg["POSTGRES_DSN"])
             item = {
                 "prompt": args.prompt,
                 "thumbnail_url": args.url,
@@ -217,6 +226,7 @@ def main():
                 "tag": args.tag,
             }
             conexao_db.insert_trend(item)
+            return 0
         elif args.cmd == "preseed":
             cfg = load_config()
             # Ler contas
@@ -240,298 +250,42 @@ def main():
                 inserted += collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
             print(f"Preseed concluído para {target_name}. Novos itens inseridos: {inserted}")
             try:
-                conexao_db = Database(cfg["POSTGRES_DSN"]) 
+                conexao_db = Database(cfg["POSTGRES_DSN"])
                 filter_tags = hashtags + users
                 rows = conexao_db.list_unposted_by_tags(filter_tags, 50)
                 print(f"Itens não postados disponíveis para {target_name}: {len(rows)}")
             except Exception as e:
                 print(f"Aviso: não foi possível listar não postados por tags: {e}")
+            return 0
         elif args.cmd == "autopost":
             cfg = load_config()
-            # Tentar usar o banco; se indisponível, ativar fallback Standalone
             rows = []
             db_available = bool(cfg.get("POSTGRES_DSN"))
-            if not db_available:
+            if db_available:
+                try:
+                    conexao_db = Database(cfg["POSTGRES_DSN"])
+                    tags_arg = getattr(args, "tags", None) or os.environ.get("POST_TAGS")
+                    if tags_arg:
+                        tags = [t.strip() for t in tags_arg.split(",") if t.strip()]
+                        rows = conexao_db.list_unposted_by_tags(tags, 1)
+                    else:
+                        rows = conexao_db.list_unposted(1)
+                except Exception as e:
+                    print(f"⚠️ Erro ao conectar/consultar o banco: {e}. Ativando fallback Standalone.")
+                    rows = []
+            else:
                 print("⚠️ Aviso: POSTGRES_DSN/DATABASE_URL não definido. Usando fallback Standalone para garantir publicação.")
-            else:
+
+            if not rows:
+                acc_name = os.environ.get("ACCOUNT_NAME", "Milton_Albanez")
+                acc = None
                 try:
-                    conexao_db = Database(cfg["POSTGRES_DSN"])  
-                # Suporte a filtro por tags/usernames quando informado via CLI ou variável de ambiente POST_TAGS
-                tags_arg = getattr(args, "tags", None) or os.environ.get("POST_TAGS")
-                if tags_arg:
-                    tags = [t.strip() for t in tags_arg.split(",") if t.strip()]
-                    rows = db.list_unposted_by_tags(tags, 1)
-                else:
-                    rows = db.list_unposted(1)
-            except Exception as e:
-                print(f"⚠️ Erro ao conectar/consultar o banco: {e}. Ativando fallback Standalone.")
-                rows = []
-        # Se não há conteúdo no banco, usar modo Standalone por tema
-        if not rows:
-            print("🔁 Fallback: gerando conteúdo Standalone (temático) para garantir a postagem do horário.")
-            # Carregar prompts da conta se disponíveis
-            acc_name = os.environ.get("ACCOUNT_NAME", "Milton_Albanez")
-            acc = None
-            try:
-                with open("accounts.json", "r", encoding="utf-8") as f:
-                    accounts = json.load(f)
-                acc = next((a for a in accounts if a.get("nome") == acc_name), None)
-            except Exception as e:
-                print(f"⚠️ Erro ao carregar accounts.json: {e}")
-
-            # Selecionar tema padrão para meio-dia
-            fallback_theme = "motivacional"
-            # Mapa de imagens reais (Unsplash) por tema
-            theme_images = {
-                "motivacional": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-                "produtividade": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-                "lideranca": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-                "mindset": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-                "negocios": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-            }
-            source_image_url = theme_images.get(fallback_theme, theme_images["motivacional"])
-
-            # Prompts de conta e estilo
-            acc_content_prompt = acc.get("prompt_ia_geracao_conteudo") if acc else None
-            acc_caption_prompt = acc.get("prompt_ia_legenda") if acc else None
-            acc_replicate_prompt = acc.get("prompt_ia_replicate") if acc else None
-
-            print(f"🎯 Conta: {acc_name}")
-            print(f"🎨 Tema: {fallback_theme.title()}")
-            print(f"🖼️ Imagem (Unsplash): {source_image_url}")
-
-            result = generate_and_publish(
-                openai_key=cfg["OPENAI_API_KEY"],
-                replicate_token=cfg["REPLICATE_TOKEN"],
-                instagram_business_id=cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
-                instagram_access_token=cfg["INSTAGRAM_ACCESS_TOKEN"],
-                telegram_bot_token=cfg["TELEGRAM_BOT_TOKEN"],
-                telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
-                source_image_url=source_image_url,
-                caption_style=getattr(args, "style", None),
-                content_prompt=acc_content_prompt,
-                caption_prompt=acc_caption_prompt,
-                original_text=None,
-                disable_replicate=True,
-                replicate_prompt=acc_replicate_prompt,
-                # Overrides opcionais de Supabase via CLI
-                supabase_url=getattr(args, "supabase_url", None),
-                supabase_service_key=getattr(args, "supabase_service_key", None),
-                supabase_bucket=getattr(args, "supabase_bucket", None),
-                account_name=acc_name if acc else None,
-                account_config=acc,
-                publish_to_stories=getattr(args, "stories", False),
-                stories_text_position="auto" if getattr(args, "stories", False) else None,
-                use_weekly_themes=True,
-            )
-            print("Resultado:", result)
-            return
-        # Caso tenha conteúdo não postado no banco, seguir fluxo tradicional
-        item = rows[0]
-        # Carregar prompts da conta (se disponível) para seguir o fluxo original
-        acc_content_prompt = None
-        acc_caption_prompt = None
-        acc_replicate_prompt = None
-        try:
-            with open("accounts.json", "r", encoding="utf-8") as f:
-                accounts = json.load(f)
-            acc_name = os.environ.get("ACCOUNT_NAME", "Milton_Albanez")
-            acc = next((a for a in accounts if a.get("nome") == acc_name), None)
-            if acc:
-                acc_content_prompt = acc.get("prompt_ia_geracao_conteudo")
-                acc_caption_prompt = acc.get("prompt_ia_legenda")
-                acc_replicate_prompt = acc.get("prompt_ia_replicate")
-        except Exception:
-            pass
-        result = generate_and_publish(
-            openai_key=cfg["OPENAI_API_KEY"],
-            replicate_token=cfg["REPLICATE_TOKEN"],
-            instagram_business_id=cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
-            instagram_access_token=cfg["INSTAGRAM_ACCESS_TOKEN"],
-            telegram_bot_token=cfg["TELEGRAM_BOT_TOKEN"],
-            telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
-            source_image_url=item["thumbnail_url"],
-            caption_style=args.style,
-            content_prompt=acc_content_prompt,
-            caption_prompt=acc_caption_prompt,
-            original_text=item.get("prompt"),
-            disable_replicate=getattr(args, "disable_replicate", False),
-            replicate_prompt=(getattr(args, "replicate_prompt", None) or acc_replicate_prompt),
-            # Overrides opcionais de Supabase via CLI
-            supabase_url=getattr(args, "supabase_url", None),
-            supabase_service_key=getattr(args, "supabase_service_key", None),
-            supabase_bucket=getattr(args, "supabase_bucket", None),
-            account_name=acc_name if acc else None,
-            account_config=acc,
-            # Suporte para Stories
-            publish_to_stories=getattr(args, "stories", False),
-            stories_text_position="auto" if getattr(args, "stories", False) else None,
-        )
-        print("Resultado:", result)
-        if result.get("status") == "PUBLISHED":
-            db.mark_posted(item["code"]) 
-            print(f"Marcado como postado: {item['code']}")
-    elif args.cmd == "multirun":
-        # Detectar se é modo Stories
-        is_stories_mode = getattr(args, "stories", False)
-        mode_text = "STORIES" if is_stories_mode else "FEED"
-        force_fallback_stories = False
-        
-        print(f"🚀 INICIANDO MULTIRUN - MODO {mode_text} - LOG DETALHADO")
-        print(f"⏰ Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S UTC')}")
-        print(f"🌍 Timezone: BRT (UTC-3)")
-        
-        if is_stories_mode:
-            print("📱 MODO STORIES ATIVADO - Monitoramento especial habilitado")
-            print("🔍 Logs detalhados para Stories das 15h BRT")
-            
-            # Para Stories, sempre ativar fallback se RapidAPI falhar
-            from datetime import datetime, timezone, timedelta
-            utc_now = datetime.now(timezone.utc)
-            brt_now = utc_now - timedelta(hours=3)  # UTC-3 = BRT
-            
-            print(f"🕐 Horário atual: {brt_now.strftime('%H:%M')} BRT ({utc_now.strftime('%H:%M')} UTC)")
-            
-            # Para Stories, sempre usar fallback se for horário crítico ou se RapidAPI falhar
-            if brt_now.hour == 15:  # 15h BRT
-                force_fallback_stories = True
-                print("🚨 HORÁRIO CRÍTICO DETECTADO: 15h BRT - Ativando fallback automático para Stories")
-                print("⚡ Pulando RapidAPI e indo direto para modo fallback")
-            else:
-                print(f"🔍 Horário atual: {brt_now.hour}h BRT - Tentando RapidAPI primeiro, fallback se falhar")
-            
-            print("=" * 60)
-        
-        cfg = load_config()
-        print(f"✅ Configuração carregada")
-        
-        # Ler contas
-        try:
-            with open("accounts.json", "r", encoding="utf-8") as f:
-                accounts = json.load(f)
-            print(f"✅ Arquivo accounts.json carregado com {len(accounts)} contas")
-        except Exception as e:
-            print(f"❌ ERRO ao carregar accounts.json: {e}")
-            return
-            
-        for acc in accounts:
-            nome = acc.get("nome")
-            if getattr(args, "only", None) and nome != args.only:
-                print(f"⏭️ Pulando conta {nome} (filtro --only aplicado)")
-                continue
-                
-            print(f"\n🔄 == PROCESSANDO CONTA: {nome} ==")
-            
-            # Verificar credenciais básicas
-            hashtags = acc.get("hashtags_pesquisa", [])
-            users = acc.get("usernames", [])
-            print(f"📊 Hashtags: {hashtags}")
-            print(f"👥 Usuários: {users}")
-            
-            # Coleta de dados com timeout de segurança
-            inserted = 0
-            rapidapi_failed = force_fallback_stories  # Usar fallback forçado se ativado
-            import time as time_module
-            
-            if force_fallback_stories:
-                print(f"⚡ FALLBACK FORÇADO ATIVADO para {nome} - Pulando coleta RapidAPI")
-                rapidapi_failed = True
-            else:
-                try:
-                    if hashtags:
-                        print(f"🔍 Coletando hashtags...")
-                        start_time = time_module.time()
-                        
-                        try:
-                            inserted += collect_hashtags(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], hashtags)
-                            elapsed = time_module.time() - start_time
-                            print(f"⏱️ Coleta de hashtags levou {elapsed:.1f}s")
-                        except Exception as e:
-                            elapsed = time_module.time() - start_time
-                            print(f"⚠️ Erro na coleta de hashtags após {elapsed:.1f}s: {str(e)}")
-                            # Detecção específica de "Acesso negado" para fallback instantâneo
-                            error_str = str(e).lower()
-                            if ("acesso negado" in error_str or 
-                                "access denied" in error_str or 
-                                "403" in str(e) or 
-                                "forbidden" in error_str or 
-                                "timeout" in error_str):
-                                print(f"🚫 ERRO CRÍTICO DETECTADO: {str(e)}")
-                                print(f"🔄 Ativando fallback IMEDIATO para {nome}...")
-                                rapidapi_failed = True
-                            # Para Stories, ativar fallback imediatamente em qualquer erro
-                            elif is_stories_mode:
-                                print(f"🔄 STORIES: Erro detectado - Ativando modo fallback para {nome}...")
-                                rapidapi_failed = True
-                            elif elapsed > 15:  # Reduzido de 25 para 15 segundos
-                                print(f"🔄 RapidAPI lento ({elapsed:.1f}s). Ativando modo fallback para {nome}...")
-                                rapidapi_failed = True
-                
-                    if users and not rapidapi_failed:
-                        print(f"👤 Coletando posts de usuários...")
-                        try:
-                            inserted += collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
-                        except Exception as e:
-                            print(f"⚠️ Erro na coleta de usuários: {str(e)}")
-                            error_str = str(e).lower()
-                            if ("acesso negado" in error_str or 
-                                "access denied" in error_str or 
-                                "403" in str(e) or 
-                                "forbidden" in error_str or 
-                                "timeout" in error_str):
-                                print(f"🚫 ERRO CRÍTICO na coleta de usuários: {str(e)}")
-                                print(f"🔄 Ativando fallback IMEDIATO para {nome}...")
-                                rapidapi_failed = True
-                    
-                    if not rapidapi_failed:
-                        print(f"✅ Coleta concluída para {nome}. Novos itens: {inserted}")
+                    with open("accounts.json", "r", encoding="utf-8") as f:
+                        accounts = json.load(f)
+                    acc = next((a for a in accounts if a.get("nome") == acc_name), None)
                 except Exception as e:
-                    error_msg = str(e)
-                    print(f"❌ ERRO na coleta para {nome}: {e}")
-                    # Verificar se é erro 403, timeout ou travamento da RapidAPI
-                    if ("403" in error_msg or "Forbidden" in error_msg or 
-                        "timeout" in error_msg.lower() or "travou" in error_msg.lower()):
-                        print(f"🔄 RapidAPI com problemas. Ativando modo fallback para {nome}...")
-                        rapidapi_failed = True
-                    else:
-                        continue
-            
-            # Verificar banco de dados
-            rows = []
-            if not rapidapi_failed and not force_fallback_stories:
-                try:
-                    db = Database(cfg["POSTGRES_DSN"]) 
-                    filter_tags = hashtags + users
-                    rows = db.list_unposted_by_tags(filter_tags, args.limit)
-                    print(f"📋 Itens não postados encontrados: {len(rows)}")
-                    if len(rows) == 0:
-                        print(f"⚠️ Nenhum item para postar para {nome}")
-                        if not is_stories_mode:
-                            continue
-                        else:
-                            print(f"🔄 Modo Stories: ativando fallback temático...")
-                            rapidapi_failed = True
-                except Exception as e:
-                    print(f"❌ ERRO ao acessar banco para {nome}: {e}")
-                    if is_stories_mode:
-                        print(f"🔄 Erro no banco em modo Stories: ativando fallback...")
-                        rapidapi_failed = True
-                    else:
-                        continue
-            
-            # Fallback para modo Stories quando RapidAPI falha ou não há conteúdo
-            if (rapidapi_failed or force_fallback_stories) and is_stories_mode:
-                print(f"🎯 MODO FALLBACK ATIVADO para {nome}")
-                if force_fallback_stories:
-                    print(f"⚡ FALLBACK FORÇADO - Horário crítico 15h BRT detectado")
-                print(f"🎨 Gerando conteúdo temático standalone...")
-                
-                # Temas para Stories
-                themes = ["motivacional", "produtividade", "lideranca", "mindset", "negocios"]
-                import random
-                selected_theme = random.choice(themes)
-                
-                # Imagens por tema (Unsplash)
+                    print(f"⚠️ Erro ao carregar accounts.json: {e}")
+                fallback_theme = "motivacional"
                 theme_images = {
                     "motivacional": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
                     "produtividade": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
@@ -539,239 +293,267 @@ def main():
                     "mindset": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
                     "negocios": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
                 }
-                
-                fallback_image = theme_images.get(selected_theme, theme_images["motivacional"])
-                print(f"🎨 Tema selecionado: {selected_theme}")
-                print(f"🖼️ Imagem: {fallback_image}")
-                
-                # Criar item fake para o fallback
-                rows = [{
-                    "thumbnail_url": fallback_image,
-                    "code": f"fallback_{selected_theme}_{int(time.time())}",
-                    "prompt": f"Conteúdo temático sobre {selected_theme} para Stories - Horário crítico 15h BRT" if force_fallback_stories else f"Conteúdo temático sobre {selected_theme} para Stories"
-                }]
-                print(f"✅ Item fallback criado para {nome}")
-                if force_fallback_stories:
-                    print(f"🚨 GARANTIA DE PUBLICAÇÃO: Fallback automático às 15h BRT funcionando!")
-            elif len(rows) == 0:
-                print(f"⚠️ Nenhum item para postar para {nome}")
-                continue
-
-            # Validação detalhada de credenciais
-            acc_instagram_id = acc.get("instagram_id") or cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
-            acc_instagram_token = acc.get("instagram_access_token") or cfg["INSTAGRAM_ACCESS_TOKEN"]
-            acc_supa_url = acc.get("supabase_url") or cfg["SUPABASE_URL"]
-            acc_supa_key = acc.get("supabase_service_key") or cfg["SUPABASE_SERVICE_KEY"]
-            acc_supa_bucket = acc.get("supabase_bucket") or cfg["SUPABASE_BUCKET"]
-            
-            print(f"🔐 VERIFICAÇÃO DE CREDENCIAIS para {nome}:")
-            print(f"   Instagram ID: {'✅' if acc_instagram_id else '❌'} ({acc_instagram_id[:10] + '...' if acc_instagram_id else 'VAZIO'})")
-            print(f"   Instagram Token: {'✅' if acc_instagram_token else '❌'} ({acc_instagram_token[:10] + '...' if acc_instagram_token else 'VAZIO'})")
-            print(f"   Supabase URL: {'✅' if acc_supa_url else '❌'} ({acc_supa_url[:20] + '...' if acc_supa_url else 'VAZIO'})")
-            print(f"   Supabase Key: {'✅' if acc_supa_key else '❌'} ({'PRESENTE' if acc_supa_key else 'VAZIO'})")
-            print(f"   Supabase Bucket: {'✅' if acc_supa_bucket else '❌'} ({acc_supa_bucket if acc_supa_bucket else 'VAZIO'})")
-            
-            instagram_ok = bool(acc_instagram_id) and bool(acc_instagram_token)
-            supabase_ok = bool(acc_supa_url) and bool(acc_supa_key) and bool(acc_supa_bucket)
-            
-            if not instagram_ok or not supabase_ok:
-                print(f"❌ CREDENCIAIS INCOMPLETAS para {nome}:")
-                print(f"   Instagram OK: {instagram_ok}")
-                print(f"   Supabase OK: {supabase_ok}")
-                print(f"   🚫 PULANDO geração/publicação para esta conta")
-                continue
-            print(f"🎯 INICIANDO GERAÇÃO E PUBLICAÇÃO para {nome}")
-            for i, item in enumerate(rows, 1):
-                print(f"\n📝 PROCESSANDO ITEM {i}/{len(rows)} para {nome}")
-                print(f"   🔗 URL: {item.get('thumbnail_url', 'N/A')}")
-                print(f"   📄 Código: {item.get('code', 'N/A')}")
-                print(f"   💬 Prompt: {item.get('prompt', 'N/A')[:50]}...")
-                
+                source_image_url = theme_images.get(fallback_theme, theme_images["motivacional"])
+                acc_content_prompt = acc.get("prompt_ia_geracao_conteudo") if acc else None
+                acc_caption_prompt = acc.get("prompt_ia_legenda") if acc else None
+                acc_replicate_prompt = acc.get("prompt_ia_replicate") if acc else None
                 try:
-                    # Logs específicos para Stories
-                    if getattr(args, "stories", False):
-                        print(f"📱 INICIANDO GERAÇÃO DE STORIES para {nome}")
-                        if force_fallback_stories:
-                            print(f"   🚨 MODO FALLBACK FORÇADO - 15h BRT")
-                        print(f"   🔐 Instagram ID: {acc_instagram_id}")
-                        print(f"   🔑 Token válido: {'✅' if acc_instagram_token else '❌'}")
-                        print(f"   🖼️ URL da imagem: {item['thumbnail_url']}")
-                        print(f"   📝 Prompt original: {item.get('prompt', 'N/A')[:100]}...")
-                        print(f"   ⚙️ Configurações Stories:")
-                        print(f"      - publish_to_stories: True")
-                        print(f"      - stories_text_position: auto")
-                        print(f"   🚀 Chamando generate_and_publish...")
-                    
                     result = generate_and_publish(
-                        openai_key=acc.get("openai_api_key", cfg["OPENAI_API_KEY"]),
-                        replicate_token=acc.get("replicate_token", cfg["REPLICATE_TOKEN"]),
-                        instagram_business_id=acc_instagram_id,
-                        instagram_access_token=acc_instagram_token,
-                        telegram_bot_token=acc.get("telegram_bot_token", cfg["TELEGRAM_BOT_TOKEN"]),
-                        telegram_chat_id=acc.get("telegram_chat_id", cfg["TELEGRAM_CHAT_ID"]),
-                        source_image_url=item["thumbnail_url"],
+                        openai_key=cfg["OPENAI_API_KEY"],
+                        replicate_token=cfg["REPLICATE_TOKEN"],
+                        instagram_business_id=cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
+                        instagram_access_token=cfg["INSTAGRAM_ACCESS_TOKEN"],
+                        telegram_bot_token=cfg["TELEGRAM_BOT_TOKEN"],
+                        telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
+                        source_image_url=source_image_url,
                         caption_style=getattr(args, "style", None),
-                        content_prompt=acc.get("prompt_ia_geracao_conteudo"),
-                        caption_prompt=acc.get("prompt_ia_legenda"),
-                        original_text=item.get("prompt"),
-                        disable_replicate=bool(acc.get("disable_replicate", False)),
-                        replicate_prompt=acc.get("prompt_ia_replicate"),
-                        supabase_url=acc_supa_url,
-                        supabase_service_key=acc_supa_key,
-                        supabase_bucket=acc_supa_bucket,
-                        account_name=nome,
+                        content_prompt=acc_content_prompt,
+                        caption_prompt=acc_caption_prompt,
+                        original_text=None,
+                        disable_replicate=True,
+                        replicate_prompt=acc_replicate_prompt,
+                        supabase_url=getattr(args, "supabase_url", None),
+                        supabase_service_key=getattr(args, "supabase_service_key", None),
+                        supabase_bucket=getattr(args, "supabase_bucket", None),
+                        account_name=acc_name if acc else None,
                         account_config=acc,
                         publish_to_stories=getattr(args, "stories", False),
                         stories_text_position="auto" if getattr(args, "stories", False) else None,
+                        use_weekly_themes=True,
                     )
-                    
-                    # Logs específicos do resultado para Stories
-                    if getattr(args, "stories", False):
-                        print(f"📱 RESULTADO STORIES para {nome}:")
-                        if force_fallback_stories:
-                            print(f"   🚨 RESULTADO FALLBACK FORÇADO - 15h BRT")
-                        print(f"   📊 Status: {result.get('status', 'UNKNOWN')}")
-                        print(f"   🆔 Post ID: {result.get('post_id', 'N/A')}")
-                        if result.get('stories_published'):
-                            print(f"   ✅ Stories publicado com sucesso!")
-                            if force_fallback_stories:
-                                print(f"   🎉 FALLBACK AUTOMÁTICO FUNCIONOU - 15h BRT GARANTIDO!")
-                            print(f"   📱 Stories ID: {result.get('stories', {}).get('media_id', 'N/A')}")
-                        else:
-                            print(f"   ❌ Stories NÃO foi publicado")
-                            if force_fallback_stories:
-                                print(f"   🚨 FALHA NO FALLBACK FORÇADO - INVESTIGAR!")
-                        if result.get('error'):
-                            print(f"   🚨 ERRO: {result.get('error')}")
-                    else:
-                        print(f"✅ RESULTADO para {nome}: {result}")
-                    
-                    if result.get("status") == "PUBLISHED":
-                        db.mark_posted(item["code"]) 
-                        print(f"✅ Marcado como postado: {item['code']}")
-                        print(f"🎉 POST PUBLICADO COM SUCESSO para {nome}!")
-                    else:
-                        print(f"⚠️ Post não foi publicado. Status: {result.get('status', 'UNKNOWN')}")
-                        if result.get("error"):
-                            print(f"❌ Erro: {result.get('error')}")
-                            
+                    print("Resultado:", result)
                 except Exception as e:
-                    if getattr(args, "stories", False):
-                        print(f"🚨 ERRO CRÍTICO EM STORIES para {nome}: {e}")
-                        print(f"   📱 Modo: STORIES")
-                        print(f"   🔐 Instagram ID: {acc_instagram_id}")
-                        print(f"   🔑 Token presente: {'✅' if acc_instagram_token else '❌'}")
-                        print(f"   📄 Item código: {item.get('code', 'N/A')}")
-                        print(f"   🖼️ URL imagem: {item.get('thumbnail_url', 'N/A')}")
-                    else:
-                        print(f"❌ ERRO CRÍTICO ao processar item para {nome}: {e}")
-                    import traceback
-                    print(f"🔍 Traceback: {traceback.format_exc()}")
+                    print(f"❌ Erro no fallback Standalone: {e}")
+                return 0
+
+            item = rows[0]
+            acc_content_prompt = None
+            acc_caption_prompt = None
+            acc_replicate_prompt = None
+            acc_name = os.environ.get("ACCOUNT_NAME", "Milton_Albanez")
+            try:
+                with open("accounts.json", "r", encoding="utf-8") as f:
+                    accounts = json.load(f)
+                acc = next((a for a in accounts if a.get("nome") == acc_name), None)
+                if acc:
+                    acc_content_prompt = acc.get("prompt_ia_geracao_conteudo")
+                    acc_caption_prompt = acc.get("prompt_ia_legenda")
+                    acc_replicate_prompt = acc.get("prompt_ia_replicate")
+            except Exception:
+                pass
+            try:
+                result = generate_and_publish(
+                    openai_key=cfg["OPENAI_API_KEY"],
+                    replicate_token=cfg["REPLICATE_TOKEN"],
+                    instagram_business_id=cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
+                    instagram_access_token=cfg["INSTAGRAM_ACCESS_TOKEN"],
+                    telegram_bot_token=cfg["TELEGRAM_BOT_TOKEN"],
+                    telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
+                    source_image_url=item["thumbnail_url"],
+                    caption_style=args.style,
+                    content_prompt=acc_content_prompt,
+                    caption_prompt=acc_caption_prompt,
+                    original_text=item.get("prompt"),
+                    disable_replicate=getattr(args, "disable_replicate", False),
+                    replicate_prompt=(getattr(args, "replicate_prompt", None) or acc_replicate_prompt),
+                    supabase_url=getattr(args, "supabase_url", None),
+                    supabase_service_key=getattr(args, "supabase_service_key", None),
+                    supabase_bucket=getattr(args, "supabase_bucket", None),
+                    account_name=acc_name if acc else None,
+                    account_config=acc,
+                    publish_to_stories=getattr(args, "stories", False),
+                    stories_text_position="auto" if getattr(args, "stories", False) else None,
+                )
+                print("Resultado:", result)
+                if result.get("status") == "PUBLISHED":
+                    try:
+                        if db_available and conexao_db:
+                            conexao_db.mark_posted(item["code"])
+                            print(f"Marcado como postado: {item['code']}")
+                    except Exception:
+                        pass
+            except Exception as e:
+                print(f"❌ Erro na publicação: {e}")
+            return 0
+        
+        elif args.cmd == "multirun":
+            cfg = load_config()
+            is_stories_mode = getattr(args, "stories", False)
+            try:
+                with open("accounts.json", "r", encoding="utf-8") as f:
+                    accounts = json.load(f)
+            except Exception as e:
+                print(f"❌ ERRO ao carregar accounts.json: {e}")
+                return 0
+            for acc in accounts:
+                nome = acc.get("nome")
+                if getattr(args, "only", None) and nome != args.only:
                     continue
-                    
-            print(f"✅ PROCESSAMENTO CONCLUÍDO para {nome}")
-        
-        print(f"\n🏁 MULTIRUN FINALIZADO - {time.strftime('%Y-%m-%d %H:%M:%S UTC')}")
-    elif args.cmd == "clear_cache":
-        cfg = load_config()
-        client = RapidAPIClient(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"])
-        predicate = {}
-        if getattr(args, "url_contains", None):
-            predicate["url_contains"] = args.url_contains
-        if getattr(args, "path", None):
-            predicate["path"] = args.path
-        if getattr(args, "older", None) is not None:
-            predicate["older_than_seconds"] = args.older
-        removed = client.clear_cache(predicate or None)
-        print(f"Cache removido: {removed} arquivos")
-    elif args.cmd == "standalone":
-        print("🚀 MODO STANDALONE - Geração de conteúdo independente")
-        print("=" * 60)
-        
-        cfg = load_config()
-        account_name = args.account
-        
-        # Carregar configuração da conta
-        selected_account = None
-        try:
-            with open("accounts.json", "r", encoding="utf-8") as f:
-                accounts = json.load(f)
-            selected_account = next((a for a in accounts if a.get("nome") == account_name), None)
-            if not selected_account:
-                print(f"⚠️ Conta '{account_name}' não encontrada. Usando configuração padrão.")
-        except Exception as e:
-            print(f"⚠️ Erro ao carregar accounts.json: {e}")
-        
-        # Definir prompts baseados no tema
-        content_prompt = args.content_prompt
-        if not content_prompt and args.theme:
-            theme_prompts = {
-                "motivacional": "Crie uma mensagem motivacional inspiradora sobre superação, crescimento pessoal e conquista de objetivos",
-                "produtividade": "Compartilhe uma dica prática e valiosa sobre produtividade, organização ou gestão de tempo",
-                "lideranca": "Desenvolva um insight sobre liderança, gestão de equipes ou desenvolvimento profissional",
-                "mindset": "Explore conceitos de mindset de crescimento, mentalidade positiva e desenvolvimento mental",
-                "negocios": "Apresente uma estratégia ou insight sobre empreendedorismo, negócios ou inovação"
+                hashtags = acc.get("hashtags_pesquisa", [])
+                users = acc.get("usernames", [])
+                rapidapi_failed = False
+                try:
+                    if hashtags:
+                        collect_hashtags(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], hashtags)
+                except Exception:
+                    rapidapi_failed = True
+                try:
+                    if users and not rapidapi_failed:
+                        collect_userposts(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"], cfg["POSTGRES_DSN"], users)
+                except Exception:
+                    rapidapi_failed = True
+                rows = []
+                try:
+                    db = Database(cfg["POSTGRES_DSN"]) 
+                    filter_tags = hashtags + users
+                    rows = db.list_unposted_by_tags(filter_tags, args.limit)
+                except Exception:
+                    rapidapi_failed = True
+                if len(rows) == 0:
+                    import random
+                    themes = ["motivacional", "produtividade", "lideranca", "mindset", "negocios"]
+                    theme_images = {
+                        "motivacional": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                        "produtividade": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                        "lideranca": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                        "mindset": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                        "negocios": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                    }
+                    t = random.choice(themes)
+                    fallback_image = theme_images.get(t, theme_images["motivacional"]) 
+                    rows = [{
+                        "thumbnail_url": fallback_image,
+                        "code": f"fallback_{t}_{int(time.time())}",
+                        "prompt": f"Conteúdo temático sobre {t}"
+                    }]
+                acc_instagram_id = acc.get("instagram_id") or cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
+                acc_instagram_token = acc.get("instagram_access_token") or cfg["INSTAGRAM_ACCESS_TOKEN"]
+                acc_supa_url = acc.get("supabase_url") or cfg.get("SUPABASE_URL")
+                acc_supa_key = acc.get("supabase_service_key") or cfg.get("SUPABASE_SERVICE_KEY")
+                acc_supa_bucket = acc.get("supabase_bucket") or cfg.get("SUPABASE_BUCKET")
+                for item in rows:
+                    try:
+                        result = generate_and_publish(
+                            openai_key=acc.get("openai_api_key", cfg["OPENAI_API_KEY"]),
+                            replicate_token=acc.get("replicate_token", cfg["REPLICATE_TOKEN"]),
+                            instagram_business_id=acc_instagram_id,
+                            instagram_access_token=acc_instagram_token,
+                            telegram_bot_token=acc.get("telegram_bot_token", cfg["TELEGRAM_BOT_TOKEN"]),
+                            telegram_chat_id=acc.get("telegram_chat_id", cfg["TELEGRAM_CHAT_ID"]),
+                            source_image_url=item["thumbnail_url"],
+                            caption_style=getattr(args, "style", None),
+                            content_prompt=acc.get("prompt_ia_geracao_conteudo"),
+                            caption_prompt=acc.get("prompt_ia_legenda"),
+                            original_text=item.get("prompt"),
+                            disable_replicate=bool(acc.get("disable_replicate", False)),
+                            replicate_prompt=acc.get("prompt_ia_replicate"),
+                            supabase_url=acc_supa_url,
+                            supabase_service_key=acc_supa_key,
+                            supabase_bucket=acc_supa_bucket,
+                            account_name=nome,
+                            account_config=acc,
+                            publish_to_stories=is_stories_mode,
+                            stories_text_position="auto" if is_stories_mode else None,
+                        )
+                        print(f"✅ RESULTADO para {nome}: {result}")
+                        if result.get("status") == "PUBLISHED":
+                            try:
+                                db.mark_posted(item.get("code", ""))
+                                print(f"✅ Marcado como postado: {item.get('code', '')}")
+                            except Exception:
+                                pass
+                    except Exception as e:
+                        print(f"❌ ERRO ao processar item para {nome}: {e}")
+                        continue
+            return 0
+        elif args.cmd == "clear_cache":
+            cfg = load_config()
+            client = RapidAPIClient(cfg["RAPIDAPI_KEY"], cfg["RAPIDAPI_HOST"])
+            predicate = {}
+            if getattr(args, "url_contains", None):
+                predicate["url_contains"] = args.url_contains
+            if getattr(args, "path", None):
+                predicate["path"] = args.path
+            if getattr(args, "older", None) is not None:
+                predicate["older_than_seconds"] = args.older
+            removed = client.clear_cache(predicate or None)
+            print(f"Cache removido: {removed} arquivos")
+            return 0
+        elif args.cmd == "standalone":
+            print("🚀 MODO STANDALONE - Geração de conteúdo independente")
+            print("=" * 60)
+            cfg = load_config()
+            account_name = args.account
+            selected_account = None
+            try:
+                with open("accounts.json", "r", encoding="utf-8") as f:
+                    accounts = json.load(f)
+                selected_account = next((a for a in accounts if a.get("nome") == account_name), None)
+                if not selected_account:
+                    print(f"⚠️ Conta '{account_name}' não encontrada. Usando configuração padrão.")
+            except Exception as e:
+                print(f"⚠️ Erro ao carregar accounts.json: {e}")
+            content_prompt = args.content_prompt
+            if not content_prompt and args.theme:
+                theme_prompts = {
+                    "motivacional": "Crie uma mensagem motivacional inspiradora sobre superação, crescimento pessoal e conquista de objetivos",
+                    "produtividade": "Compartilhe uma dica prática e valiosa sobre produtividade, organização ou gestão de tempo",
+                    "lideranca": "Desenvolva um insight sobre liderança, gestão de equipes ou desenvolvimento profissional",
+                    "mindset": "Explore conceitos de mindset de crescimento, mentalidade positiva e desenvolvimento mental",
+                    "negocios": "Apresente uma estratégia ou insight sobre empreendedorismo, negócios ou inovação"
+                }
+                content_prompt = theme_prompts.get(args.theme.lower(), "Crie conteúdo valioso e inspirador sobre desenvolvimento pessoal e profissional")
+            theme_images = {
+                "motivacional": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                "produtividade": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                "lideranca": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                "mindset": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
+                "negocios": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80"
             }
-            content_prompt = theme_prompts.get(args.theme.lower(), 
-                "Crie conteúdo valioso e inspirador sobre desenvolvimento pessoal e profissional")
-        
-        # Usar imagens reais do Unsplash por tema
-        theme_images = {
-            "motivacional": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-            "produtividade": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-            "lideranca": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-            "mindset": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80",
-            "negocios": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&h=1080&q=80"
-        }
-        
-        theme = args.theme.lower() if args.theme else "motivacional"
-        source_image_url = theme_images.get(theme, theme_images["motivacional"])
-        
-        print(f"🎯 Conta: {account_name}")
-        print(f"🎨 Tema: {theme.title()}")
-        print(f"📝 Prompt: {content_prompt[:100]}..." if content_prompt and len(content_prompt) > 100 else f"📝 Prompt: {content_prompt}")
-        print(f"🖼️ Imagem: {source_image_url}")
-        print()
-        
-        try:
-            # Usar credenciais específicas da conta se disponíveis
-            acc_instagram_id = selected_account.get("instagram_id") if selected_account else cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
-            acc_instagram_token = selected_account.get("instagram_access_token") if selected_account else cfg["INSTAGRAM_ACCESS_TOKEN"]
-            
-            result = generate_and_publish(
-                openai_key=cfg["OPENAI_API_KEY"],
-                replicate_token=cfg.get("REPLICATE_TOKEN", ""),
-                instagram_business_id=acc_instagram_id,
-                instagram_access_token=acc_instagram_token,
-                telegram_bot_token=cfg["TELEGRAM_BOT_TOKEN"],
-                telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
-                source_image_url=source_image_url,
-                content_prompt=content_prompt,
-                caption_style=args.style,
-                account_name=account_name,
-                account_config=selected_account,
-                disable_replicate=args.disable_replicate,
-                publish_to_stories=args.stories,
-                use_weekly_themes=True
-            )
-            
+            theme = args.theme.lower() if args.theme else "motivacional"
+            source_image_url = theme_images.get(theme, theme_images["motivacional"])
+            print(f"🎯 Conta: {account_name}")
+            print(f"🎨 Tema: {theme.title()}")
+            print(f"📝 Prompt: {content_prompt[:100]}..." if content_prompt and len(content_prompt) > 100 else f"📝 Prompt: {content_prompt}")
+            print(f"🖼️ Imagem: {source_image_url}")
             print()
-            print("✅ CONTEÚDO GERADO E PUBLICADO COM SUCESSO!")
-            print(f"📊 Resultado: {result}")
-            print()
-            print("🎉 Modo standalone funcionando perfeitamente!")
-            print("💡 Benefícios:")
-            print("   • Independente de APIs externas")
-            print("   • Conteúdo 100% original")
-            print("   • Sistema temático automático")
-            print("   • Sem limitações de rate limit")
-            
-        except Exception as e:
-            print(f"❌ Erro no modo standalone: {e}")
-            print("🔧 Verifique as configurações básicas (Instagram, OpenAI, Telegram)")
+            try:
+                acc_instagram_id = selected_account.get("instagram_id") if selected_account else cfg["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
+                acc_instagram_token = selected_account.get("instagram_access_token") if selected_account else cfg["INSTAGRAM_ACCESS_TOKEN"]
+                result = generate_and_publish(
+                    openai_key=cfg["OPENAI_API_KEY"],
+                    replicate_token=cfg.get("REPLICATE_TOKEN", ""),
+                    instagram_business_id=acc_instagram_id,
+                    instagram_access_token=acc_instagram_token,
+                    telegram_bot_token=cfg["TELEGRAM_BOT_TOKEN"],
+                    telegram_chat_id=cfg["TELEGRAM_CHAT_ID"],
+                    source_image_url=source_image_url,
+                    content_prompt=content_prompt,
+                    caption_style=args.style,
+                    account_name=account_name,
+                    account_config=selected_account,
+                    disable_replicate=args.disable_replicate,
+                    publish_to_stories=args.stories,
+                    use_weekly_themes=True
+                )
+                print()
+                print("✅ CONTEÚDO GERADO E PUBLICADO COM SUCESSO!")
+                print(f"📊 Resultado: {result}")
+                print()
+                print("🎉 Modo standalone funcionando perfeitamente!")
+                print("💡 Benefícios:")
+                print("   • Independente de APIs externas")
+                print("   • Conteúdo 100% original")
+                print("   • Sistema temático automático")
+                print("   • Sem limitações de rate limit")
+            except Exception as e:
+                print(f"❌ Erro no modo standalone: {e}")
+                print("🔧 Verifique as configurações básicas (Instagram, OpenAI, Telegram)")
+            return 0
+
         else:
             parser.print_help()
-
+            return 0
         logger.info(f"✅ Agente {cron_name} concluído com sucesso!")
         return 0
     except Exception as e:

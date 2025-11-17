@@ -12,3 +12,5 @@ flask==2.3.3
 numpy==2.2.0
 psutil
 python-telegram-bot==20.7
+reportlab==4.2.5
+cryptography==43.0.1
